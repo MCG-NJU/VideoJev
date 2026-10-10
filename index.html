@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#f8f7f3" name="theme-color"/>
+<meta content="VideoJev: System One Model for Video Understanding and Interaction. Direct decisions over time and options, with shared video computation." name="description"/>
+<meta content="VideoJev — Direct decisions. Shared computation." property="og:title"/>
+<meta content="A family of video System One models for temporal grounding and multiple-choice video question answering." property="og:description"/>
+<meta content="website" property="og:type"/>
+<title>VideoJev · System One for Video</title>
+<link href="assets/mark.svg" rel="icon" type="image/svg+xml"/>
+<link as="font" crossorigin="" href="assets/fonts/inter-regular.woff2" rel="preload" type="font/woff2"/>
+<link href="styles.css?v=5" rel="stylesheet"/>
+<script defer="" src="assets/data/paper-data.js"></script>
+<script defer="" src="app.js?v=3"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="nav-inner">
+<a aria-label="VideoJev home" class="brand" href="#"><img alt="" height="30" src="assets/mark.svg" width="30"/><span>Video<span class="clay">Jev</span></span></a>
+<nav aria-label="Main navigation">
+<a href="#examples">Examples</a><a href="#method">Method</a><a href="#results">Results</a><a href="#models">Models</a>
+</nav>
+<a class="nav-paper" href="assets/VideoJev.pdf" rel="noopener" target="_blank">Read the paper <span aria-hidden="true">↗</span></a>
+</div>
+</header>
+<main id="main">
+<section aria-labelledby="paper-title" class="hero container">
+<h1 id="paper-title">Video<span>Jev</span><svg aria-hidden="true" class="hero-spark" viewbox="0 0 40 40"><path d="M8 31 29 10M19 8l13-3-2 13M6 14l4-4M21 33l5-5"></path></svg></h1>
+<p class="paper-title">System One Model for<br class="desktop-break"/> Video Understanding and Interaction</p>
+<div class="authors">
+<span>Yuhan Zhu<sup>*1</sup></span><span>Xiangyu Zeng<sup>*1</sup></span><span>Qingyi Si<sup>*‡2</sup></span><span>Chenxu Yang<sup>*3</sup></span><span>Yifei Li<sup>*4</sup></span><span>Junhao Zhou<sup>3</sup></span>
+<span>Dingyu Yao<sup>3</sup></span><span>Jun Zhang<sup>2</sup></span><span>Chuanyu Qin<sup>3</sup></span><span>Luozheng Qin<sup>5</sup></span><span>Zhiqiu Zhang<sup>6</sup></span><span>Yuandong Yang<sup>1</sup></span>
+<span>Yuqi Xu<sup>2</sup></span><span>Tianyu Zhang<sup>7</sup></span><span>Hongcheng Guo<sup>8</sup></span><span>Jiaqi Wang<sup>2</sup></span><span>Nan Duan<sup>2</sup></span><span>Limin Wang<sup>†1</sup></span>
+</div>
+<p class="affiliations"><span><sup>1</sup>NJU</span><span><sup>2</sup>JD.com</span><span><sup>3</sup>UCAS</span><span><sup>4</sup>THU</span><span><sup>5</sup>XMU</span><span><sup>6</sup>SJTU</span><span><sup>7</sup>USTC</span><span><sup>8</sup>FDU</span></p>
+<p class="contributions">* Equal contribution <span>‡ Project lead</span> <span>† Corresponding author</span></p>
+<div class="resource-links">
+<a class="button primary" href="assets/VideoJev.pdf" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="M5 2h7l4 4v12H5zM12 2v5h4M8 11h5M8 14h5"></path></svg>Paper <span>↗</span></a>
+<a class="button secondary" href="#models"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="m6 5-5 5 5 5m8-10 5 5-5 5M12 3 8 17"></path></svg>Code <span class="soon">Soon</span></a>
+<a class="button secondary" href="#models"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="m10 2 8 4-8 4-8-4 8-4ZM2 10l8 4 8-4M2 14l8 4 8-4"></path></svg>Models <span class="soon">Soon</span></a>
+</div>
+<div class="hero-summary"><p class="section-title">Make the decision. <em>Reuse the video.</em></p></div>
+<div class="key-stats">
+<div><span class="stat-value">2 <span class="stat-unit">tasks, one interface</span></span><p>Temporal grounding + video QA</p></div>
+<div><span class="stat-value">+6.7 / +10.8 <span class="stat-unit">pts</span></span><p>mIoU gain over 4B / MoE backbones</p></div>
+<div><span class="stat-value">100–129<span class="stat-unit">×</span></span><p>QA speedup vs. Thinking</p></div>
+</div>
+</section>
+<section aria-labelledby="examples-title" class="section examples-section" id="examples">
+<div class="container">
+<div class="section-heading"><h2 class="section-title" id="examples-title">One video.  <em>Many decisions.</em></h2><p>Explore recorded predictions for event localization and video question answering.</p></div>
+<div class="demo-shell">
+<div aria-label="Video examples" class="demo-tabs" role="tablist">
+<button aria-controls="demo-panel" aria-selected="true" class="demo-tab active" data-demo="1" id="tab-grounding" role="tab" tabindex="0">Temporal grounding</button>
+<button aria-controls="demo-panel" aria-selected="false" class="demo-tab" data-demo="4" id="tab-qa" role="tab" tabindex="-1">Long-video QA</button>
+</div>
+<div aria-labelledby="tab-grounding" id="demo-panel" role="tabpanel">
+<div class="demo-grid">
+<div class="demo-visual">
+<div class="video-wrap"><video aria-label="Charades video used for temporal grounding" controls="" id="demo-video" muted="" playsinline="" poster="assets/frames/case-01-03.webp" preload="none"><source src="assets/videos/case-01.mp4" type="video/mp4"/></video></div>
+<div class="media-caption"><span id="video-caption">27-second video</span></div>
+<div aria-label="Video frames" class="frame-strip" id="frame-strip"></div>
+<div class="shared-flow"><span class="flow-source"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 4h16v16H4zM9 8l7 4-7 4z"></path></svg>Shared video</span><span class="flow-line"></span><span class="flow-compute">1 forward pass</span><span class="flow-line"></span><span class="flow-output" id="flow-output">6 readouts</span></div>
+</div>
+<div class="demo-readouts">
+<div class="readout-toolbar"><p class="query-count" id="query-count">3 of 6 query readouts shown</p><div aria-label="Model size" class="mini-switch"><button aria-pressed="true" class="active" data-demo-model="4B">4B</button><button aria-pressed="false" data-demo-model="35B-A3B">35B-A3B</button></div></div>
+<div class="query-buttons" id="query-buttons"></div>
+<div aria-live="polite" class="prediction-detail" id="prediction-detail"></div>
+</div>
+</div>
+</div>
+</div>
+<details class="more-examples"><summary><span>More examples</span><span aria-hidden="true" class="expand-icon">+</span></summary><div class="extra-cases" id="extra-cases"></div></details>
+</div>
+</section>
+<section aria-labelledby="overview-title" class="section overview-section">
+<div class="container overview-grid">
+<div><h2 class="section-title" id="overview-title">Understanding can  be a <em>direct decision.</em></h2></div>
+<div class="overview-copy"><p>VideoJev turns video understanding into two direct decisions: <strong>when an event happens, and which answer matches the evidence.</strong></p><p>A shared scorer evaluates time intervals and text options without generating an answer token by token. The same video context supports many questions.</p></div>
+</div>
+<div class="container"><details class="abstract"><summary>Read the full abstract <span aria-hidden="true" class="expand-icon">+</span></summary><p>Turning video understanding into intelligent action requires timely, repeated decisions. Many of these decisions are structured, even when the task itself is complex and open-ended. Discriminative vision models support efficient prediction but typically require task-specific designs, while video multimodal large language models (MLLMs) offer semantic flexibility yet rely on autoregressive generation even for simple decisions. We introduce <strong>VideoJev</strong>, a family of video System One models that combines pretrained multimodal understanding with efficient direct prediction. VideoJev unifies temporal grounding and multiple-choice video question answering through a shared candidate-scoring interface, directly evaluating temporal intervals and textual options against video evidence without autoregressive answer decoding. Because successive judgments often share the same visual context, VideoJev reuses visual computation through Cached inference for arriving queries and Joint inference for multiple queries in a single forward pass. Across three temporal grounding benchmarks, VideoJev-4B and VideoJev-35B-A3B improve mean mIoU over their backbones by 6.7 and 10.8 points, respectively, with measured inference speedups of 2.8–3.1×. On four video QA benchmarks, both achieve performance comparable to their backbones in Thinking mode, with measured inference speedups exceeding 100×. These results establish a unified, reusable decision interface, providing a foundation for visual agents that compose structured judgments into complex, open-ended workflows.</p></details></div>
+</section>
+<section aria-labelledby="method-title" class="section method-section" id="method">
+<div class="container">
+<div class="section-heading"><h2 class="section-title" id="method-title">Direct decisions.  <em>Shared computation.</em></h2><p>Score time intervals and answer options with one shared model.</p></div>
+<figure class="paper-figure architecture-figure"><button aria-label="Enlarge the VideoJev architecture figure" class="image-zoom" data-caption="VideoJev architecture · example scores are illustrative" data-zoom="assets/figures/architecture.webp"><img alt="VideoJev architecture: video frames and candidates feed a causal backbone, a shared scorer, and temporal or option decision outputs." class="architecture-desktop" height="1544" loading="lazy" src="assets/figures/architecture.webp" width="2800"/><span aria-hidden="true" class="zoom-label">↗</span></button><div class="architecture-mobile"><img alt="Unified candidate inputs" height="1820" loading="lazy" src="assets/figures/architecture-1.webp" width="1100"/><img alt="Shared video prefix and scoring" height="1820" loading="lazy" src="assets/figures/architecture-2.webp" width="1100"/><img alt="Temporal and option decision outputs" height="1820" loading="lazy" src="assets/figures/architecture-3.webp" width="1100"/></div></figure>
+<div class="inference-explainer"><h3 class="section-title" id="inference-title">Questions together.  Decisions together.</h3>
+<div class="inference-copy"><div aria-label="Inference mode" class="segmented" role="group"><button aria-pressed="true" class="active" data-inference="joint">Joint inference</button><button aria-pressed="false" data-inference="cached">Cached inference</button></div><p id="inference-description">Place multiple queries after one video prefix. A single causal forward pass reads out a separate decision for each query in the group.</p></div>
+<div aria-live="polite" class="inference-diagram" id="inference-diagram"></div>
+</div>
+</div>
+</section>
+<section aria-labelledby="results-title" class="section results-section" id="results">
+<div class="container">
+<div class="section-heading"><h2 class="section-title" id="results-title">Strong judgments.  <em>A fraction of the cost.</em></h2><p>Two model scales. Seven benchmarks.</p></div>
+<div class="performance-grid">
+<figure class="paper-figure"><button aria-label="Enlarge grounding performance and latency chart" class="image-zoom" data-caption="Temporal grounding · accuracy and latency" data-zoom="assets/figures/performance-grounding.webp"><img alt="VideoJev-4B and 35B-A3B achieve high grounding mIoU at low measured model forward latency." height="836" loading="lazy" src="assets/figures/performance-grounding.webp" width="1600"/></button></figure>
+<figure class="paper-figure"><button aria-label="Enlarge video QA performance and latency chart" class="image-zoom" data-caption="Video QA · accuracy and latency" data-zoom="assets/figures/performance-qa.webp"><img alt="VideoJev reaches QA quality comparable to Thinking backbones with much lower model forward latency." height="854" loading="lazy" src="assets/figures/performance-qa.webp" width="1601"/></button></figure>
+</div>
+<div class="scaling-section"><h3 class="section-title">Encode once.  <em>Keep deciding.</em></h3>
+<div class="scaling-copy"><p>Answer more questions with one shared video encoding.</p><div aria-label="Query scaling task" class="segmented" role="group"><button aria-pressed="true" class="active" data-scaling="grounding">Grounding</button><button aria-pressed="false" data-scaling="qa">Video QA</button></div><div aria-live="polite" class="scaling-stat"><span id="scaling-value">0.39<span>s</span></span><p id="scaling-description">10 grounding queries, jointly<br/> <strong>vs. 5.98 s</strong> for Instruct generation</p></div><p class="small-note" hidden="" id="scaling-insight"></p></div>
+<figure class="paper-figure scaling-figure"><button aria-label="Enlarge multi-query efficiency figure" class="image-zoom" data-caption="Multi-query efficiency · VideoJev-4B" data-zoom="assets/figures/scaling-grounding.webp" id="scaling-zoom"><img alt="Model forward time for one through ten grounding queries, comparing Cached, Joint and generative baselines." height="1818" id="scaling-image" loading="lazy" src="assets/figures/scaling-grounding.webp" width="1700"/></button></figure>
+</div>
+<div class="benchmark-block">
+<div class="benchmark-heading"><div><h3 class="section-title">Benchmark results</h3></div></div>
+<div class="table-controls"><div aria-label="Benchmark task" class="segmented" role="group"><button aria-pressed="true" class="active" data-table-task="grounding">Temporal grounding</button><button aria-pressed="false" data-table-task="qa">Video QA</button></div><div class="table-filters"><label>Model scale <select id="table-scale"><option value="all">Both scales</option><option value="4B">4B dense</option><option value="MoE">35B-A3B / MoE</option></select></label><label class="checkbox-label"><input id="show-all-methods" type="checkbox"/> All methods</label><label class="checkbox-label" id="all-metrics-label"><input id="show-all-metrics" type="checkbox"/> All metrics</label></div></div>
+<div aria-label="Benchmark results, scroll horizontally for more columns" class="table-scroll" role="region" tabindex="0"><table id="benchmark-table"><caption>Temporal grounding results from Table 1.</caption></table></div>
+<noscript><p>Interactive comparisons require JavaScript. <a href="assets/VideoJev.pdf#page=7">Read all results in the paper.</a></p></noscript>
+<p class="table-note" id="table-note"></p>
+</div><details class="protocol" id="timing-protocol"><summary>Evaluation settings <span aria-hidden="true" class="expand-icon">+</span></summary>
+<div class="protocol-columns"><div><h4>Benchmark results</h4>
+<p>Grounding uses TimeLens-Bench annotations at 4 fps. QA uses video frames only, without audio or subtitles.</p>
+<p>Latency is model forward time per question on Charades (grounding) or LVBench (QA), measured on H200 at batch size 1. It includes visual encoding, prefill and decoding, excluding preprocessing and transfers. All timed methods reuse the video prefix.</p></div>
+<div><h4>Multiple queries</h4>
+<p>Timings average 40 videos per task from Charades and Video-Holmes, at 2 fps. Native questions repeat when fewer than ten are available; bands show 95% confidence intervals. Quality scores are measured separately on the complete benchmarks.</p>
+<p>The plots use logarithmic time axes; the QA plot includes an axis break.</p></div></div></details>
+</div>
+</section>
+<section aria-labelledby="analysis-title" class="section analysis-section" id="analysis"><div class="container">
+<div class="section-heading"><h2 class="section-title" id="analysis-title">What makes the  <em>difference?</em></h2></div>
+<div class="analysis-grid">
+<article class="analysis-card"><h3 class="section-title">Learn the decision directly.</h3><p>With the same data and single-stage training, direct scoring improves both grounding and video QA.</p><div class="analysis-number">+1.3 <span>grounding</span><span class="number-divider">/</span> +1.9 <span>QA</span></div><details><summary>Compare the two models <span aria-hidden="true" class="expand-icon">+</span></summary><div class="table-scroll"><table class="small-table"><caption>Single-stage training on the same data</caption><thead><tr><th>Model</th><th>Grounding<br/> Avg. mIoU</th><th>QA<br/> Avg.</th></tr></thead><tbody><tr><th>Qwen3.5-4B AR SFT</th><td>64.1</td><td>72.8</td></tr><tr class="ours"><th>VideoJev-4B</th><td>65.4</td><td>74.7</td></tr></tbody></table></div></details></article>
+<article class="analysis-card"><h3 class="section-title">Share more. Preserve quality.</h3><p>Evaluate questions together in a single forward pass while retaining strong prediction quality.</p><div class="analysis-number">1 <span>forward per query group</span></div><details><summary>Compare inference modes <span aria-hidden="true" class="expand-icon">+</span></summary><div class="table-scroll"><table class="small-table"><caption>Full-benchmark mean scores</caption><thead><tr><th>Model / mode</th><th>Grounding</th><th>QA</th></tr></thead><tbody><tr><th>4B · Cached</th><td>64.5</td><td>73.8</td></tr><tr class="ours"><th>4B · Joint</th><td>65.3</td><td>74.3</td></tr><tr><th>35B-A3B · Cached</th><td>67.4</td><td>78.8</td></tr><tr class="ours"><th>35B-A3B · Joint</th><td>67.7</td><td>79.5</td></tr></tbody></table></div><p class="small-note">35B weights: FP32 for Cached; BF16 for Joint.</p></details></article>
+</div>
+<details class="calibration"><summary><span>Confidence and calibration</span><span aria-hidden="true" class="expand-icon">+</span></summary><p>Higher option scores usually accompany higher accuracy, but confidence remains overestimated. Mean calibration error is 8.65 points for 4B and 8.13 for 35B-A3B.</p><button aria-label="Enlarge confidence calibration figure" class="image-zoom" data-caption="Video QA · confidence and observed accuracy" data-zoom="assets/figures/calibration.webp"><img alt="Reliability diagrams comparing predicted confidence to observed accuracy on four QA benchmarks." height="925" loading="lazy" src="assets/figures/calibration.webp" width="2400"/></button></details>
+</div></section>
+<section aria-labelledby="models-title" class="section models-section" id="models"><div class="container">
+<div class="section-heading"><h2 class="section-title" id="models-title">Two scales.  <em>One decision interface.</em></h2></div>
+<div class="model-grid"><article class="model-card"><div class="model-top"><span class="eyebrow">Dense</span><span class="release-badge">Coming soon</span></div><h3>VideoJev<span>-4B</span></h3><p>Built on Qwen3.5-4B</p><div class="model-scores"><div><strong>65.3</strong><span>Grounding mIoU</span></div><div><strong>74.3</strong><span>Video QA average</span></div></div></article><article class="model-card"><div class="model-top"><span class="eyebrow">Mixture of experts · 3B active</span><span class="release-badge">Coming soon</span></div><h3>VideoJev<span>-35B-A3B</span></h3><p>Built on Qwen3.6-35B-A3B</p><div class="model-scores"><div><strong>67.7</strong><span>Grounding mIoU</span></div><div><strong>79.5</strong><span>Video QA average</span></div></div></article></div>
+<div class="citation" id="citation"><div class="citation-heading"><div><h3 class="section-title">Citation</h3></div><button class="button secondary copy-button" id="copy-citation">Copy BibTeX <span aria-hidden="true">⧉</span></button></div><pre><code id="bibtex">@misc{zhu2026videojev,
+  title = {VideoJev: System One Model for Video Understanding and Interaction},
+  author = {Yuhan Zhu and Xiangyu Zeng and Qingyi Si and Chenxu Yang and
+            Yifei Li and Junhao Zhou and Dingyu Yao and Jun Zhang and
+            Chuanyu Qin and Luozheng Qin and Zhiqiu Zhang and Yuandong Yang and
+            Yuqi Xu and Tianyu Zhang and Hongcheng Guo and Jiaqi Wang and
+            Nan Duan and Limin Wang},
+  year = {2026}
+}</code></pre><span aria-live="polite" class="sr-only" id="copy-status"></span></div>
+</div></section>
+</main>
+<footer class="site-footer"><div class="container"><a class="brand" href="#"><img alt="" height="26" src="assets/mark.svg" width="26"/><span>Video<span class="clay">Jev</span></span></a><p>Direct decisions. Shared computation.</p><a href="#">Back to top ↑</a></div></footer>
+<dialog aria-label="Expanded figure" id="figure-dialog"><div class="dialog-toolbar"><p id="dialog-caption"></p><button aria-label="Close figure" id="close-dialog">✕</button></div><div class="dialog-image-scroll"><img alt="" id="dialog-image"/></div></dialog>
+</body>
+</html>

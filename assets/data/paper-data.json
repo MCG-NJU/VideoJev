@@ -1,0 +1,1223 @@
+{
+  "cases": [
+    {
+      "id": 1,
+      "title": "Precise boundaries from one joint forward",
+      "duration": 27.293933333333335,
+      "dataset": "charades",
+      "frames": [
+        {
+          "time": 1,
+          "src": "assets/frames/case-01-00.webp"
+        },
+        {
+          "time": 4.5,
+          "src": "assets/frames/case-01-01.webp"
+        },
+        {
+          "time": 6,
+          "src": "assets/frames/case-01-02.webp"
+        },
+        {
+          "time": 8,
+          "src": "assets/frames/case-01-03.webp"
+        },
+        {
+          "time": 10,
+          "src": "assets/frames/case-01-04.webp"
+        },
+        {
+          "time": 10.5,
+          "src": "assets/frames/case-01-05.webp"
+        },
+        {
+          "time": 11.5,
+          "src": "assets/frames/case-01-06.webp"
+        },
+        {
+          "time": 20,
+          "src": "assets/frames/case-01-07.webp"
+        }
+      ],
+      "queries": [
+        {
+          "query": "A man is sitting on a chair.",
+          "options": null,
+          "answer": null,
+          "spans": [
+            [
+              5,
+              10
+            ]
+          ],
+          "predictions": {
+            "4B": {
+              "prediction": [
+                5.0,
+                11.0
+              ]
+            },
+            "35B-A3B": {
+              "prediction": [
+                5.0,
+                10.0
+              ]
+            }
+          }
+        },
+        {
+          "query": "The man runs toward the door.",
+          "options": null,
+          "answer": null,
+          "spans": [
+            [
+              11,
+              12
+            ]
+          ],
+          "predictions": {
+            "4B": {
+              "prediction": [
+                10.0,
+                12.0
+              ]
+            },
+            "35B-A3B": {
+              "prediction": [
+                11.0,
+                12.0
+              ]
+            }
+          }
+        },
+        {
+          "query": "The man gets up from the chair.",
+          "options": null,
+          "answer": null,
+          "spans": [
+            [
+              10,
+              11
+            ]
+          ],
+          "predictions": {
+            "4B": {
+              "prediction": [
+                10.0,
+                11.0
+              ]
+            },
+            "35B-A3B": {
+              "prediction": [
+                10.0,
+                11.0
+              ]
+            }
+          }
+        }
+      ],
+      "interpretation": "Both models isolate a one-second action rather than the rest of the activity.",
+      "groupSize": 6
+    },
+    {
+      "id": 2,
+      "title": "Locating a compound sports event",
+      "duration": 147.41393333333335,
+      "dataset": "activitynet",
+      "frames": [
+        {
+          "time": 2,
+          "src": "assets/frames/case-02-00.webp"
+        },
+        {
+          "time": 8,
+          "src": "assets/frames/case-02-01.webp"
+        },
+        {
+          "time": 15,
+          "src": "assets/frames/case-02-02.webp"
+        },
+        {
+          "time": 25,
+          "src": "assets/frames/case-02-03.webp"
+        },
+        {
+          "time": 34,
+          "src": "assets/frames/case-02-04.webp"
+        },
+        {
+          "time": 80,
+          "src": "assets/frames/case-02-05.webp"
+        }
+      ],
+      "queries": [
+        {
+          "query": "Two children performed a set of jump rope moves, then two girls continued jumping.",
+          "options": null,
+          "answer": null,
+          "spans": [
+            [
+              5,
+              37
+            ]
+          ],
+          "predictions": {
+            "4B": {
+              "prediction": [
+                2.0,
+                40.0
+              ]
+            },
+            "35B-A3B": {
+              "prediction": [
+                4.0,
+                39.0
+              ]
+            }
+          }
+        }
+      ],
+      "interpretation": "The 35B-A3B model recovers the event onset more closely; both extend beyond its end.",
+      "groupSize": null
+    },
+    {
+      "id": 3,
+      "title": "Retrieval amid unrelated vlog content",
+      "duration": 150.0,
+      "dataset": "qvhighlights",
+      "frames": [
+        {
+          "time": 55,
+          "src": "assets/frames/case-03-00.webp"
+        },
+        {
+          "time": 78,
+          "src": "assets/frames/case-03-01.webp"
+        },
+        {
+          "time": 81,
+          "src": "assets/frames/case-03-02.webp"
+        },
+        {
+          "time": 86,
+          "src": "assets/frames/case-03-03.webp"
+        },
+        {
+          "time": 90,
+          "src": "assets/frames/case-03-04.webp"
+        },
+        {
+          "time": 110,
+          "src": "assets/frames/case-03-05.webp"
+        }
+      ],
+      "queries": [
+        {
+          "query": "Someone opens a cup of instant noodles and adds the seasoning packet and hot water.",
+          "options": null,
+          "answer": null,
+          "spans": [
+            [
+              78,
+              91
+            ]
+          ],
+          "predictions": {
+            "4B": {
+              "prediction": [
+                78.0,
+                91.0
+              ]
+            },
+            "35B-A3B": {
+              "prediction": [
+                78.0,
+                91.0
+              ]
+            }
+          }
+        }
+      ],
+      "interpretation": "Both models retrieve the preparation sequence within unrelated vlog footage.",
+      "groupSize": null
+    },
+    {
+      "id": 4,
+      "title": "Reading a brief caption in an hour-long video",
+      "duration": 3665.5,
+      "dataset": "LVBench",
+      "frames": [
+        {
+          "time": 12,
+          "src": "assets/frames/case-04-00.webp"
+        },
+        {
+          "time": 16,
+          "src": "assets/frames/case-04-01.webp"
+        },
+        {
+          "time": 18,
+          "src": "assets/frames/case-04-02.webp"
+        },
+        {
+          "time": 20,
+          "src": "assets/frames/case-04-03.webp"
+        },
+        {
+          "time": 38,
+          "src": "assets/frames/case-04-04.webp"
+        },
+        {
+          "time": 42,
+          "src": "assets/frames/case-04-05.webp"
+        }
+      ],
+      "queries": [
+        {
+          "query": "What year appears in the opening caption of the video?",
+          "options": [
+            "A. 1636",
+            "B. 1366",
+            "C. 1363",
+            "D. 1633"
+          ],
+          "answer": 3,
+          "spans": null,
+          "predictions": {
+            "4B": {
+              "answer_index": 3,
+              "probabilities": [
+                1.8353255200054264e-06,
+                9.990545777327497e-07,
+                0.00042291710269637406,
+                0.9995742440223694
+              ],
+              "correct": true
+            },
+            "35B-A3B": {
+              "answer_index": 3,
+              "probabilities": [
+                1.405932107445551e-05,
+                1.5058303688419983e-06,
+                1.5820469343452714e-05,
+                0.9999685287475586
+              ],
+              "correct": true
+            }
+          }
+        },
+        {
+          "query": "How is the weather like in the opening?",
+          "options": [
+            "A. Cloudy",
+            "B. Snowy",
+            "C. Sunny",
+            "D. Rainy"
+          ],
+          "answer": 1,
+          "spans": null,
+          "predictions": {
+            "4B": {
+              "answer_index": 1,
+              "probabilities": [
+                0.0008246881770901382,
+                0.9990050196647644,
+                5.986850374029018e-05,
+                0.00011034042108803988
+              ],
+              "correct": true
+            },
+            "35B-A3B": {
+              "answer_index": 1,
+              "probabilities": [
+                9.961470641428605e-05,
+                0.9998762607574463,
+                7.439619821525412e-06,
+                1.669339144427795e-05
+              ],
+              "correct": true
+            }
+          }
+        }
+      ],
+      "interpretation": "The relevant text is brief; inference used the full 3,665.5-second video.",
+      "groupSize": 18
+    },
+    {
+      "id": 5,
+      "title": "Relating an event to what happens next",
+      "duration": 538.08,
+      "dataset": "longvideobench",
+      "frames": [
+        {
+          "time": 4,
+          "src": "assets/frames/case-05-00.webp"
+        },
+        {
+          "time": 10,
+          "src": "assets/frames/case-05-01.webp"
+        },
+        {
+          "time": 20,
+          "src": "assets/frames/case-05-02.webp"
+        },
+        {
+          "time": 24,
+          "src": "assets/frames/case-05-03.webp"
+        },
+        {
+          "time": 28,
+          "src": "assets/frames/case-05-04.webp"
+        },
+        {
+          "time": 36,
+          "src": "assets/frames/case-05-05.webp"
+        }
+      ],
+      "queries": [
+        {
+          "query": "In front of a blue background, a gentleman wearing a shirt with pink floral patterns is speaking. What did the gentleman do after becoming friends with the unicorn?",
+          "options": [
+            "A. Put on a watch",
+            "B. Changed into a different shirt",
+            "C. Put on a mask",
+            "D. Put on a pair of sunglasses",
+            "E. Put on a unicorn headpiece"
+          ],
+          "answer": 4,
+          "spans": null,
+          "predictions": {
+            "4B": {
+              "probabilities": [
+                7.554856711067259e-05,
+                1.6019166650949046e-06,
+                3.675613697851077e-05,
+                7.098466539900983e-06,
+                0.999879002571106
+              ],
+              "answer_index": 4,
+              "correct": true
+            },
+            "35B-A3B": {
+              "probabilities": [
+                3.019873474841006e-05,
+                6.857532298454316e-06,
+                0.00014688906958326697,
+                1.4054112398298457e-05,
+                0.9998021721839905
+              ],
+              "answer_index": 4,
+              "correct": true
+            }
+          }
+        }
+      ],
+      "interpretation": "Both models select the action following the referenced unicorn event.",
+      "groupSize": null
+    },
+    {
+      "id": 6,
+      "title": "Counting recurring scenes across a long video",
+      "duration": 500.06666666666666,
+      "dataset": "mlvu",
+      "frames": [
+        {
+          "time": 25,
+          "src": "assets/frames/case-06-00.webp"
+        },
+        {
+          "time": 26,
+          "src": "assets/frames/case-06-01.webp"
+        },
+        {
+          "time": 140,
+          "src": "assets/frames/case-06-02.webp"
+        },
+        {
+          "time": 142,
+          "src": "assets/frames/case-06-03.webp"
+        },
+        {
+          "time": 293,
+          "src": "assets/frames/case-06-04.webp"
+        },
+        {
+          "time": 296,
+          "src": "assets/frames/case-06-05.webp"
+        },
+        {
+          "time": 425,
+          "src": "assets/frames/case-06-06.webp"
+        },
+        {
+          "time": 428,
+          "src": "assets/frames/case-06-07.webp"
+        },
+        {
+          "time": 481,
+          "src": "assets/frames/case-06-08.webp"
+        },
+        {
+          "time": 483,
+          "src": "assets/frames/case-06-09.webp"
+        }
+      ],
+      "queries": [
+        {
+          "query": "In this video, how many instances are there of the 'carving pumpkin' action scene in total?",
+          "options": [
+            "A. 5",
+            "B. 3",
+            "C. 1",
+            "D. 0"
+          ],
+          "answer": 0,
+          "spans": null,
+          "predictions": {
+            "4B": {
+              "probabilities": [
+                0.7157602906227112,
+                0.2825431823730469,
+                0.0014568861806765199,
+                0.00023971385962795466
+              ],
+              "answer_index": 0,
+              "correct": true
+            },
+            "35B-A3B": {
+              "probabilities": [
+                0.8718949556350708,
+                0.1268462985754013,
+                0.0011156396940350533,
+                0.0001430367847206071
+              ],
+              "answer_index": 0,
+              "correct": true
+            }
+          }
+        }
+      ],
+      "interpretation": "Five displayed occurrences are separated by unrelated animal-documentary footage.",
+      "groupSize": null
+    },
+    {
+      "id": 7,
+      "title": "Inferring intent at a specified moment",
+      "duration": 6856.5,
+      "dataset": "LVBench",
+      "frames": [
+        {
+          "time": 6072,
+          "src": "assets/frames/case-07-00.webp"
+        },
+        {
+          "time": 6076,
+          "src": "assets/frames/case-07-01.webp"
+        },
+        {
+          "time": 6081,
+          "src": "assets/frames/case-07-02.webp"
+        },
+        {
+          "time": 6084,
+          "src": "assets/frames/case-07-03.webp"
+        },
+        {
+          "time": 6088,
+          "src": "assets/frames/case-07-04.webp"
+        },
+        {
+          "time": 6092,
+          "src": "assets/frames/case-07-05.webp"
+        }
+      ],
+      "queries": [
+        {
+          "query": "What goals or objectives are the man holding a woman's arm trying to achieve at 101:21?",
+          "options": [
+            "A. Ensuring safety",
+            "B. Accompanying and showing courtesy",
+            "C. Arresting",
+            "D. Displaying friendliness"
+          ],
+          "answer": 2,
+          "spans": null,
+          "predictions": {
+            "4B": {
+              "probabilities": [
+                0.07983144372701645,
+                0.8778989315032959,
+                0.00659892987459898,
+                0.035670652985572815
+              ],
+              "answer_index": 1,
+              "correct": false
+            },
+            "35B-A3B": {
+              "probabilities": [
+                0.06652865558862686,
+                0.06041932851076126,
+                0.8724108338356018,
+                0.0006411113427020609
+              ],
+              "answer_index": 2,
+              "correct": true
+            }
+          }
+        }
+      ],
+      "interpretation": "The models disagree: 4B selects courtesy; 35B-A3B selects the annotated arrest intent.",
+      "groupSize": null
+    },
+    {
+      "id": 8,
+      "title": "A failure on small-object counting",
+      "duration": 38.038,
+      "dataset": "Video-MME",
+      "frames": [
+        {
+          "time": 21,
+          "src": "assets/frames/case-08-00.webp"
+        },
+        {
+          "time": 22,
+          "src": "assets/frames/case-08-01.webp"
+        },
+        {
+          "time": 23,
+          "src": "assets/frames/case-08-02.webp"
+        },
+        {
+          "time": 24,
+          "src": "assets/frames/case-08-03.webp"
+        },
+        {
+          "time": 25,
+          "src": "assets/frames/case-08-04.webp"
+        },
+        {
+          "time": 26,
+          "src": "assets/frames/case-08-05.webp"
+        }
+      ],
+      "queries": [
+        {
+          "query": "At the end of the video, how many books can be seen resting on the living room table?",
+          "options": [
+            "A. 2.",
+            "B. 4.",
+            "C. 1.",
+            "D. 3."
+          ],
+          "answer": 1,
+          "spans": null,
+          "predictions": {
+            "4B": {
+              "probabilities": [
+                0.27777186036109924,
+                0.07495681941509247,
+                0.0010951495496556163,
+                0.6461762189865112
+              ],
+              "answer_index": 3,
+              "correct": false
+            },
+            "35B-A3B": {
+              "probabilities": [
+                0.6343089938163757,
+                0.32119879126548767,
+                0.0004044769739266485,
+                0.044087789952754974
+              ],
+              "answer_index": 0,
+              "correct": false
+            }
+          }
+        }
+      ],
+      "interpretation": "Both models miss the annotated count of four books in a small region of the scene.",
+      "groupSize": null
+    }
+  ],
+  "tables": {
+    "grounding": [
+      {
+        "model": "GPT-5",
+        "mode": "Instruct",
+        "size": "Proprietary",
+        "values": [
+          null,
+          59.3,
+          42.0,
+          22.0,
+          40.5,
+          57.4,
+          44.9,
+          30.4,
+          42.9,
+          72.4,
+          60.4,
+          46.4,
+          56.8,
+          46.7
+        ]
+      },
+      {
+        "model": "Gemini-2.5-Pro",
+        "mode": "Instruct",
+        "size": "Proprietary",
+        "values": [
+          null,
+          74.1,
+          61.1,
+          34.0,
+          52.8,
+          72.3,
+          64.2,
+          47.1,
+          58.1,
+          84.1,
+          75.9,
+          61.1,
+          70.4,
+          60.4
+        ]
+      },
+      {
+        "model": "Molmo2-4B",
+        "mode": "Instruct",
+        "size": "4B",
+        "values": [
+          0.636,
+          44.4,
+          31.1,
+          18.5,
+          34.7,
+          50.8,
+          40.3,
+          29.9,
+          40.9,
+          73.7,
+          62.6,
+          51.8,
+          60.8,
+          45.5
+        ]
+      },
+      {
+        "model": "Qwen3-VL-4B",
+        "mode": "Instruct",
+        "size": "4B",
+        "values": [
+          0.703,
+          71.8,
+          53.8,
+          28.7,
+          49.4,
+          67.4,
+          54.8,
+          37.6,
+          50.7,
+          78.4,
+          66.4,
+          51.1,
+          62.3,
+          54.1
+        ]
+      },
+      {
+        "model": "Mage-VL",
+        "mode": "Instruct",
+        "size": "4B",
+        "values": [
+          1.437,
+          75.5,
+          63.1,
+          36.1,
+          55.0,
+          65.1,
+          57.0,
+          39.7,
+          51.6,
+          76.4,
+          68.1,
+          53.6,
+          63.4,
+          56.7
+        ]
+      },
+      {
+        "model": "Qwen3.5-4B",
+        "mode": "Instruct",
+        "size": "4B",
+        "values": [
+          0.763,
+          75.2,
+          56.6,
+          31.5,
+          52.3,
+          72.6,
+          61.6,
+          42.6,
+          55.6,
+          82.9,
+          73.1,
+          58.1,
+          67.9,
+          58.6
+        ]
+      },
+      {
+        "model": "VideoChat3-4B",
+        "mode": "Instruct",
+        "size": "4B",
+        "values": [
+          1.067,
+          78.4,
+          64.9,
+          35.9,
+          56.1,
+          70.1,
+          60.5,
+          42.2,
+          54.6,
+          81.0,
+          72.5,
+          56.8,
+          67.0,
+          59.2
+        ]
+      },
+      {
+        "model": "Video-ORA-4B",
+        "mode": "Instruct",
+        "size": "4B",
+        "values": [
+          2.347,
+          77.1,
+          64.9,
+          37.9,
+          56.8,
+          69.3,
+          60.1,
+          43.8,
+          57.3,
+          81.4,
+          72.6,
+          58.6,
+          67.5,
+          60.5
+        ]
+      },
+      {
+        "model": "TimeLens2-4B",
+        "mode": "Instruct",
+        "size": "4B",
+        "values": [
+          0.646,
+          80.3,
+          66.6,
+          37.5,
+          57.7,
+          74.6,
+          65.5,
+          47.2,
+          59.0,
+          83.3,
+          75.2,
+          60.0,
+          69.3,
+          62.0
+        ]
+      },
+      {
+        "model": "VideoJev-4B",
+        "mode": "Joint",
+        "size": "4B",
+        "values": [
+          0.276,
+          82.8,
+          69.4,
+          40.3,
+          60.1,
+          78.8,
+          70.5,
+          51.4,
+          62.8,
+          87.3,
+          79.4,
+          64.8,
+          73.2,
+          65.3
+        ]
+      },
+      {
+        "model": "Nemotron-3-Nano-Omni-30B-A3B",
+        "mode": "Instruct",
+        "size": "MoE",
+        "values": [
+          3.882,
+          65.2,
+          49.9,
+          26.6,
+          45.3,
+          54.7,
+          43.5,
+          27.9,
+          40.6,
+          66.7,
+          55.7,
+          41.2,
+          52.6,
+          46.2
+        ]
+      },
+      {
+        "model": "Qwen3-VL-30B-A3B",
+        "mode": "Instruct",
+        "size": "MoE",
+        "values": [
+          1.055,
+          70.3,
+          46.5,
+          25.1,
+          48.1,
+          65.7,
+          51.1,
+          36.5,
+          49.4,
+          79.3,
+          67.6,
+          52.6,
+          63.2,
+          53.6
+        ]
+      },
+      {
+        "model": "Qwen3.5-35B-A3B",
+        "mode": "Instruct",
+        "size": "MoE",
+        "values": [
+          1.021,
+          71.5,
+          44.2,
+          21.1,
+          46.0,
+          72.1,
+          57.3,
+          40.4,
+          54.4,
+          80.3,
+          67.3,
+          53.2,
+          64.3,
+          54.9
+        ]
+      },
+      {
+        "model": "Qwen3.6-35B-A3B",
+        "mode": "Instruct",
+        "size": "MoE",
+        "values": [
+          1.054,
+          72.6,
+          47.0,
+          23.2,
+          47.3,
+          73.9,
+          59.8,
+          42.4,
+          56.0,
+          83.3,
+          72.5,
+          57.6,
+          67.5,
+          56.9
+        ]
+      },
+      {
+        "model": "VideoJev-35B-A3B",
+        "mode": "Joint",
+        "size": "MoE",
+        "values": [
+          0.336,
+          86.1,
+          74.8,
+          44.5,
+          63.7,
+          81.0,
+          72.5,
+          54.4,
+          65.5,
+          88.0,
+          79.9,
+          65.5,
+          74.0,
+          67.7
+        ]
+      }
+    ],
+    "qa": [
+      {
+        "model": "GPT-5.2",
+        "mode": "Instruct",
+        "size": "Proprietary",
+        "values": [
+          null,
+          73.7,
+          85.8,
+          null,
+          85.6,
+          null
+        ]
+      },
+      {
+        "model": "Gemini-3-Pro",
+        "mode": "Instruct",
+        "size": "Proprietary",
+        "values": [
+          null,
+          76.2,
+          87.7,
+          null,
+          83.0,
+          null
+        ]
+      },
+      {
+        "model": "Claude-Opus-4.5",
+        "mode": "Instruct",
+        "size": "Proprietary",
+        "values": [
+          null,
+          57.3,
+          81.4,
+          null,
+          81.7,
+          null
+        ]
+      },
+      {
+        "model": "Seed2.0-Pro",
+        "mode": "Instruct",
+        "size": "Proprietary",
+        "values": [
+          null,
+          76.4,
+          null,
+          80.3,
+          null,
+          null
+        ]
+      },
+      {
+        "model": "Molmo2-4B",
+        "mode": "Instruct",
+        "size": "4B",
+        "values": [
+          0.748,
+          53.9,
+          69.6,
+          68.0,
+          74.3,
+          66.5
+        ]
+      },
+      {
+        "model": "VideoChat3-4B",
+        "mode": "Instruct",
+        "size": "4B",
+        "values": [
+          1.21,
+          56.7,
+          70.1,
+          64.1,
+          73.8,
+          66.2
+        ]
+      },
+      {
+        "model": "Qwen3-VL-4B",
+        "mode": "Instruct",
+        "size": "4B",
+        "values": [
+          3.012,
+          56.2,
+          69.3,
+          66.5,
+          75.3,
+          66.8
+        ]
+      },
+      {
+        "model": "Qwen3-VL-4B",
+        "mode": "Thinking",
+        "size": "4B",
+        "values": [
+          19.713,
+          53.5,
+          68.9,
+          63.4,
+          75.7,
+          65.4
+        ]
+      },
+      {
+        "model": "Qwen3.5-4B",
+        "mode": "Instruct",
+        "size": "4B",
+        "values": [
+          1.355,
+          60.0,
+          70.6,
+          61.2,
+          73.3,
+          66.3
+        ]
+      },
+      {
+        "model": "Qwen3.5-4B",
+        "mode": "Thinking",
+        "size": "4B",
+        "values": [
+          144.929,
+          66.4,
+          76.9,
+          73.6,
+          82.8,
+          74.9
+        ]
+      },
+      {
+        "model": "VideoJev-4B",
+        "mode": "Joint",
+        "size": "4B",
+        "values": [
+          1.123,
+          67.9,
+          75.0,
+          73.6,
+          80.6,
+          74.3
+        ]
+      },
+      {
+        "model": "Nemotron-3-Nano-Omni-30B-A3B",
+        "mode": "Instruct",
+        "size": "MoE",
+        "values": [
+          1.106,
+          54.9,
+          70.8,
+          67.5,
+          77.2,
+          67.6
+        ]
+      },
+      {
+        "model": "Nemotron-3-Nano-Omni-30B-A3B",
+        "mode": "Thinking",
+        "size": "MoE",
+        "values": [
+          229.095,
+          52.2,
+          72.2,
+          69.6,
+          79.6,
+          68.4
+        ]
+      },
+      {
+        "model": "Qwen3-VL-30B-A3B",
+        "mode": "Instruct",
+        "size": "MoE",
+        "values": [
+          4.817,
+          62.5,
+          74.5,
+          70.9,
+          81.3,
+          72.3
+        ]
+      },
+      {
+        "model": "Qwen3-VL-30B-A3B",
+        "mode": "Thinking",
+        "size": "MoE",
+        "values": [
+          9.637,
+          59.2,
+          73.3,
+          69.1,
+          78.9,
+          70.1
+        ]
+      },
+      {
+        "model": "Qwen3.5-35B-A3B",
+        "mode": "Instruct",
+        "size": "MoE",
+        "values": [
+          1.683,
+          58.8,
+          74.4,
+          65.7,
+          77.4,
+          69.1
+        ]
+      },
+      {
+        "model": "Qwen3.5-35B-A3B",
+        "mode": "Thinking",
+        "size": "MoE",
+        "values": [
+          164.73,
+          71.4,
+          82.5,
+          74.5,
+          85.6,
+          78.5
+        ]
+      },
+      {
+        "model": "Qwen3.6-35B-A3B",
+        "mode": "Instruct",
+        "size": "MoE",
+        "values": [
+          2.379,
+          66.0,
+          77.1,
+          72.4,
+          79.5,
+          73.8
+        ]
+      },
+      {
+        "model": "Qwen3.6-35B-A3B",
+        "mode": "Thinking",
+        "size": "MoE",
+        "values": [
+          149.777,
+          71.4,
+          82.5,
+          74.9,
+          86.2,
+          78.8
+        ]
+      },
+      {
+        "model": "VideoJev-35B-A3B",
+        "mode": "Joint",
+        "size": "MoE",
+        "values": [
+          1.493,
+          73.4,
+          81.8,
+          77.1,
+          85.9,
+          79.5
+        ]
+      }
+    ]
+  }
+}

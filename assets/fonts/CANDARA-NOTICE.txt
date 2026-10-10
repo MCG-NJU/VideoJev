@@ -1,0 +1,20 @@
+Candara
+=======
+
+Family: Candara
+Style: Regular
+Version: 0.90
+
+Source: https://github.com/Adebayobenjamin/CandaraFont/blob/main/CandaraFont.ttf
+
+The WOFF2 asset preserves the original font metadata. CSS requests bold italic; browsers synthesize the weight and slant when native Candara Bold Italic is unavailable.
+
+Candara is a Microsoft font; the SIL Open Font License in OFL.txt applies only to Inter.
+
+© 2004 Microsoft Corporation. All Rights Reserved.
+
+Candara is either a registered trademark or a trademark of Microsoft Corporation in the United States and/or other countries.
+
+This font software is part of the Microsoft software product in which it was included and is provided under the end user license agreement (“EULA”) for that Microsoft software product. The terms and conditions of the EULA govern the use of font software. Please refer to the applicable Microsoft product EULA if you have any questions about how you may use this font software. Microsoft reserves all rights that are not expressly granted in the EULA. For products that may have installed this font please see the link below.
+
+http://www.microsoft.com/typography/fonts/default.aspx
