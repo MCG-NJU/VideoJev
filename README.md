@@ -48,10 +48,10 @@ Figures, author list, benchmark results and cases: VideoJev manuscript and accom
 
 ## Editorial presentation
 
-The page stands alone: repeated figure/table numbers, source links and usage captions are omitted. Essential metric definitions stay with the results, and evaluation conditions are collected in one expandable section. Detailed source provenance remains documented here and in the data export script.
+The page stands alone: repeated figure/table numbers, source links and usage captions are omitted. The two-paragraph model overview and optional full abstract sit below the resource links and above the key results; the earlier hero slogan and separate overview section are removed. Essential metric definitions stay with the results, and evaluation conditions are collected in one expandable section. Detailed source provenance remains documented here and in the data export script. Comparison tables are displayed directly below their analysis text, without disclosure controls or duplicate numeric summaries. Table values and the inference-precision qualification are retained.
 
 ## Heading typography
 
-Section headlines use a shared Candara bold italic style and a 36px desktop size. Explicit line breaks are removed, and headings span the section width where needed. On narrower screens, a shared size fits every headline on one line. All headline text, including emphasis, uses warm dark gray (#55534f), slightly darker than the body copy, and shares the same typography.
+Section headlines use a shared Candara bold italic style and a 36px desktop size. Explicit line breaks are removed, and headings span the section width where needed. On narrower screens, a shared size fits every headline on one line. All headline text, including emphasis, uses warm dark gray (#55534f), slightly darker than the body copy, and shares the same typography. The two analysis card headings are subordinate to “What makes the difference?”: they use 24px on desktop and scale down to 16px on narrow screens, while retaining the same bold italic Candara style. A smaller gap below the parent heading and lighter card dividers reinforce the grouping.
 
 Native Candara is preferred. The local WOFF2 fallback contains Candara Regular, with bold and italic synthesized by the browser; it is not a native Candara Italic font. Font origin and original copyright/license metadata are retained in `assets/fonts/CANDARA-NOTICE.txt` and the font file.
