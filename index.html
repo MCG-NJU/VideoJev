@@ -12,9 +12,9 @@
 <title>VideoJev · System One for Video</title>
 <link href="assets/mark.svg" rel="icon" type="image/svg+xml"/>
 <link as="font" crossorigin="" href="assets/fonts/inter-regular.woff2" rel="preload" type="font/woff2"/>
-<link href="styles.css?v=9" rel="stylesheet"/>
+<link href="styles.css?v=10" rel="stylesheet"/>
 <script defer="" src="assets/data/paper-data.js"></script>
-<script defer="" src="app.js?v=3"></script>
+<script defer="" src="app.js?v=4"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -43,6 +43,15 @@
 <a class="button secondary" href="#models"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="m6 5-5 5 5 5m8-10 5 5-5 5M12 3 8 17"></path></svg>Code <span class="soon">Soon</span></a>
 <a class="button secondary" href="#models"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="m10 2 8 4-8 4-8-4 8-4ZM2 10l8 4 8-4M2 14l8 4 8-4"></path></svg>Models <span class="soon">Soon</span></a>
 </div>
+<figure class="promo-film" id="video">
+<div class="promo-player">
+<video aria-label="VideoJev — 90-second overview" controls="" height="1080" id="promo-video" playsinline="" poster="assets/videojev-promo-poster.jpg" preload="none" width="1920">
+<source src="assets/videos/videojev-promo.mp4" type="video/mp4"/>
+<a href="assets/videos/videojev-promo.mp4">Watch the VideoJev overview</a>
+</video>
+</div>
+<figcaption>VideoJev in 90 seconds</figcaption>
+</figure>
 <div class="hero-summary"><div class="overview-copy"><p>VideoJev turns video understanding into two direct decisions: <strong>when an event happens, and which answer matches the evidence.</strong></p><p>A shared scorer evaluates time intervals and text options without generating an answer token by token. The same video context supports many questions.</p></div><details class="abstract"><summary>Read the full abstract <span aria-hidden="true" class="expand-icon">+</span></summary><p>Turning video understanding into intelligent action requires timely, repeated decisions. Many of these decisions are structured, even when the task itself is complex and open-ended. Discriminative vision models support efficient prediction but typically require task-specific designs, while video multimodal large language models (MLLMs) offer semantic flexibility yet rely on autoregressive generation even for simple decisions. We introduce <strong>VideoJev</strong>, a family of video System One models that combines pretrained multimodal understanding with efficient direct prediction. VideoJev unifies temporal grounding and multiple-choice video question answering through a shared candidate-scoring interface, directly evaluating temporal intervals and textual options against video evidence without autoregressive answer decoding. Because successive judgments often share the same visual context, VideoJev reuses visual computation through Cached inference for arriving queries and Joint inference for multiple queries in a single forward pass. Across three temporal grounding benchmarks, VideoJev-4B and VideoJev-35B-A3B improve mean mIoU over their backbones by 6.7 and 10.8 points, respectively, with measured inference speedups of 2.8–3.1×. On four video QA benchmarks, both achieve performance comparable to their backbones in Thinking mode, with measured inference speedups exceeding 100×. These results establish a unified, reusable decision interface, providing a foundation for visual agents that compose structured judgments into complex, open-ended workflows.</p></details></div>
 <div class="key-stats">
 <div><span class="stat-value">2 <span class="stat-unit">tasks, one interface</span></span><p>Temporal grounding + video QA</p></div>

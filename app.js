@@ -14,6 +14,23 @@
   let demoModel = '4B';
   let queryIndex = 0;
   const video = $('#demo-video');
+  const promo = $('#promo-video');
+  if (promo) {
+    const promoPlay = document.createElement('button');
+    promoPlay.className = 'promo-play';
+    promoPlay.setAttribute('aria-label', 'Play the 90-second VideoJev overview');
+    promoPlay.innerHTML = '<span aria-hidden="true">▶</span>';
+    promo.parentElement.append(promoPlay);
+    promo.controls = false;
+    promoPlay.addEventListener('click', async () => {
+      promoPlay.hidden = true;
+      promo.controls = true;
+      try { await promo.play(); }
+      catch { promoPlay.hidden = false; promo.controls = false; }
+    });
+    promo.addEventListener('play', () => video.pause());
+    video.addEventListener('play', () => promo.pause());
+  }
   const playButton = document.createElement('button');
   playButton.className = 'video-play';
   playButton.setAttribute('aria-label', 'Play the example video');
