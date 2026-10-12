@@ -88,7 +88,7 @@ Latency is measured on H200 at batch size 1 over full Charades (grounding) and f
 
 Set up the [environment](#environment), then run this example.
 
-Run grounding and QA on [Eating spaghetti](https://huggingface.co/datasets/ZhuYuhan/VideoJev-Demo/resolve/7e2b9685bca592c3b929268f6fcf82c4ad74b267/eating_spaghetti.mp4) (10 seconds), sampling 8 frames.
+Run grounding and QA on [Eating spaghetti](https://huggingface.co/datasets/ZhuYuhan/VideoJev-Demo/resolve/7e2b9685bca592c3b929268f6fcf82c4ad74b267/eating_spaghetti.mp4) (10 seconds), at 2 FPS.
 
 ```python
 import json
@@ -117,7 +117,7 @@ questions = [
 ]
 results = model.predict_video(
     processor, video, questions,
-    fps=2.0, max_frames=8, context=8192,
+    fps=2.0, max_frames=2048, context=8192,
 )
 print(json.dumps(results, indent=2))
 ```
@@ -134,23 +134,29 @@ Actual output from the video and code above:
     "id": "grounding-1",
     "task": "grounding",
     "probabilities": [
-      0.011942245997488499,
-      0.7642496228218079,
-      0.9801473617553711,
-      0.03251248598098755
+      0.005761092994362116,
+      0.010865824297070503,
+      0.026081746444106102,
+      0.9046059250831604,
+      0.9879851937294006,
+      0.9887627959251404,
+      0.9896195530891418,
+      0.9849089980125427,
+      0.833530068397522,
+      0.33037981390953064
     ],
     "interval": [
-      2.0,
-      7.0
+      3.0,
+      10.0
     ]
   },
   {
     "id": "qa-1",
     "task": "choice",
     "probabilities": [
-      0.9997788071632385,
-      0.0001670706260483712,
-      5.411279198597185e-05
+      0.9999161958694458,
+      5.755242091254331e-05,
+      2.617507561808452e-05
     ],
     "answer_index": 0,
     "answer": "A. Pasta."
