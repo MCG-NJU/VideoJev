@@ -158,7 +158,6 @@
 
   function renderInference(mode) {
     const joint = mode === 'joint';
-    $('#inference-title').innerHTML = joint ? 'Questions together. Decisions together.' : 'A new question. The same video context.';
     $('#inference-description').textContent = joint
       ? 'Answer a group of questions in one forward pass.'
       : 'Reuse the video cache as new questions arrive, with one forward pass per query.';
@@ -166,7 +165,6 @@
     $('#inference-diagram').innerHTML = joint ? `${label}<div class="sequence"><span class="token-video">V</span><span class="sequence-arrow">→</span><span class="token-query">Q<sub>1</sub> + options</span><span class="token-query">Q<sub>2</sub> + options</span><span class="token-query">Q<sub>3</sub> + options</span></div><div class="group-bracket"></div><div class="group-output">One forward <strong>A<sub>1</sub> · A<sub>2</sub> · A<sub>3</sub></strong></div>`
       : `${label}<div class="cache-branches"><div class="cache-source">Video cache<span>prefill once</span></div><div class="branches">${[1,2,3].map(n=>`<div class="branch"><span>↗</span><span>Q<sub>${n}</sub> + options</span><small>→ A<sub>${n}</sub></small></div>`).join('')}</div></div>`;
     $$('[data-inference]').forEach(b => {const selected=b.dataset.inference===mode;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});
-    fitSectionTitles();
   }
   $$('[data-inference]').forEach(button => button.addEventListener('click',()=>renderInference(button.dataset.inference)));
   renderInference('joint');
@@ -262,28 +260,6 @@
   });
 
 
-  function fitSectionTitles() {
-    const titles = $$('.section-title');
-    const baseSize = 36;
-    document.documentElement.style.setProperty('--section-title-size', `${baseSize}px`);
-    let scale = 1;
-    for (const title of titles) {
-      const range = document.createRange();
-      range.selectNodeContents(title);
-      const textWidth = range.getBoundingClientRect().width;
-      const available = title.clientWidth;
-      if (textWidth > 0 && available > 0) scale = Math.min(scale, (available - 4) / textWidth);
-    }
-    const size = Math.floor(baseSize * Math.min(1, scale) * 10) / 10;
-    document.documentElement.style.setProperty('--section-title-size', `${size}px`);
-  }
-  let titleResizeFrame;
-  window.addEventListener('resize', () => {
-    cancelAnimationFrame(titleResizeFrame);
-    titleResizeFrame = requestAnimationFrame(fitSectionTitles);
-  });
-  document.fonts.ready.then(fitSectionTitles);
-
   const links = $$('.site-header nav a');
   const observer = new IntersectionObserver(entries => {
     for (const entry of entries) {
@@ -295,5 +271,5 @@
       });
     }
   }, {rootMargin:'-15% 0px -65% 0px',threshold:0});
-  ['examples','method','results','models'].forEach(id=>observer.observe(document.getElementById(id)));
+  ['overview','examples','method','results','models'].forEach(id=>observer.observe(document.getElementById(id)));
 })();
