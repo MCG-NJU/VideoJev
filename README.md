@@ -2,7 +2,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-header-dark.svg">
     <source media="(prefers-color-scheme: light)" srcset="docs/assets/readme-header.svg">
-    <img src="docs/assets/readme-header.svg" alt="VideoJev" width="600">
+    <img src="docs/assets/readme-header.svg" alt="VideoJev" width="500">
   </picture>
 </p>
 
