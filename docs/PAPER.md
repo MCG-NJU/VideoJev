@@ -39,7 +39,7 @@ Head alignment uses BCE for grounding and CE for QA. Joint adaptation adds twice
 
 ## Reported results and measurement protocol
 
-The [README results](../README.md#results) transcribe the manuscript's main grounding and video QA tables. They are paper-reported measurements, not a new benchmark run of the BF16 Hugging Face exports.
+The [README results](../README.md#results) display the manuscript's original main grounding and video QA tables, cropped directly from the compiled PDF. They are paper-reported measurements, not a new benchmark run of the BF16 Hugging Face exports.
 
 | Setting | Temporal grounding | Video QA |
 |---|---|---|
@@ -65,3 +65,5 @@ The distributed 35B training export and the standalone Hugging Face model packag
 The title, author order, and affiliations follow the manuscript's `main.tex`. The method and inference descriptions follow `sections/03_method.tex`; the results follow Tables 1–2 in `sections/04_experiments.tex`; measurement settings follow `sections/99_appendix.tex`.
 
 The README teaser and method image are copied from the manuscript's `figures/video-jev-teaser/video-jev-teaser.png` and `figures/video-jev-charades-v48/video-jev-charades-v48.png`. The method figure's scores and example interval are illustrative.
+
+The results images `temporal-grounding-table.png` and `video-qa-table.png` reproduce Tables 1 and 2 from `main.pdf`, including their captions, complete model comparisons, and original formatting.

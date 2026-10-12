@@ -65,27 +65,15 @@ Main results from the manuscript, using **Joint inference**. Grounding uses Time
 
 ### Temporal grounding
 
-| Model | Charades mIoU | ActivityNet mIoU | QVHighlights mIoU | Avg. | Latency (s/query) ↓ |
-|---|---:|---:|---:|---:|---:|
-| Qwen3.5-4B | 52.3 | 55.6 | 67.9 | 58.6 | 0.763 |
-| **VideoJev-4B** | **60.1** | **62.8** | **73.2** | **65.3** | **0.276** |
-| Qwen3.6-35B-A3B | 47.3 | 56.0 | 67.5 | 56.9 | 1.054 |
-| **VideoJev-35B-A3B** | **63.7** | **65.5** | **74.0** | **67.7** | **0.336** |
+![Paper Table 1: complete temporal grounding results, including recall, mIoU, and latency](docs/assets/temporal-grounding-table.png)
 
 VideoJev improves mean mIoU over its respective Instruct backbone by **6.7 / 10.8 points**, with **2.8× / 3.1×** measured forward-time speedups.
 
 ### Video question answering
 
-| Model | LVBench | Video-MME | LongVideoBench | MLVU | Avg. | Latency (s/query) ↓ |
-|---|---:|---:|---:|---:|---:|---:|
-| Qwen3.5-4B · Instruct | 60.0 | 70.6 | 61.2 | 73.3 | 66.3 | 1.355 |
-| Qwen3.5-4B · Thinking | 66.4 | 76.9 | 73.6 | 82.8 | 74.9 | 144.929 |
-| **VideoJev-4B** | **67.9** | **75.0** | **73.6** | **80.6** | **74.3** | **1.123** |
-| Qwen3.6-35B-A3B · Instruct | 66.0 | 77.1 | 72.4 | 79.5 | 73.8 | 2.379 |
-| Qwen3.6-35B-A3B · Thinking | 71.4 | 82.5 | 74.9 | 86.2 | 78.8 | 149.777 |
-| **VideoJev-35B-A3B** | **73.4** | **81.8** | **77.1** | **85.9** | **79.5** | **1.493** |
+![Paper Table 2: complete multiple-choice video QA results and latency](docs/assets/video-qa-table.png)
 
-Both models achieve mean QA performance comparable to their Thinking backbones, with **129× / 100×** measured forward-time speedups. QA reports accuracy, except MLVU's seven-task M-Avg. Bold identifies VideoJev rows.
+Both models achieve mean QA performance comparable to their Thinking backbones, with **129× / 100×** measured forward-time speedups. QA reports accuracy, except MLVU's seven-task M-Avg.
 
 Latency is measured on H200 at batch size 1 over full Charades (grounding) and full LVBench (QA). It includes visual encoding and model forward computation, with shared video prefixes for generative baselines too; preprocessing and data transfers are excluded. These are paper-reported results. The manuscript settings and differences from current release defaults are documented in [Paper details](docs/PAPER.md#reported-results-and-measurement-protocol).
 
