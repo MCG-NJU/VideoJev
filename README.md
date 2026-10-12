@@ -84,87 +84,81 @@ Latency is measured on H200 at batch size 1 over full Charades (grounding) and f
 | **VideoJev-4B** | [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) | BF16 · Safetensors | [Model & examples ↗](https://huggingface.co/MCG-NJU/VideoJev-4B) |
 | **VideoJev-35B-A3B** | [Qwen3.6-35B-A3B](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) | BF16 · Safetensors | [Model & examples ↗](https://huggingface.co/MCG-NJU/VideoJev-35B-A3B) |
 
-> **Access:** Both model repositories and the [collection](https://huggingface.co/collections/MCG-NJU/videojev-6acb0ed1be2780d1cfc1a35d) are currently private. Use an authorized Hugging Face account with `hf auth login`.
-
 ## Quick start
 
-Set up the [environment](#environment), authenticate, then run grounding and QA on the same video:
+Set up the [environment](#environment), then run this example.
+
+Run grounding and QA on [Eating spaghetti](https://huggingface.co/datasets/nielsr/video-demo/resolve/657fbe79a427948714ba0f45f454a494d346f75e/eating_spaghetti.mp4) (10 seconds), sampling 8 frames.
 
 ```python
 import json
 import torch
+from huggingface_hub import hf_hub_download
 from transformers import AutoModel, AutoProcessor
 
+video = hf_hub_download(
+    repo_id="nielsr/video-demo", filename="eating_spaghetti.mp4",
+    repo_type="dataset", revision="657fbe79a427948714ba0f45f454a494d346f75e",
+)
 repo = "MCG-NJU/VideoJev-4B"
 processor = AutoProcessor.from_pretrained(repo, trust_remote_code=True)
 model = AutoModel.from_pretrained(
-    repo,
-    trust_remote_code=True,
-    dtype=torch.bfloat16,
-    device_map={"": "cuda:0"},
-    attn_implementation="flash_attention_2",
+    repo, trust_remote_code=True, dtype=torch.bfloat16,
+    device_map={"": "cuda:0"}, attn_implementation="flash_attention_2",
 )
 model.prepare_for_inference()
 
 questions = [
-    {
-        "id": "grounding-1", "task": "grounding",
-        "query": "The person opens the door.",
-    },
-    {
-        "id": "qa-1", "task": "choice",
-        "query": "What does the person do after opening the door?",
-        "options": ["A. Walks outside.", "B. Sits down.", "C. Picks up a bag."],
-    },
+    {"id": "grounding-1", "task": "grounding",
+     "query": "The woman in green eats pasta."},
+    {"id": "qa-1", "task": "choice",
+     "query": "What is the woman in green eating?",
+     "options": ["A. Pasta.", "B. Rice.", "C. Soup."]},
 ]
 results = model.predict_video(
-    processor, "/path/to/video.mp4", questions,
-    fps=4.0, max_frames=2048, context=147456,
+    processor, video, questions,
+    fps=2.0, max_frames=8, context=8192,
 )
-print(json.dumps(results, indent=2, ensure_ascii=False))
+print(json.dumps(results, indent=2))
 ```
 
-Use `MCG-NJU/VideoJev-35B-A3B` to load the larger model. Short-video inference was verified on one H200; longer contexts need more memory. The weights alone occupy approximately **8.94 GB / 67.58 GB** for 4B / 35B-A3B.
-
-The example mixes tasks to show the API. See the [evaluation guide](docs/EVALUATION.md) for prepared feature plans and the [paper protocol](docs/PAPER.md#reported-results-and-measurement-protocol) for the settings behind the reported tables. `trust_remote_code=True` loads the VideoJev implementation bundled with the model.
+Use `MCG-NJU/VideoJev-35B-A3B` to load the larger model. See the [evaluation guide](docs/EVALUATION.md) for benchmark settings.
 
 ## Inference output
 
-The APIs return **one dictionary per question, in input order**. Below is a recorded 4B smoke-test result; it uses the synthetic-video queries described below, rather than the door queries in the quick start.
+Actual output from the video and code above:
 
 ```json
 [
   {
-    "id": "v/0",
+    "id": "grounding-1",
     "task": "grounding",
-    "logits": [2.9891, 1.6585, 0.6531, -0.6125],
-    "probabilities": [0.9521, 0.84, 0.6577, 0.3515],
-    "interval": [0.0, 2.0]
+    "probabilities": [
+      0.011942245997488499,
+      0.7642496228218079,
+      0.9801473617553711,
+      0.03251248598098755
+    ],
+    "interval": [
+      2.0,
+      7.0
+    ]
   },
   {
-    "id": "v/1",
+    "id": "qa-1",
     "task": "choice",
-    "logits": [-1.5424, -1.569, -2.3759],
-    "probabilities": [0.4152, 0.4043, 0.1804],
+    "probabilities": [
+      0.9997788071632385,
+      0.0001670706260483712,
+      5.411279198597185e-05
+    ],
     "answer_index": 0,
-    "answer": "A. A person walks."
+    "answer": "A. Pasta."
   }
 ]
 ```
 
-This is the recorded VideoJev-4B output on a 2-second synthetic smoke-test video (8 frames at 4 FPS, `context=4096`), with scores rounded to four decimal places. The queries were `What happens during event 0?` and `What happens during event 1?`; the QA options were `A. A person walks.`, `B. A person runs.`, and `C. A person sits.` It demonstrates the output format, not semantic accuracy on real video.
-
-| Field | Meaning |
-|---|---|
-| `id` · `task` | The input question ID and task. |
-| `interval` | Grounding: `[start_seconds, end_seconds]` relative to the video start. |
-| `answer_index` · `answer` | QA: zero-based option index and the exact selected option string. |
-| `logits` | Raw scores for valid candidates, without padding. |
-| `probabilities` | Grounding: sigmoid scores in chronological two-frame candidate order; they do not sum to 1. QA: softmax scores in input option order; they sum to 1 up to rounding. |
-
-These APIs return structured predictions, not generated text.
-
-See the [4B model card](https://huggingface.co/MCG-NJU/VideoJev-4B#video-grounding-and-qa) and [35B-A3B model card](https://huggingface.co/MCG-NJU/VideoJev-35B-A3B#video-grounding-and-qa) for complete loading and inference examples. Benchmark evaluation writes its own prediction and metric files as described above.
+`interval` is in seconds; `answer_index` is zero-based. `probabilities` contains independent sigmoid scores for grounding and softmax scores over QA options.
 
 ## Environment
 

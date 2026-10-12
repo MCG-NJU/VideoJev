@@ -144,7 +144,7 @@ def format_predictions(output, rows, record, decoder):
         logits = output.logits[i, :count].float().cpu().tolist()
         probabilities = output.probabilities[i, :count].float().cpu().tolist()
         value = dict(id=row.get('id', i), task=row.get('task', 'grounding'),
-                     logits=logits, probabilities=probabilities)
+                     probabilities=probabilities)
         if row.get('task') == 'choice':
             answer = int(np.argmax(probabilities))
             value.update(answer_index=answer, answer=row['options'][answer])
