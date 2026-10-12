@@ -5,11 +5,11 @@ Both released HF checkpoints work with the same evaluator:
 ```bash
 source scripts/env.sh
 python scripts/evaluate_hf.py \
-  --checkpoint MCG-NJU/VideoJev-4B \
+  --checkpoint ZhuYuhan/VideoJev-4B \
   --manifest /path/to/eval.jsonl --out runs/eval4b
 ```
 
-Use `MCG-NJU/VideoJev-35B-A3B` or a local HF directory for `--checkpoint`. See the [JSONL format](DATA.md). Results are saved as `predictions.jsonl`, `metrics.json`, and `summary.json`.
+Use `ZhuYuhan/VideoJev-35B-A3B` or a local HF directory for `--checkpoint`. See the [JSONL format](DATA.md). Results are saved as `predictions.jsonl`, `metrics.json`, and `summary.json`.
 
 Grounding uses **4 FPS**, **147456 tokens**, and **threshold 0.25**; change the threshold with `--threshold`. QA uses **2 FPS**, **262144 tokens**, at most **2048 frames**, and no subtitles or audio. Questions share a video prefix and split only between complete questions.
 
@@ -19,7 +19,7 @@ Place each benchmark under `data/benchmarks/<name>/` with `questions.jsonl`, vid
 
 ```bash
 python scripts/evaluate_hf.py \
-  --checkpoint MCG-NJU/VideoJev-4B \
+  --checkpoint ZhuYuhan/VideoJev-4B \
   --benchmark all --data-root data/benchmarks --out runs/benchmarks
 ```
 

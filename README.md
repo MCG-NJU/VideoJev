@@ -11,8 +11,8 @@
 <p align="center">
   <a href="https://mcg-nju.github.io/VideoJev"><img src="https://img.shields.io/badge/VideoJev-Homepage-555555?labelColor=c96343" alt="VideoJev Homepage" height="28"></a>
   <a href="docs/PAPER.md"><img src="https://img.shields.io/badge/Paper-Method%20%26%20results-555555?labelColor=c96343" alt="Paper · Method and results" height="28"></a>
-  <a href="https://huggingface.co/MCG-NJU/VideoJev-4B"><img src="https://img.shields.io/badge/Hugging%20Face-VideoJev--4B-555555?labelColor=b88a45" alt="Hugging Face · VideoJev-4B" height="28"></a>
-  <a href="https://huggingface.co/MCG-NJU/VideoJev-35B-A3B"><img src="https://img.shields.io/badge/Hugging%20Face-VideoJev--35B--A3B-555555?labelColor=778269" alt="Hugging Face · VideoJev-35B-A3B" height="28"></a>
+  <a href="https://huggingface.co/ZhuYuhan/VideoJev-4B"><img src="https://img.shields.io/badge/Hugging%20Face-VideoJev--4B-555555?labelColor=b88a45" alt="Hugging Face · VideoJev-4B" height="28"></a>
+  <a href="https://huggingface.co/ZhuYuhan/VideoJev-35B-A3B"><img src="https://img.shields.io/badge/Hugging%20Face-VideoJev--35B--A3B-555555?labelColor=778269" alt="Hugging Face · VideoJev-35B-A3B" height="28"></a>
 </p>
 
 <p align="center">
@@ -58,8 +58,8 @@ https://github.com/user-attachments/assets/2a1e9d25-4a1b-4c99-b550-0bffd87cd4b4
 
 | Model | Base model | Weight format | Usage |
 |---|---|---|---|
-| **VideoJev-4B** | [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) | BF16 · Safetensors | [Checkpoint & examples ↗](https://huggingface.co/MCG-NJU/VideoJev-4B) |
-| **VideoJev-35B-A3B** | [Qwen3.6-35B-A3B](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) | BF16 · Safetensors | [Checkpoint & examples ↗](https://huggingface.co/MCG-NJU/VideoJev-35B-A3B) |
+| **VideoJev-4B** | [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) | BF16 · Safetensors | [Checkpoint & examples ↗](https://huggingface.co/ZhuYuhan/VideoJev-4B) |
+| **VideoJev-35B-A3B** | [Qwen3.6-35B-A3B](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) | BF16 · Safetensors | [Checkpoint & examples ↗](https://huggingface.co/ZhuYuhan/VideoJev-35B-A3B) |
 
 ## Quick start
 
@@ -75,7 +75,7 @@ video = hf_hub_download(
     repo_id="ZhuYuhan/VideoJev-Demo", filename="eating_spaghetti.mp4",
     repo_type="dataset", revision="7e2b9685bca592c3b929268f6fcf82c4ad74b267",
 )
-repo = "MCG-NJU/VideoJev-4B"
+repo = "ZhuYuhan/VideoJev-4B"
 processor = AutoProcessor.from_pretrained(repo, trust_remote_code=True)
 model = AutoModel.from_pretrained(
     repo, trust_remote_code=True, dtype=torch.bfloat16,
@@ -97,7 +97,7 @@ results = model.predict_video(
 print(json.dumps(results, indent=2))
 ```
 
-Use `MCG-NJU/VideoJev-35B-A3B` for the larger model.
+Use `ZhuYuhan/VideoJev-35B-A3B` for the larger model.
 
 ## Inference output
 
@@ -193,11 +193,11 @@ For 35B-A3B, use `scripts/train_qwen36.py` with its generated configs and `scrip
 ```bash
 source scripts/env.sh
 python scripts/evaluate_hf.py \
-  --checkpoint MCG-NJU/VideoJev-4B \
+  --checkpoint ZhuYuhan/VideoJev-4B \
   --manifest /path/to/eval.jsonl --out runs/eval4b
 ```
 
-The same command supports `MCG-NJU/VideoJev-35B-A3B`. QA uses a fixed 256K context. See [Evaluation](docs/EVALUATION.md) for benchmarks and distributed runs.
+The same command supports `ZhuYuhan/VideoJev-35B-A3B`. QA uses a fixed 256K context. See [Evaluation](docs/EVALUATION.md) for benchmarks and distributed runs.
 
 ## Verification
 
