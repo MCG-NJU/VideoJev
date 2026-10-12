@@ -5,6 +5,7 @@ from pathlib import Path
 
 DEFAULT_FPS = 2.0
 FPS_CHOICES = (2.0, 4.0)
+QA_CONTEXT = 262144
 
 
 def add_evaluation_arguments(parser):
@@ -38,7 +39,8 @@ def apply_evaluation(config, evaluation):
     if evaluation['eval_fps'] not in FPS_CHOICES or evaluation['max_frames'] != 2048:
         raise ValueError('Unsupported evaluation sampling settings')
     benchmark = evaluation['benchmark']
-    result = dict(config, qa_task='choice', feature_root=evaluation['feature_root'], feature_variant_root=None,
+    result = dict(config, qa_task='choice', max_sequence_length=QA_CONTEXT,
+                  feature_root=evaluation['feature_root'], feature_variant_root=None,
                   eval_fps=evaluation['eval_fps'], max_frames=evaluation['max_frames'],
                   benchmarks={benchmark: evaluation['manifest']},
                   packed_eval_lengths={benchmark: evaluation['lengths']})
@@ -62,26 +64,20 @@ def validate_evaluation(config, evaluation):
     return spec
 
 
-def select_context_results(comparison):
-    """Select one complete prediction set per benchmark; ties favor 192K."""
-    contexts = (196608, 262144)
-    names = ('lvbench', 'videomme', 'longvideobench', 'mlvu')
-    result = {}
-    for name in names:
-        metric = 'm_avg' if name == 'mlvu' else 'accuracy'
-        context = max(contexts, key=lambda c: (comparison[str(c)][name][metric], -c))
-        result[name] = dict(context=context, metric=metric, metrics=comparison[str(context)][name])
-    return result
-
-
-def write_context_results(comparison, directory, *, folder_pattern='context_{context}'):
+def write_qa_results(metrics, directory, *, predictions_folder='context_262144'):
+    """Report the four QA benchmarks at the fixed 256K context."""
     directory = Path(directory)
-    selected = select_context_results(comparison)
+    directory.mkdir(parents=True, exist_ok=True)
+    reports = {}
     lines = ['# VideoJev QA results', '', '| Benchmark | Score (%) | Questions |', '|---|---:|---:|']
-    for name, value in selected.items():
-        value['predictions_directory'] = folder_pattern.format(context=value['context'])+'/'+name
-        metrics = value['metrics']
-        lines.append(f"| {name} | {100*metrics[value['metric']]:.4f} | {metrics['n']} |")
-    (directory/'selected.json').write_text(json.dumps(selected, indent=2)+'\n')
+    for name in ('lvbench', 'videomme', 'longvideobench', 'mlvu'):
+        result = metrics[name]
+        if result.get('context', result.get('max_sequence_length', QA_CONTEXT)) != QA_CONTEXT:
+            raise ValueError('QA results must use the fixed 262144-token context')
+        metric = 'm_avg' if name == 'mlvu' else 'accuracy'
+        reports[name] = dict(context=QA_CONTEXT, metric=metric, metrics=result,
+                             predictions_directory=predictions_folder+'/'+name)
+        lines.append(f"| {name} | {100*result[metric]:.4f} | {result['n']} |")
+    (directory/'qa_results.json').write_text(json.dumps(reports, indent=2)+'\n')
     (directory/'RESULTS.md').write_text('\n'.join(lines)+'\n')
-    return [directory/'selected.json', directory/'RESULTS.md']
+    return [directory/'qa_results.json', directory/'RESULTS.md']

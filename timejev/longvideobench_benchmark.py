@@ -47,7 +47,7 @@ def score_longvideobench(predictions, rows, reference):
             raise ValueError(f'Question differs from the official reference: {row["id"]}')
         prediction = by_id[row['id']]
         n = len(target['candidates'])
-        choice, probabilities, logits = prediction['answer_index'], prediction['probabilities'], prediction['logits']
+        choice, probabilities, logits = prediction['answer_index'], prediction['probabilities'], prediction.get('logits', prediction['probabilities'])
         if (prediction.get('task') != 'choice' or prediction['options'] != formatted_options(target)
                 or type(choice) is not int or not 0 <= choice < n
                 or len(probabilities) != n or len(logits) != n

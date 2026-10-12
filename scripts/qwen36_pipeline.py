@@ -28,7 +28,7 @@ def snapshot(project, out, data):
         if target.exists() or (out/'data').exists():
             raise ValueError('Incomplete snapshot; inspect it or choose a new WORK_DIR')
         ready = read(data/'ready.json')
-        if not ready.get('complete') or sum(s['questions'] for s in ready['summary'].values()) != 404037:
+        if not ready.get('complete') or not all(s['questions'] > 0 for s in ready['summary'].values()):
             raise ValueError('Run prepare_qwen36_mixed.py before launch')
         for name, value in ready['files'].items():
             if digest(data/name) != value:
@@ -94,10 +94,10 @@ def finalize(out):
         raise ValueError('Evaluated checkpoint differs from the completed joint training run')
     expected = {'charades', 'activitynet', 'qvhighlights'} | {
         f'{name}_{capacity}' for name in ('lvbench', 'videomme', 'longvideobench', 'mlvu')
-        for capacity in (196608, 262144)}
+        for capacity in (262144,)}
     if set(evaluation['benchmarks']) != expected:
-        raise ValueError('All eleven results are required')
-    for folder in ('grounding', 'qa_196608', 'qa_262144'):
+        raise ValueError('All seven results are required')
+    for folder in ('grounding', 'qa_262144'):
         names = ('charades', 'activitynet', 'qvhighlights') if folder == 'grounding' else (
             'lvbench', 'videomme', 'longvideobench', 'mlvu')
         for name in names:
@@ -121,16 +121,13 @@ def finalize(out):
                 raise ValueError('Training logs do not cover all planned questions exactly once')
         audits[stage] = dict(steps=steps, questions=questions, ranks=64)
     scores = read(out/'evaluation/summary.json')
-    from timejev.qa_eval_settings import select_context_results
     qa = ('lvbench', 'videomme', 'longvideobench', 'mlvu')
-    selected = select_context_results({str(c): {n: scores[f'{n}_{c}'] for n in qa}
-                                       for c in (196608, 262144)})
     lines = ['# VideoJev-35B-A3B results', '',
              f"Checkpoint: `{evaluation['identity']['checkpoint_id']}`", '',
              '| Benchmark | Score (%) | Questions |', '|---|---:|---:|']
     for name in ('charades', 'activitynet', 'qvhighlights', *qa):
-        metrics = scores[name] if name not in qa else selected[name]['metrics']
-        score = metrics['mIoU'] if name not in qa else 100*metrics[selected[name]['metric']]
+        metrics = scores[name] if name not in qa else scores[f'{name}_262144']
+        score = metrics['mIoU'] if name not in qa else 100*metrics['m_avg' if name == 'mlvu' else 'accuracy']
         lines.append(f"| {name} | {score:.4f} | {metrics['n']} |")
     (out/'RESULTS.md').write_text('\n'.join(lines)+'\n')
     save(dict(complete=True, checkpoint_id=evaluation['identity']['checkpoint_id'],

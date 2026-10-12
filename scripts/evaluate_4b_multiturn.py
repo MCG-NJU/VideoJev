@@ -1,4 +1,4 @@
-"""Eleven complete cached-feature evaluations using same-video query chunks."""
+"""Seven complete cached-feature evaluations using same-video query chunks."""
 import argparse
 from timejev.hf_checkpoint import load_training_checkpoint, checkpoint_fingerprint, checkpoint_stat
 import json
@@ -43,9 +43,9 @@ def assignments(jobs, world):
 
 
 def validate_plan(plan, path):
-    expected = {f'{c}/{n}' for n in COUNTS for c in ((147456,) if n in VTG else (196608,262144))}
+    expected = {f'{c}/{n}' for n in COUNTS for c in ((147456,) if n in VTG else (262144,))}
     if plan['protocol'] != PROTOCOL or set(plan['scopes']) != expected:
-        raise ValueError('Expected all eleven complete multi-query benchmarks')
+        raise ValueError('Expected all seven complete multi-query benchmarks')
     for name, digest in plan['files'].items():
         if sha256(path.parent/name) != digest:
             raise ValueError(f'Frozen multi-query reference changed: {name}')
@@ -128,17 +128,17 @@ def finish_evaluation(output, summary, identity):
     save_json(grounding,output/'grounding/vtg_summary.json')
     mark_complete(output/'grounding',identity,[output/'grounding/vtg_summary.json',
         *(output/'grounding'/n/'completion.json' for n in VTG)])
-    comparison = {}
-    for context in (196608,262144):
+    qa_results = {}
+    for context in (262144,):
         target = output/f'qa/context_{context}'
-        comparison[str(context)] = {n:summary[f'{context}/{n}'] for n in QA}
-        save_json(comparison[str(context)],target/'summary.json')
+        qa_results = {n:summary[f'{context}/{n}'] for n in QA}
+        save_json(qa_results,target/'summary.json')
         mark_complete(target,identity,[target/'summary.json',*(target/n/'completion.json' for n in QA)])
-    from timejev.qa_eval_settings import write_context_results
-    selected_files = write_context_results(comparison, output/'qa')
-    save_json(comparison,output/'qa/summary.json')
-    mark_complete(output/'qa',identity,[output/'qa/summary.json', *selected_files,
-        *(output/f'qa/context_{c}/completion.json' for c in (196608,262144))])
+    from timejev.qa_eval_settings import write_qa_results
+    qa_files = write_qa_results(qa_results, output/'qa')
+    save_json(qa_results,output/'qa/summary.json')
+    mark_complete(output/'qa',identity,[output/'qa/summary.json', *qa_files,
+        *(output/f'qa/context_{c}/completion.json' for c in (262144,))])
     mark_complete(output,identity,[output/'grounding/completion.json',output/'qa/completion.json'],
                   questions=sum(v['n'] for v in summary.values()),full_coverage=True)
 

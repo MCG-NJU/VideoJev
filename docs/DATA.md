@@ -1,53 +1,42 @@
-# Data preparation
+# Custom data
 
-Supply prepared datasets under `data/`. Paths in `configs/*.json` resolve from the repository root; absolute paths also work.
+Use JSONL, one question per line:
 
-```text
-data/
-  ready.json, split.json
-  head_only/
-    train.jsonl, episodes.json, packs.json
-    vtg0.jsonl, vtg0_lengths.json
-    vtg1.jsonl, vtg1_lengths.json
-    qa.jsonl, qa_lengths.json
-  joint/                     # same layout as head_only
-  metadata/                  # media geometry
-  qa/                        # option permutation metadata
-  cache/                     # visual features
-  benchmarks/<name>/
-    questions.jsonl
-    official.json            # LVBench uses official.jsonl
-    lengths_f2.json          # QA
-    lengths_f4.json          # grounding
+```jsonl
+{"id":"v1/0","video_key":"v1","video_path":"videos/v1.mp4","duration":10.0,"task":"grounding","query":"A person opens the door.","spans":[[2.0,4.5]]}
+{"id":"v2/0","video_key":"v2","video_path":"videos/v2.mp4","duration":12.0,"task":"choice","query":"What does the person pick up?","options":["A. A cup.","B. A book."],"answer_index":0}
 ```
 
-## Manifests and media
+Paths are relative to the JSONL file. Times are in seconds; `answer_index` is zero-based. Keep IDs unique and use one `video_key` for all questions about the same video. Either task or a mixture is supported. Two-stage training needs at least two videos.
 
-Every row needs `id`, `video_key`, `video_path`, `duration` and `query`:
+## Prepare
 
-- Grounding: `task="grounding"`, `spans` containing all target intervals.
-- QA: `task="choice"`, labeled `options`, zero-based `answer_index`.
+```bash
+source scripts/env.sh
+python scripts/prepare_data.py \
+  --manifest /path/to/train.jsonl --base /path/to/Qwen3.5-4B \
+  --out data/custom4b --world-size 8
+```
 
-Keep IDs unique and questions in source order. [QA conversion helpers](../timejev/qa_manifest.py) preserve the option format.
+The command splits videos 30%/70% between head warmup and joint training, preserves question order, and generates RGB metadata, token lengths, packs, `ready.json`, and training configs. Use `--head-fraction` to change the split; `--world-size` is the total number of training GPUs and must divide 64.
 
-Optional `media_source` selects `video`, `frames_sidecar` or `frames_4fps` by `kind` and `path`. QA context planning needs complete 2-FPS frames with `.complete.json` and `.timestamps.jsonl` sidecars, usually under `data/frames/<benchmark>/<video-stem>/`.
+For 35B, use `--model-size 35B-A3B --base /path/to/Qwen3.6-35B-A3B` and a separate output directory. Preparation uses the tokenizer and video files; no feature cache is required.
 
-## Features and plans
+## Train
 
-- Feature caches contain BF16 native visual features, grid/timestamp metadata and model/file hashes. Use features from the matching model.
-- `episodes.json` binds manifests, caches, context, FPS and seed; each episode records ordered `query_indices` and exact `tokens`.
-- `packs.json` binds episode metadata and packer hashes. `ready.json` records completed data files and their hashes.
+For the 8-GPU configuration above:
 
-See [episode loading](../timejev/multiturn_data.py), [packing](../timejev/packing.py) and [feature formats](../timejev/features.py).
+```bash
+torchrun --standalone --nproc-per-node=8 scripts/train.py \
+  --config data/custom4b/configs/head_only.json --out runs/custom4b/head_only
 
-RGB planners reuse the manifests and video split, then regenerate lengths and packs:
+torchrun --standalone --nproc-per-node=8 scripts/train.py \
+  --config data/custom4b/configs/joint.json --out runs/custom4b/joint \
+  --init-head runs/custom4b/head_only/head.pt
+```
 
-| Planner | Output |
-|---|---|
-| `scripts/prepare_rgb192.py` | `data/rgb192/` |
-| `scripts/prepare_qwen36_mixed.py` | `data/qwen36_mixed_v1/` |
-| `scripts/prepare_context_eval.py` | QA context plans |
+For 35B, source `scripts/env_qwen36.sh` and use `scripts/train_qwen36.py` with its generated configs. For multiple nodes, use the corresponding `torchrun` node and rendezvous arguments.
 
-Run each with `--help`. Rebuild metadata after changing media paths, tokenizer, context or input code.
+## Evaluate
 
-The RGB planners require 404037 training questions: 96586 TimeLens-100K, 67924 TimeLens2 and 239527 QA.
+Use the same labeled JSONL format with the [HF evaluator](EVALUATION.md). Official QA benchmarks additionally retain `uid` for LVBench or `question_id` for the other three benchmarks; MLVU also needs `task_type` and `official_duration`. Preserve the official question and option order.

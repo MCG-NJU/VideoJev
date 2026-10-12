@@ -45,7 +45,7 @@ def score_mlvu(predictions, rows, reference):
             raise ValueError(f'Question differs from the pinned official release: {row["id"]}')
         prediction = by_id[row['id']]
         choice = prediction['answer_index']
-        probabilities, logits = prediction['probabilities'], prediction['logits']
+        probabilities, logits = prediction['probabilities'], prediction.get('logits', prediction['probabilities'])
         if (prediction.get('task')!='choice' or prediction['options']!=formatted_options(target)
                 or type(choice) is not int or not 0<=choice<4
                 or len(probabilities)!=4 or len(logits)!=4

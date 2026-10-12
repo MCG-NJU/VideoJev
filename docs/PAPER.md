@@ -45,5 +45,5 @@ Latency per query on H200 (batch 1, after warm-up) includes visual encoding and 
 ### Current release defaults
 
 - Grounding defaults to `threshold=0.25`, with per-call overrides.
-- QA scripts compare two contexts; the paper fixes 262144. Raw-video resolution may differ from prepared benchmark features.
+- QA uses 262144 tokens. Raw-video resolution may differ from prepared benchmark features.
 - HF exports use BF16. Paper 4B QA used FP32 weights with BF16 autocast. Full benchmarks have not been rerun on the HF exports.

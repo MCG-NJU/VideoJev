@@ -24,14 +24,14 @@ case "$MASTER_ADDR" in localhost|localhost.*|127.*|::1|0.0.0.0) fail 'MASTER_ADD
 export MASTER_PORT="${MASTER_PORT:-29710}"
 [[ "$MASTER_PORT" =~ ^[1-9][0-9]{0,4}$ ]] && ((MASTER_PORT<=65535)) || fail 'Invalid MASTER_PORT.'
 export CHECKPOINT="${CHECKPOINT:-$PROJECT/runs/videojev4b/joint/hf_checkpoint}"
-export WORK_DIR="${WORK_DIR:-$PROJECT/runs/qa_rgb_context80_196608_262144_7nodes_v1}"
+export WORK_DIR="${WORK_DIR:-$PROJECT/runs/qa_rgb_context80_262144_7nodes_v1}"
 export CONTEXT_PLANS="${CONTEXT_PLANS:-$PROJECT/data/context_eval_v1}"
 [[ "$WORK_DIR" == /* && "$WORK_DIR" != "$PROJECT" ]] || fail 'WORK_DIR must be an absolute shared output directory.'
 [[ -f "$CHECKPOINT" || -f "$CHECKPOINT/export_complete.json" ]] || fail "Checkpoint not found: $CHECKPOINT"
 PYTHON_BIN="${TIMEJEV_PYTHON:-python}"
 local -a TORCHRUN=("$PYTHON_BIN" -B -m torch.distributed.run --nnodes=7 --nproc-per-node=8
   --node-rank="$NODE_INDEX" --master-addr="$MASTER_ADDR" --master-port="$MASTER_PORT" --max-restarts=0)
-echo "7 nodes x 8 GPUs; node=$NODE_INDEX; contexts=196608,262144; visual budgets=157286,209715"
+echo "7 nodes x 8 GPUs; node=$NODE_INDEX; context=262144; visual budget=209715"
 echo 'LVBench / Video-MME / LongVideoBench validation / MLVU Dev MC; 2fps; 2048 frames; max pixels=640*640'
 echo "checkpoint=$CHECKPOINT; output=$WORK_DIR/evaluation"
 if [[ "$MODE" == --dry-run ]]; then

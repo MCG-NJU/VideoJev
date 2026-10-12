@@ -38,7 +38,7 @@ def score_videomme(predictions, rows, reference):
         prediction = by_id[row['id']]
         choice = prediction['answer_index']
         probabilities = prediction['probabilities']
-        logits = prediction['logits']
+        logits = prediction.get('logits', prediction['probabilities'])
         if (type(choice) is not int or not 0 <= choice < 4
                 or prediction.get('task') != 'choice' or prediction['options'] != target['options']
                 or len(probabilities) != 4 or len(logits) != 4

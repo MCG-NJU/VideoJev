@@ -30,7 +30,7 @@ local -a TORCHRUN=("$PYTHON_BIN" -B -m torch.distributed.run --nnodes=8 --nproc-
   --node-rank="$NODE_INDEX" --master-addr="$MASTER_ADDR" --master-port="$MASTER_PORT" --max-restarts=0)
 echo "Qwen3.6-35B-A3B; 8x8 GPUs; GBS64 packs; train 147456; node=$NODE_INDEX"
 echo 'Fresh base -> 30% head (VTG BCE / QA CE) -> 70% joint (LLM 2e-6, head 1e-4)'
-echo 'Then grounding 147456/4fps; four QA benchmarks at 196608 and 262144/2fps; all visual budgets 80%.'
+echo 'Then grounding 147456/4fps; four QA benchmarks at 262144/2fps; all visual budgets 80%.'
 if [[ "$MODE" == --dry-run ]]; then
   for STAGE in head_only joint; do
     printf '%q ' "${TORCHRUN[@]}" "$WORK_DIR/source/scripts/train_qwen36.py" \
@@ -79,7 +79,7 @@ done
   --plans "$WORK_DIR/data" --out "$WORK_DIR/evaluation"
 if [[ "$NODE_INDEX" == 0 ]]; then
   "$PYTHON_BIN" -B scripts/qwen36_pipeline.py finalize --out "$WORK_DIR"
-  echo "All eleven results: $WORK_DIR/RESULTS.md"
+  echo "All seven results: $WORK_DIR/RESULTS.md"
 fi
 }
 video_jev_qwen36_main "$@"

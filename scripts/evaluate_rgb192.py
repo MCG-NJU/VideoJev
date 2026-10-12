@@ -1,4 +1,4 @@
-"""Seven benchmarks from RGB with 192K contexts and causal multi-query groups."""
+"""RGB grounding and fixed-256K QA with causal multi-query groups."""
 import argparse
 from timejev.hf_checkpoint import load_training_checkpoint, checkpoint_fingerprint, checkpoint_stat
 import hashlib
@@ -18,6 +18,7 @@ from timejev.engine import atomic_save, make_loader, save_json, setup, sha256
 from timejev.multiturn_data import MultiturnCollator
 from timejev.rgb_data import (PROTOCOL, RGBEvaluationVideos, single_video_collate, text_item)
 from timejev.vision import VISUAL_PROTOCOL
+from timejev.qa_eval_settings import QA_CONTEXT
 
 
 @torch.inference_mode()
@@ -82,6 +83,10 @@ def main():
     model, processor, all_rows, all_scores, timing = None, None, {}, {}, {}
     for name in names:
         qa, spec = name in QA_NAMES, plan['benchmarks'][name]
+        context = QA_CONTEXT if qa else config['max_sequence_length']
+        if spec.get('context', plan['max_sequence_length']) != context:
+            raise ValueError('Evaluation context changed; regenerate the RGB plan')
+        evaluation_config = dict(config, max_sequence_length=context)
         rows = read_jsonl(spec['manifest'])
         if (len(rows) != COUNTS[name] or len({r['id'] for r in rows}) != COUNTS[name]
                 or sha256(spec['manifest']) != spec['manifest_sha256']):
@@ -89,7 +94,7 @@ def main():
         reference = registry[name]['2'] if qa else None
         identity = dict(evaluation_protocol='greedy_video_query_chunks_single_forward_v1', checkpoint_id=checkpoint_id, checkpoint_sha256=envelope[0], code_sha256=code_hash,
             manifest_sha256=spec['manifest_sha256'], rgb_plan_sha256=sha256(config['rgb_evaluation']),
-            max_sequence_length=196608, fps=2. if qa else 4., benchmark=name, input_mode=PROTOCOL)
+            max_sequence_length=context, fps=2. if qa else 4., benchmark=name, input_mode=PROTOCOL)
         if qa:
             identity['official_reference_sha256'] = sha256(reference.get('official_questions', reference.get('lvbench_metadata')))
         target = output/name
@@ -109,7 +114,7 @@ def main():
             loader = make_loader(dataset, single_video_collate, config['workers'], batch_size=1)
             torch.cuda.synchronize()
             start = time.monotonic()
-            predictions, cache = predict_videos(model, loader, spec, rows, config, device, processor)
+            predictions, cache = predict_videos(model, loader, spec, rows, evaluation_config, device, processor)
             torch.cuda.synchronize()
             seconds = torch.tensor(time.monotonic()-start, device=device)
             atomic_save(predictions, target/f'rank{rank}.pt')
@@ -124,7 +129,7 @@ def main():
                     raise ValueError(f'Missing/duplicate benchmark predictions: {name}')
                 merged = [by_id[r['id']] for r in rows]
                 stats = dict(n=len(rows), videos=len(spec['videos']), seconds=float(seconds), world_size=world,
-                    sample_fps=2. if qa else 4., max_frames=2048, max_sequence_length=196608,
+                    sample_fps=2. if qa else 4., max_frames=2048, max_sequence_length=context,
                     checkpoint_id=checkpoint_id, queries_per_second=len(rows)/max(float(seconds), 1e-9),
                     input_mode=PROTOCOL, prompt_protocol='independent questions; private KV/DeltaNet forks',
                     video_cache=[read(target/f'cache_rank{worker}.json') for worker in range(world)])

@@ -178,7 +178,7 @@ def main():
     validate_recipe(config)
     rank, world, device = setup(config['seed'])
     if world != config['expected_world_size'] or config['global_batch_size'] % world:
-        raise ValueError('This recipe requires 8 nodes x 8 GPUs and GBS64 packed sequences')
+        raise ValueError('Launch world size must match the prepared config and divide GBS64')
     out = Path(args.out).resolve()
     out.mkdir(parents=True, exist_ok=True)
     stage = config['training_stage']

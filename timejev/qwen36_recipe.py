@@ -8,11 +8,14 @@ def validate_recipe(config):
         freeze_visual_connector=True, attention_mode='causal', query_placement='last',
         readout_mode='last_attention', head_dim=512, head_similarity='cosine', head_logit_scale=10.,
         grounding_candidates='timestamp_options', sequence_packing=True,
-        global_batch_unit='packed_sequence', global_batch_size=64, expected_world_size=64,
-        batch_size=1, accumulation=1, epochs=1, seed=20260924, max_sequence_length=147456,
+        global_batch_unit='packed_sequence', global_batch_size=64,
+        batch_size=1, epochs=1, seed=20260924, max_sequence_length=147456,
         sample_visual_fraction=.8, router_compute_dtype='float32', moe_router_aux_loss_weight=0,
         mtp_enabled=False, weight_decay=.01, warmup_ratio=.05, grad_clip=1,
         training_tasks=['grounding', 'choice'], input_mode='rgb_dynamic')
+    world = config.get('expected_world_size', 0)
+    if type(world) is not int or world < 1 or 64 % world or config.get('accumulation') != 64//world:
+        raise ValueError('Training world size must divide 64; accumulation must be 64/world_size')
     for key in ('embedding_warmup', 'train_new_token_embeddings', 'feature_root',
                 'feature_variant_root', 'new_token_lr'):
         if config.get(key):

@@ -1,4 +1,4 @@
-"""One ZeRO-3 model, original grounding plus QA at 196608 and 262144 tokens."""
+"""One ZeRO-3 model, original grounding plus QA at 262144 tokens."""
 import argparse
 import hashlib
 import json
@@ -108,6 +108,9 @@ def predict_packs(engine, visual, spec, rows, config, capacity, rank, world, dev
 
 
 def main():
+    from timejev.hf_evaluation import released_checkpoint_cli, main as evaluate_hf
+    if released_checkpoint_cli():
+        return evaluate_hf()
     import deepspeed
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--checkpoint', required=True)
@@ -222,15 +225,15 @@ def main():
             save_json(summary, out/'summary.json')
         dist.barrier()
     if rank == 0:
-        if len(summary) != 11:
-            raise ValueError('Expected three grounding and eight QA results')
+        if len(summary) != 7:
+            raise ValueError('Expected three grounding and four QA results')
         after = {p.name: (p.stat().st_size, p.stat().st_mtime_ns) for p in checkpoint.iterdir() if p.is_file()}
         if checkpoint_stats != after:
             raise ValueError('Checkpoint changed during evaluation')
-        from timejev.qa_eval_settings import write_context_results
-        comparison = {str(c): {n: summary[f'{n}_{c}'] for n in QA_NAMES} for c in (196608, 262144)}
-        selected_files = write_context_results(comparison, out, folder_pattern='qa_{context}')
-        files = [out/'summary.json', *completions, *selected_files, *((out/'grounding/vtg').glob('*.json')),
+        from timejev.qa_eval_settings import write_qa_results
+        qa_results = {n: summary[f'{n}_262144'] for n in QA_NAMES}
+        qa_files = write_qa_results(qa_results, out, predictions_folder='qa_262144')
+        files = [out/'summary.json', *completions, *qa_files, *((out/'grounding/vtg').glob('*.json')),
                  *((out/'grounding/vtg').glob('*.jsonl'))]
         mark_complete(out, dict(checkpoint_id=checkpoint_id, checkpoint_sha256=envelope[0], code_sha256=code_hash),
                       files, benchmarks=list(summary))

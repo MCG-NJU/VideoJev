@@ -1,4 +1,4 @@
-"""Prepare fixed-stage complete conversations and 144K/192K/256K RGB plans."""
+"""Prepare fixed-stage complete conversations and 144K training/grounding and 256K QA RGB plans."""
 from timejev.config import read_config
 import argparse
 from concurrent.futures import ProcessPoolExecutor
@@ -69,7 +69,7 @@ def records(pool, jobs, journal_path):
     return saved
 
 
-def prepare(project, root, base, workers):
+def prepare(project, root, base, workers, *, benchmarks=None):
     from timejev.decision_inputs import load_processor
     from timejev.token_metadata import tokenizer_identity
     from timejev.packing import build_xtuner_packs, xtuner_source_hashes
@@ -78,11 +78,15 @@ def prepare(project, root, base, workers):
     root.mkdir(parents=True, exist_ok=True)
     with (root/'.prepare.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
-        stages = ('head_only', 'joint')
-        paths = [project/f'data/{s}/{n}' for s in stages for n in ('train.jsonl', 'episodes.json')]
+        from scripts.prepare_rgb192 import source_rows
+        stage_rows, _ = source_rows(project, 20260924)
+        stages = tuple(stage_rows)
+        if benchmarks is None:
+            benchmarks = ('charades', 'activitynet', 'qvhighlights', *COUNTS)
+        paths = [project/f'data/{s}/train.jsonl' for s in stages]
         paths += [project/'data/split.json']
         paths += [project/f'data/benchmarks/{n}/questions.jsonl'
-                  for n in ('charades', 'activitynet', 'qvhighlights', *COUNTS)]
+                  for n in benchmarks]
         code_root = Path(__file__).resolve().parents[1]
         identity = dict(protocol=PROTOCOL, base=base, capacity=CAPACITY, sample_visual_fraction=.8,
             source_bindings={str(p): sha256(p) for p in paths},
@@ -105,7 +109,7 @@ def prepare(project, root, base, workers):
                                  initializer=init_worker, initargs=(base,)) as pool:
             for stage in stages:
                 rows = read_jsonl(project/f'data/{stage}/train.jsonl')
-                parent = json.loads((project/f'data/{stage}/episodes.json').read_text())
+                parent = dict(episodes=group_memberships(rows))
                 jobs = [([rows[i] for i in g['query_indices']], None) for g in parent['episodes']]
                 values = records(pool, jobs, root/f'{stage}_progress.jsonl')
                 target = root/stage
@@ -136,8 +140,8 @@ def prepare(project, root, base, workers):
             if overlength:
                 raise ValueError(f'{len(overlength)} complete conversations exceed original 144K recipe; '
                                  'no data dropped or split. See filter_audit.json; user decision required.')
-            if sum(s['questions'] for s in summaries.values()) != 404037:
-                raise ValueError('The fixed mixed inventory must contain all 404037 questions')
+            if sum(s['questions'] for s in summaries.values()) != sum(map(len, stage_rows.values())):
+                raise ValueError('Prepared questions differ from the input manifests')
             save_json(dict(protocol=PROTOCOL, records=catalog), root/'rgb_metadata.json')
             for stage in stages:
                 path = root/stage/'episodes.json'
@@ -153,7 +157,7 @@ def prepare(project, root, base, workers):
             save_json(split, root/'split.json')
             plans = {c: dict(protocol=PROTOCOL, base=base, context=c, visual_budget=c*4//5,
                             identity=identity, benchmarks={}) for c in (CAPACITY, *CONTEXTS)}
-            for name in ('charades', 'activitynet', 'qvhighlights', *COUNTS):
+            for name in benchmarks:
                 path = project/f'data/benchmarks/{name}/questions.jsonl'
                 rows = read_jsonl(path)
                 groups = group_memberships(rows)

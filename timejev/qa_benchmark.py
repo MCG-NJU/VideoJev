@@ -35,7 +35,7 @@ def score_lvbench(predictions, rows, metadata):
                 or row['video_key'] != 'lvbench/' + owners[uid]):
             raise ValueError(f'LVBench row differs from the official reference: {uid}')
         probabilities = prediction['probabilities']
-        logits = prediction['logits']
+        logits = prediction.get('logits', prediction['probabilities'])
         if (type(choice) is not int or not 0 <= choice < len(options)
                 or prediction.get('task') != 'choice' or prediction['options'] != options
                 or len(probabilities) != len(options) or len(logits) != len(options)

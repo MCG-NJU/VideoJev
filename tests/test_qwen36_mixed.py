@@ -64,7 +64,7 @@ def test_fingerprint_detects_same_size_export_corruption(tmp_path):
     assert checkpoint_fingerprint(tmp_path) != before
 
 
-def test_all_eleven_exports_resume_and_corruption_guard(tmp_path, monkeypatch):
+def test_all_seven_exports_resume_and_corruption_guard(tmp_path, monkeypatch):
     if not (Path(__file__).resolve().parents[1]/'data/qwen36_mixed_v1/ready.json').exists():
         pytest.skip('Required prepared data is not bundled with the source release')
     import deepspeed
@@ -111,10 +111,10 @@ def test_all_eleven_exports_resume_and_corruption_guard(tmp_path, monkeypatch):
     monkeypatch.setattr('sys.argv', ['evaluate', '--checkpoint', str(checkpoint), '--plans',
         str(ROOT/'data/qwen36_mixed_v1'), '--out', str(output)])
     evaluate.main()
-    assert len(calls) == 11
-    assert len(verify_completion(output)['benchmarks']) == 11
+    assert len(calls) == 7
+    assert len(verify_completion(output)['benchmarks']) == 7
     summary = json.loads((output/'summary.json').read_text())
-    for context in (196608, 262144):
+    for context in (262144,):
         for name in evaluate.QA_NAMES:
             assert summary[f'{name}_{context}']['m_avg' if name == 'mlvu' else 'accuracy'] == 1.
     calls.clear()

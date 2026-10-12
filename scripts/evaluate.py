@@ -110,6 +110,9 @@ def predict_dataset(model, processor, dataset, indices, config, device):
 
 @torch.inference_mode()
 def main():
+    from timejev.hf_evaluation import released_checkpoint_cli, main as evaluate_hf
+    if released_checkpoint_cli():
+        return evaluate_hf()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--checkpoint', required=True)
     parser.add_argument('--out', required=True)

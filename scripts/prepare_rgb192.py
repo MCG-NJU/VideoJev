@@ -48,8 +48,8 @@ def write_rows(rows, path):
 def source_rows(project, seed):
     stages = {s: read_jsonl(project/f'data/{s}/train.jsonl') for s in ('head_only', 'joint')}
     all_rows = [r for rows in stages.values() for r in rows]
-    if len(all_rows) != 404037 or len({r['id'] for r in all_rows}) != len(all_rows):
-        raise ValueError('The RGB version preserves the current 404,037-question source inventory')
+    if not all(stages.values()) or len({r['id'] for r in all_rows}) != len(all_rows):
+        raise ValueError('Both stages require nonempty manifests with unique question IDs')
     if ({r['video_key'] for r in stages['head_only']} & {r['video_key'] for r in stages['joint']}):
         raise ValueError('A source video crossed training stages')
     paths = [project/f'data/{s}/train.jsonl' for s in stages]
@@ -99,25 +99,30 @@ def plan_records(rows, processor, output, *, benchmark=None, workers=12):
     return episodes, done
 
 
-def prepare(project, root, base, workers):
+def prepare(project, root, base, workers, *, benchmarks=None):
     from timejev.decision_inputs import load_processor
     from timejev.packing import build_xtuner_packs, xtuner_source_hashes
     from timejev.token_metadata import tokenizer_identity
+    if benchmarks is None:
+        benchmarks = ('charades', 'activitynet', 'qvhighlights', 'lvbench', 'videomme', 'longvideobench', 'mlvu')
+    request = dict(base=str(Path(base).resolve()), benchmarks=list(benchmarks), qa_context=262144)
     root.mkdir(parents=True, exist_ok=True)
     with (root/'.prepare.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         stages, bindings = source_rows(project, 20260924)
+        bindings.update({str(project/f'data/benchmarks/{name}/questions.jsonl'):
+                         sha256(project/f'data/benchmarks/{name}/questions.jsonl') for name in benchmarks})
         if (root/'ready.json').exists():
             ready = json.loads((root/'ready.json').read_text())
-            if ready['source_bindings'] != bindings:
-                raise ValueError('Original training sources changed since RGB preparation')
+            if ready['source_bindings'] != bindings or ready.get('preparation') != request:
+                raise ValueError('RGB inputs/settings changed; prepare a new data directory')
             for name, digest in ready['files'].items():
                 if sha256(root/name) != digest:
                     raise ValueError(f'Prepared RGB file changed: {name}')
             print(json.dumps(dict(reused=True, summary=ready['summary'])), flush=True)
             return
         processor = load_processor(base)
-        identity = dict(protocol=PROTOCOL, capacity=CAPACITY, source_bindings=bindings,
+        identity = dict(protocol=PROTOCOL, capacity=CAPACITY, preparation=request, source_bindings=bindings,
                         tokenizer=tokenizer_identity(processor, prompt_version=PROTOCOL),
                         code={name: sha256(Path(__file__).resolve().parents[1]/name) for name in
                               ('timejev/rgb_data.py', 'timejev/rgb_media.py', 'timejev/multiturn_inputs.py',
@@ -163,13 +168,13 @@ def prepare(project, root, base, workers):
                 videos=len({r['video_key'] for r in retained}), episodes=len(episodes), packs=len(packs),
                 steps=math.ceil(len(packs)/64), dropped_questions=len(original)-len(retained))
         save_json(dict(protocol=PROTOCOL, seed=20260924, questions_per_epoch=1,
-                       existing_video_stages='unchanged', source_questions=404037,
-                       restored_videos=0, restored_questions=0,
-                       original_144k_exclusions='remain excluded by user request',
+                       existing_video_stages='unchanged', source_questions=len(all_rows),
                        stages=summaries), root/'split.json')
         save_json(dict(dropped_questions=exclusions, split_videos=splits), root/'filter_audit.json')
         evaluation = {}
-        for name in ('charades', 'activitynet', 'qvhighlights', 'lvbench', 'videomme', 'longvideobench', 'mlvu'):
+        from timejev.qa_eval_settings import QA_CONTEXT
+        for name in benchmarks:
+            context = QA_CONTEXT if name in ('lvbench', 'videomme', 'longvideobench', 'mlvu') else CAPACITY
             manifest = project/f'data/benchmarks/{name}/questions.jsonl'
             rows = read_jsonl(manifest)
             groups, values = plan_records(rows, processor, root/f'{name}_progress.jsonl',
@@ -179,18 +184,23 @@ def prepare(project, root, base, workers):
                 value = values[group['video_key']]
                 # Use the longest independent question to select one geometry,
                 # so every question can privately fork the SAME video prefix.
-                shape = geometry(value['record'], max(value['first']), minimum=1024)
+                if context == QA_CONTEXT:
+                    from timejev.context_eval import choose_geometry
+                    shape = choose_geometry(value['record'], max(value['first']), context)
+                else:
+                    shape = geometry(value['record'], max(value['first']), minimum=1024)
                 if shape is None:
                     raise ValueError(f'Benchmark single question cannot fit at native minimum: {group["video_key"]}')
                 entries.append(dict(video_key=group['video_key'], record=value['record'], geometry=shape,
                     questions=[dict(id=rows[i]['id'], query_index=i, tokens=first+shape['tokens'])
                                for i, first in zip(group['query_indices'], value['first'])]))
-            evaluation[name] = dict(manifest=str(manifest), manifest_sha256=sha256(manifest), videos=entries)
+            evaluation[name] = dict(manifest=str(manifest), manifest_sha256=sha256(manifest),
+                                    context=context, videos=entries)
         save_json(dict(protocol=PROTOCOL, max_sequence_length=CAPACITY, benchmarks=evaluation), root/'evaluation.json')
         files = {str(p.relative_to(root)): sha256(p) for p in root.rglob('*.json')
                  if not p.name.endswith('.unavailable.json')}
         files.update({f'{s}/train.jsonl': sha256(root/s/'train.jsonl') for s in stages})
-        save_json(dict(complete=True, source_bindings=bindings, files=files, summary=summaries), root/'ready.json')
+        save_json(dict(complete=True, preparation=request, source_bindings=bindings, files=files, summary=summaries), root/'ready.json')
         print(json.dumps(dict(event='rgb_preparation_complete', summary=summaries)), flush=True)
 
 

@@ -15,8 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_visual_budget_and_full_question_are_independent_constraints():
     record = dict(frames=2048, original_hw=[1080, 1920])
     shapes = [choose_geometry(record, 12000, context) for context in CONTEXTS]
-    assert [visual_budget(c) for c in CONTEXTS] == [157286, 209715]
-    assert shapes[0]['tokens'] < shapes[1]['tokens']
+    assert [visual_budget(c) for c in CONTEXTS] == [209715]
     for context, shape in zip(CONTEXTS, shapes):
         assert shape['grid_thw'][0] == 1024
         assert shape['tokens'] <= visual_budget(context)
@@ -30,11 +29,11 @@ def test_visual_budget_and_full_question_are_independent_constraints():
 @pytest.fixture(scope='module')
 def plans():
     if not (ROOT/'data/context_eval_v1/ready.json').exists():
-        pytest.skip('Prepare both context plans to run this integration test')
+        pytest.skip('Prepare the 256K context plan to run this integration test')
     return {c: json.loads((ROOT/f'data/context_eval_v1/context_{c}.json').read_text()) for c in CONTEXTS}
 
 
-def test_complete_both_plans_and_56_rank_assignment(plans):
+def test_complete_plan_and_56_rank_assignment(plans):
     for context, plan in plans.items():
         total = 0
         for name in COUNTS:
@@ -46,12 +45,9 @@ def test_complete_both_plans_and_56_rank_assignment(plans):
             assert sorted(i for shard in shards for i in shard) == list(range(len(spec['videos'])))
             total += len(rows)
         assert total == 7760
-    for name in COUNTS:
-        left, right = (plans[c]['benchmarks'][name]['videos'] for c in CONTEXTS)
-        assert [v['record'] for v in left] == [v['record'] for v in right]
 
 
-def test_native_token_lengths_and_audits_for_both_contexts(plans):
+def test_native_token_lengths_and_audits_at_fixed_context(plans):
     from timejev.decision_inputs import load_processor
     processor = load_processor(os.environ.get('VIDEOJEV_TEST_MODEL', 'models/Qwen3.5-4B'))
     for context, plan in plans.items():
@@ -66,7 +62,7 @@ def test_native_token_lengths_and_audits_for_both_contexts(plans):
             assert item['audit']['visual_token_budget'] == visual_budget(context)
 
 
-def test_four_benchmarks_two_contexts_export_and_resume(tmp_path, monkeypatch, plans):
+def test_four_benchmarks_fixed_context_export_and_resume(tmp_path, monkeypatch, plans):
     from scripts import evaluate_contexts as evaluate, pipeline
     config = json.loads((ROOT/'configs/joint.json').read_text())
     checkpoint = tmp_path/'model.pt'
@@ -94,12 +90,12 @@ def test_four_benchmarks_two_contexts_export_and_resume(tmp_path, monkeypatch, p
     monkeypatch.setattr('sys.argv', ['evaluate', '--checkpoint', str(checkpoint),
         '--plans', str(ROOT/'data/context_eval_v1'), '--out', str(output)])
     evaluate.main()
-    assert len(calls) == 2*2878
+    assert len(calls) == 2878
     assert pipeline.verify_completion(output)['questions_per_context'] == 7760
     summary = json.loads((output/'summary.json').read_text())
     for context in CONTEXTS:
         for name in COUNTS:
-            assert summary[str(context)][name]['m_avg' if name == 'mlvu' else 'accuracy'] == 1.
+            assert summary[name]['m_avg' if name == 'mlvu' else 'accuracy'] == 1.
     calls.clear()
     evaluate.main()
     assert calls == []

@@ -33,9 +33,9 @@ def freeze_plan(reference, destination, *, decoder_threshold=.25):
             raise ValueError(f'Multi-query reference input changed: {name}')
     old = read(reference/'plan.json')
     expected_scopes = {f'{c}/{n}' for n in COUNTS for c in
-                       ((147456,) if n in ('charades','activitynet','qvhighlights') else (196608,262144))}
-    if set(old['scopes']) != expected_scopes:
-        raise ValueError('Multi-query reference must contain all eleven evaluations')
+                       ((147456,) if n in ('charades','activitynet','qvhighlights') else (262144,))}
+    if not expected_scopes.issubset(old['scopes']):
+        raise ValueError('Multi-query reference must contain all seven evaluations')
     destination.parent.mkdir(parents=True, exist_ok=True)
     copied, scopes = {}, {}
 
@@ -51,7 +51,8 @@ def freeze_plan(reference, destination, *, decoder_threshold=.25):
         return name
 
     (destination.parent/'multiturn_inputs').mkdir(exist_ok=True)
-    for scope, spec in old['scopes'].items():
+    for scope in sorted(expected_scopes):
+        spec = old['scopes'][scope]
         scopes[scope] = dict(spec, manifest=copy_input(spec['manifest']),
             reference={k:copy_input(v) for k,v in spec.get('reference',{}).items()})
         rows = [json.loads(line) for line in (destination.parent/scopes[scope]['manifest']).read_text().splitlines()]
@@ -68,7 +69,8 @@ def freeze_plan(reference, destination, *, decoder_threshold=.25):
                 raise ValueError(f'Question ordering/video identity changed: {scope}')
     decoder = read(reference/'decoder.json')
     cache = Path(old['cache'])
-    value = dict(protocol=PROTOCOL, base=read(cache/'model.json')['base'], scopes=scopes, jobs=old['jobs'],
+    value = dict(protocol=PROTOCOL, base=read(cache/'model.json')['base'], scopes=scopes,
+        jobs=[j for j in old['jobs'] if j['scope'] in expected_scopes],
         files=copied, cache=str(cache), cache_model_sha256=sha(cache/'model.json'),
         cache_completion_sha256=sha(cache/'completion.json'),
         decoder=dict(threshold=decoder_threshold, smooth=decoder['smooth'], postprocess=decoder['postprocess']),

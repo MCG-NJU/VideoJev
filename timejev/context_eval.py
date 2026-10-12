@@ -1,4 +1,4 @@
-"""RGB-only MCQ evaluation contracts for the two requested context limits."""
+"""RGB-only MCQ evaluation contracts at the fixed 256K context."""
 import hashlib
 import json
 from pathlib import Path
@@ -6,7 +6,9 @@ from pathlib import Path
 from .rgb_data import geometries, text_item
 from .rgb_media import metadata, fingerprint
 
-CONTEXTS = (196608, 262144)
+from .qa_eval_settings import QA_CONTEXT
+
+CONTEXTS = (QA_CONTEXT,)
 PROTOCOL = 'qwen35_rgb_mcq_context80_v1'
 COUNTS = dict(lvbench=1549, videomme=2700, longvideobench=1337, mlvu=2174)
 VIDEO_COUNTS = dict(lvbench=103, videomme=900, longvideobench=753, mlvu=1122)

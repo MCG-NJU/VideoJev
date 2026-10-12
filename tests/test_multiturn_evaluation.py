@@ -1,5 +1,6 @@
 """Check public multi-query routes without GPU execution or benchmark downloads."""
 import os
+import json
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -78,14 +79,15 @@ def test_portable_paths():
     assert value['train'] == str(ROOT/'data/joint/train.jsonl')
 
 
-def test_qa_context_selection_uses_primary_metric_and_keeps_ties():
-    from timejev.qa_eval_settings import select_context_results
-    comparison = {str(c): {name: dict(accuracy=.6, m_avg=.5, n=2)
-        for name in ('lvbench', 'videomme', 'longvideobench', 'mlvu')}
-        for c in (196608, 262144)}
-    comparison['262144']['mlvu'].update(accuracy=.4, m_avg=.7)
-    comparison['262144']['lvbench']['accuracy'] = .8
-    selected = select_context_results(comparison)
-    assert selected['mlvu']['context'] == selected['lvbench']['context'] == 262144
-    assert selected['videomme']['context'] == selected['longvideobench']['context'] == 196608
-    assert selected['mlvu']['metrics'] is comparison['262144']['mlvu']
+def test_qa_report_uses_fixed_context_and_primary_metric(tmp_path):
+    from timejev.qa_eval_settings import QA_CONTEXT, write_qa_results
+    metrics = {name: dict(accuracy=.6, m_avg=.5, n=2, context=QA_CONTEXT)
+               for name in ('lvbench', 'videomme', 'longvideobench', 'mlvu')}
+    write_qa_results(metrics, tmp_path)
+    report = json.loads((tmp_path/'qa_results.json').read_text())
+    assert all(v['context'] == 262144 for v in report.values())
+    assert report['mlvu']['metric'] == 'm_avg'
+    assert '| mlvu | 50.0000 | 2 |' in (tmp_path/'RESULTS.md').read_text()
+    metrics['lvbench']['context'] = 8192
+    with pytest.raises(ValueError, match='262144'):
+        write_qa_results(metrics, tmp_path)

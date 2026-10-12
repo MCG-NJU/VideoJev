@@ -1,4 +1,4 @@
-"""Evaluate the completed cached-feature checkpoint from RGB at both context limits."""
+"""Evaluate the completed cached-feature checkpoint from RGB at the fixed 256K context."""
 import argparse
 from timejev.hf_checkpoint import load_training_checkpoint, checkpoint_fingerprint, checkpoint_stat
 from datetime import timedelta
@@ -127,7 +127,7 @@ def main():
     checkpoint_hash = broadcast(checkpoint_fingerprint(checkpoint_path) if rank == 0 else None, world)
     common = dict(checkpoint_id=checkpoint_id, checkpoint_sha256=checkpoint_hash,
                   code_sha256=code_hash, input_mode=PROTOCOL)
-    model, processor, comparison = None, None, {}
+    model, processor, qa_results = None, None, {}
     for context in CONTEXTS:
         plan_path = plans/f'context_{context}.json'
         plan = read(plan_path)
@@ -215,17 +215,17 @@ def main():
                 summary[name] = read(target/'metrics.json')
         if rank == 0:
             save_json(summary, directory/'summary.json')
-            comparison[str(context)] = summary
+            qa_results = summary
             mark_complete(directory, dict(common, context=context), [directory/'summary.json',
                 *(directory/name/'completion.json' for name in COUNTS)], questions=sum(COUNTS.values()))
     if rank == 0:
         after = checkpoint_stat(checkpoint_path)
         if before != after:
             raise ValueError('Checkpoint changed during evaluation')
-        save_json(comparison, output/'summary.json')
-        from timejev.qa_eval_settings import write_context_results
-        write_context_results(comparison, output)
-        mark_complete(output, common, [output/'summary.json', output/'RESULTS.md', output/'selected.json',
+        save_json(qa_results, output/'summary.json')
+        from timejev.qa_eval_settings import write_qa_results
+        write_qa_results(qa_results, output)
+        mark_complete(output, common, [output/'summary.json', output/'RESULTS.md', output/'qa_results.json',
             *(output/f'context_{c}/completion.json' for c in CONTEXTS)], contexts=list(CONTEXTS),
             benchmarks=list(COUNTS), questions_per_context=sum(COUNTS.values()))
     barrier(world)

@@ -104,7 +104,7 @@ def prepare_query_groups(processor, record, questions, context):
         start = end
 
 
-def prepare_video(processor, path, *, fps=2., max_frames=2048, context=196608):
+def prepare_video(processor, path, *, fps=2., max_frames=2048, context=262144):
     import av
     from transformers.models.qwen3_vl.video_processing_qwen3_vl import smart_resize
     with av.open(str(path)) as container:
