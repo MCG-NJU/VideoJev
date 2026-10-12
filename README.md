@@ -46,7 +46,7 @@
 | **Temporal grounding** | Native two-frame temporal intervals, represented by timestamps | Score event membership and decode a start/end interval. |
 | **Video QA** | Supplied textual answer options | Score the options and select the best-supported answer. |
 
-The paper studies **Cached inference** for arriving queries and **Joint inference** for questions available together. The released inference API uses Joint query grouping: one complete video prefix followed by multiple questions, with one causal forward per group and no reference or predicted answers appended. See [paper details](docs/PAPER.md) for authors, architecture, inference modes, and the measurement protocol.
+The paper studies **Cached inference** for arriving queries and **Joint inference** for questions available together.
 
 <details>
 <summary><strong>Method at a glance</strong></summary>
@@ -73,16 +73,14 @@ VideoJev improves mean mIoU over its respective Instruct backbone by **6.7 / 10.
 
 ![Paper Table 2: complete multiple-choice video QA results and latency](docs/assets/video-qa-table.png)
 
-Both models achieve mean QA performance comparable to their Thinking backbones, with **129× / 100×** measured forward-time speedups. QA reports accuracy, except MLVU's seven-task M-Avg.
-
-Latency is measured on H200 at batch size 1 over full Charades (grounding) and full LVBench (QA). It includes visual encoding and model forward computation, with shared video prefixes for generative baselines too; preprocessing and data transfers are excluded. These are paper-reported results. The manuscript settings and differences from current release defaults are documented in [Paper details](docs/PAPER.md#reported-results-and-measurement-protocol).
+Both models achieve mean QA performance comparable to their Thinking backbones, with **129× / 100×** measured forward-time speedups.
 
 ## Models
 
 | Model | Base model | Weight format | Usage |
 |---|---|---|---|
-| **VideoJev-4B** | [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) | BF16 · Safetensors | [Model & examples ↗](https://huggingface.co/MCG-NJU/VideoJev-4B) |
-| **VideoJev-35B-A3B** | [Qwen3.6-35B-A3B](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) | BF16 · Safetensors | [Model & examples ↗](https://huggingface.co/MCG-NJU/VideoJev-35B-A3B) |
+| **VideoJev-4B** | [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) | BF16 · Safetensors | [Checkpoint & examples ↗](https://huggingface.co/MCG-NJU/VideoJev-4B) |
+| **VideoJev-35B-A3B** | [Qwen3.6-35B-A3B](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) | BF16 · Safetensors | [Checkpoint & examples ↗](https://huggingface.co/MCG-NJU/VideoJev-35B-A3B) |
 
 ## Quick start
 
