@@ -16,10 +16,10 @@
 </p>
 
 <p align="center">
-  <a href="#overview">Overview</a> ·
-  <a href="#results">Results</a> ·
-  <a href="#models">Models</a> ·
-  <a href="#quick-start">Quick start</a> ·
+  <a href="#overview">🎬 Overview</a> ·
+  <a href="#results">📊 Results</a> ·
+  <a href="#models">🤗 Models</a> ·
+  <a href="#quick-start">🚀 Quick start</a> ·
   <a href="#inference-output">Outputs</a> ·
   <a href="#training">Training</a> ·
   <a href="#evaluation">Evaluation</a>
@@ -216,4 +216,10 @@ Set `VIDEOJEV_TEST_MODEL=/path/to/Qwen3.5-4B` for tokenizer checks. Tests skip w
 
 ---
 
-Built on [Qwen](https://huggingface.co/Qwen) and [XTuner](https://github.com/InternLM/xtuner). [Apache 2.0](LICENSE) · [NOTICE](NOTICE).
+### 🤝 Acknowledgements
+
+Thanks to the teams behind [**Qwen**](https://huggingface.co/Qwen) for the open model checkpoints, [**XTuner**](https://github.com/InternLM/xtuner) for the training framework, and [**TimeLens-100K**](https://huggingface.co/datasets/TencentARC/TimeLens-100K) and [**TimeLens2-93K**](https://huggingface.co/datasets/MCG-NJU/TimeLens2-93K) for the open training data.
+
+<p align="center">
+  <a href="LICENSE">Apache 2.0</a> · <a href="NOTICE">NOTICE</a>
+</p>
