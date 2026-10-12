@@ -71,6 +71,13 @@ sup { font-size: .68em; vertical-align: super; }
 .section-heading > p { color: var(--muted); font-size: 13px; margin-top: 6px; }
 .section-title { font-style: normal; white-space: normal; text-wrap: balance; }
 .section-title em { font: inherit; }
+.heading-with-icon { display: flex; align-items: center; gap: 9px; }
+.section-icon, .label-icon { display: block; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.section-icon { width: 22px; height: 22px; color: var(--clay); }
+.summary-title .section-icon, .citation-heading .section-icon { width: 18px; height: 18px; }
+.disclosure-label { display: inline-flex; align-items: center; gap: 8px; }
+.label-icon { width: 16px; height: 16px; color: var(--clay); }
+.resource-icon { display: block; width: 18px; height: 18px; object-fit: contain; flex-shrink: 0; }
 .eyebrow { font-size: 10px; font-weight: 500; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); }
 .small-note { font-size: 11px; line-height: 1.7; color: var(--muted); }
 .sr-only, caption {
