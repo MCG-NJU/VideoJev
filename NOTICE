@@ -1,0 +1,4 @@
+VideoJev uses native Qwen3.5 and Qwen3.5-MoE modules from Hugging Face Transformers.
+Qwen3.5-4B and Qwen3.6-35B-A3B are provided by the Qwen team under Apache-2.0.
+Training and optional grouped MoE inference use XTuner (InternLM), Apache-2.0.
+VideoJev modifies the language readout and adds a trained cosine decision head.

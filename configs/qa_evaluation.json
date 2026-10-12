@@ -1,0 +1,110 @@
+{
+  "lvbench": {
+    "2": {
+      "benchmark": "lvbench",
+      "manifest": "data/benchmarks/lvbench/questions.jsonl",
+      "lvbench_metadata": "data/benchmarks/lvbench/official.jsonl",
+      "feature_root": "data/cache/lvbench_f2",
+      "lengths": "data/benchmarks/lvbench/lengths_f2.json",
+      "eval_fps": 2.0,
+      "max_frames": 2048,
+      "use_subtitles": false,
+      "use_audio": false,
+      "available": true
+    },
+    "4": {
+      "benchmark": "lvbench",
+      "manifest": "data/benchmarks/lvbench/questions.jsonl",
+      "lvbench_metadata": "data/benchmarks/lvbench/official.jsonl",
+      "feature_root": "data/cache/lvbench_f4",
+      "lengths": "data/benchmarks/lvbench/lengths_f4.json",
+      "eval_fps": 4.0,
+      "max_frames": 2048,
+      "use_subtitles": false,
+      "use_audio": false,
+      "available": true
+    }
+  },
+  "videomme": {
+    "2": {
+      "manifest": "data/benchmarks/videomme/questions.jsonl",
+      "official_questions": "data/benchmarks/videomme/official.json",
+      "feature_root": "data/cache/videomme_f2",
+      "lengths": "data/benchmarks/videomme/lengths_f2.json",
+      "eval_fps": 2.0,
+      "max_frames": 2048,
+      "use_subtitles": false,
+      "use_audio": false,
+      "benchmark": "videomme",
+      "available": true
+    },
+    "4": {
+      "manifest": "data/benchmarks/videomme/questions.jsonl",
+      "official_questions": "data/benchmarks/videomme/official.json",
+      "feature_root": "data/cache/videomme_f4",
+      "lengths": "data/benchmarks/videomme/lengths_f4.json",
+      "eval_fps": 4.0,
+      "max_frames": 2048,
+      "use_subtitles": false,
+      "use_audio": false,
+      "benchmark": "videomme",
+      "available": false
+    }
+  },
+  "longvideobench": {
+    "2": {
+      "benchmark": "longvideobench",
+      "split": "validation",
+      "manifest": "data/benchmarks/longvideobench/questions.jsonl",
+      "official_questions": "data/benchmarks/longvideobench/official.json",
+      "feature_root": "data/cache/longvideobench_f2",
+      "lengths": "data/benchmarks/longvideobench/lengths_f2.json",
+      "eval_fps": 2.0,
+      "max_frames": 2048,
+      "use_subtitles": false,
+      "use_audio": false,
+      "available": true
+    },
+    "4": {
+      "benchmark": "longvideobench",
+      "split": "validation",
+      "manifest": "data/benchmarks/longvideobench/questions.jsonl",
+      "official_questions": "data/benchmarks/longvideobench/official.json",
+      "feature_root": "data/cache/longvideobench_f4",
+      "lengths": "data/benchmarks/longvideobench/lengths_f4.json",
+      "eval_fps": 4.0,
+      "max_frames": 2048,
+      "use_subtitles": false,
+      "use_audio": false,
+      "available": false
+    }
+  },
+  "mlvu": {
+    "2": {
+      "benchmark": "mlvu",
+      "split": "dev",
+      "manifest": "data/benchmarks/mlvu/questions.jsonl",
+      "official_questions": "data/benchmarks/mlvu/official.json",
+      "feature_root": "data/cache/mlvu_f2",
+      "lengths": "data/benchmarks/mlvu/lengths_f2.json",
+      "eval_fps": 2.0,
+      "max_frames": 2048,
+      "use_subtitles": false,
+      "use_audio": false,
+      "available": true
+    },
+    "4": {
+      "benchmark": "mlvu",
+      "split": "dev",
+      "manifest": "data/benchmarks/mlvu/questions.jsonl",
+      "official_questions": "data/benchmarks/mlvu/official.json",
+      "feature_root": "data/cache/mlvu_f4",
+      "lengths": "data/benchmarks/mlvu/lengths_f4.json",
+      "eval_fps": 4.0,
+      "max_frames": 2048,
+      "use_subtitles": false,
+      "use_audio": false,
+      "available": false
+    }
+  }
+}

@@ -1,0 +1,8 @@
+# Install the CUDA-specific packages described in README.md first.
+-r requirements-overlay.txt
+numpy>=1.26,<3
+Pillow>=10
+safetensors>=0.4
+einops>=0.8
+scipy>=1.12
+accelerate>=1.10

@@ -1,0 +1,106 @@
+{
+  "base": "models/Qwen3.5-4B",
+  "deepspeed": "configs/deepspeed_zero2.json",
+  "train": "data/joint/train.jsonl",
+  "benchmarks": {
+    "charades": "data/benchmarks/charades/questions.jsonl",
+    "activitynet": "data/benchmarks/activitynet/questions.jsonl",
+    "qvhighlights": "data/benchmarks/qvhighlights/questions.jsonl"
+  },
+  "seed": 20260924,
+  "train_fps": 2.0,
+  "eval_fps": 4.0,
+  "eval_archive_root": null,
+  "head_dim": 512,
+  "checkpointing": true,
+  "batch_size": 1,
+  "eval_batch_size": 1,
+  "accumulation": 1,
+  "epochs": 1,
+  "lr": 5e-06,
+  "head_lr": 0.0001,
+  "weight_decay": 0.01,
+  "warmup_ratio": 0.05,
+  "grad_clip": 1,
+  "workers": 4,
+  "decoder_thresholds": [
+    0.15
+  ],
+  "decoder_smoothing": [
+    1
+  ],
+  "freeze_visual": true,
+  "query_placement": "last",
+  "attention_mode": "causal",
+  "training_fraction": 0.7,
+  "train_media_shapes": "data/metadata/vtg0_media_shapes.json",
+  "checkpoint_segment_size": 0,
+  "checkpoint_segment_threshold": 131072,
+  "feature_root": "data/cache/visual_features",
+  "sequence_packing": true,
+  "global_batch_size": 64,
+  "max_sequence_length": 147456,
+  "sample_visual_fraction": 0.8,
+  "feature_variant_root": "data/cache/visual_features_packed_144k",
+  "packed_train_lengths": "data/joint/episodes.json",
+  "packed_eval_lengths": {
+    "charades": "data/benchmarks/charades/lengths_f4.json",
+    "activitynet": "data/benchmarks/activitynet/lengths_f4.json",
+    "qvhighlights": "data/benchmarks/qvhighlights/lengths_f4.json"
+  },
+  "global_batch_unit": "packed_sequence",
+  "pack_to_max_length": true,
+  "packed_train_plan": "data/joint/packs.json",
+  "formulation": "timejev_decision_v1",
+  "shared_decision_head": true,
+  "readout_mode": "last_attention",
+  "experiment_arch": "timestamp_option_memory",
+  "grounding_candidates": "timestamp_options",
+  "training_sources": [
+    {
+      "name": "TimeLens-100K",
+      "manifest": "data/joint/vtg0.jsonl",
+      "feature_root": "data/cache/visual_features",
+      "feature_variant_root": "data/cache/visual_features_packed_144k",
+      "media_shapes": "data/metadata/vtg0_media_shapes.json",
+      "lengths": "data/joint/vtg0_lengths.json"
+    },
+    {
+      "name": "TimeLens2-93K",
+      "manifest": "data/joint/vtg1.jsonl",
+      "feature_root": "data/cache/visual_features_timelens2_144k_f2048",
+      "feature_variant_root": null,
+      "media_shapes": "data/metadata/vtg1_media_shapes.json",
+      "lengths": "data/joint/vtg1_lengths.json"
+    },
+    {
+      "name": "VideoMCQ-four-datasets",
+      "manifest": "data/joint/qa.jsonl",
+      "lengths": "data/joint/qa_lengths.json",
+      "media_shapes": "data/metadata/qa_media_shapes.json",
+      "feature_root": "data/cache/qa_train",
+      "feature_variant_root": null
+    }
+  ],
+  "expected_world_size": 64,
+  "training_layout": "shared_video_multiturn_v1",
+  "training_stage": "joint",
+  "freeze_llm": false,
+  "training_split_report": "data/split.json",
+  "head_similarity": "cosine",
+  "head_logit_scale": 10.0,
+  "grounding_loss": "bce_soft_iou",
+  "soft_iou_weight": 2.0,
+  "training_tasks": [
+    "grounding",
+    "choice"
+  ],
+  "recipe": "video_jev_v1_joint",
+  "qa_option_permutation": {
+    "protocol": "qa_option_permutation_sha256_v1",
+    "seed": 20260924,
+    "epoch": 0,
+    "report": "data/qa/train.permutation_report.json"
+  },
+  "qa_evaluation_config": "configs/qa_evaluation.json"
+}

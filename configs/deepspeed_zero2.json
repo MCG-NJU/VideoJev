@@ -1,0 +1,25 @@
+{
+  "bf16": {
+    "enabled": false
+  },
+  "fp16": {
+    "enabled": false
+  },
+  "torch_autocast": {
+    "enabled": true,
+    "dtype": "bfloat16",
+    "lower_precision_safe_modules": []
+  },
+  "zero_optimization": {
+    "stage": 2,
+    "overlap_comm": true,
+    "contiguous_gradients": true,
+    "reduce_scatter": true,
+    "reduce_bucket_size": 50000000,
+    "allgather_bucket_size": 50000000
+  },
+  "gradient_clipping": 1,
+  "steps_per_print": 100,
+  "wall_clock_breakdown": false,
+  "zero_allow_untested_optimizer": true
+}

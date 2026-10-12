@@ -1,202 +1,331 @@
-<h1 align="center">VideoJev</h1>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-header-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="docs/assets/readme-header.svg">
+    <img src="docs/assets/readme-header.svg" alt="VideoJev" width="720">
+  </picture>
+</p>
+
 <h3 align="center">System One Model for Video Understanding and Interaction</h3>
 
 <p align="center">
-  Yuhan Zhu<sup>1,*</sup>, Xiangyu Zeng<sup>1,*</sup>, Qingyi Si<sup>2,*,‡</sup>, Chenxu Yang<sup>3,*</sup>, Yifei Li<sup>4,*</sup>, Junhao Zhou<sup>3</sup><br>
-  Dingyu Yao<sup>3</sup>, Jun Zhang<sup>2</sup>, Chuanyu Qin<sup>3</sup>, Luozheng Qin<sup>5</sup>, Zhiqiu Zhang<sup>6</sup>, Yuandong Yang<sup>1</sup><br>
-  Yuqi Xu<sup>2</sup>, Tianyu Zhang<sup>7</sup>, Hongcheng Guo<sup>8</sup>, Jiaqi Wang<sup>2</sup>, Nan Duan<sup>2</sup>, Limin Wang<sup>1,†</sup>
-</p>
-
-<p align="center">
-  <sup>1</sup>NJU · <sup>2</sup>JD.com · <sup>3</sup>UCAS · <sup>4</sup>THU<br>
-  <sup>5</sup>XMU · <sup>6</sup>SJTU · <sup>7</sup>USTC · <sup>8</sup>FDU<br>
-  <sub>* Equal contribution. ‡ Project lead. † Corresponding author.</sub>
-</p>
-
-<!-- TODO(release-links): Replace the status anchors with verified public URLs when available. -->
-<p align="center">
-  <a href="#release-status">
-    <img src="https://img.shields.io/badge/Paper-coming_soon-b7483d" alt="Paper: coming soon">
-  </a>
-  <a href="#release-status">
-    <img src="https://img.shields.io/badge/Code-coming_soon-777777" alt="Code: coming soon">
-  </a>
-  <a href="#models-and-data">
-    <img src="https://img.shields.io/badge/Models-coming_soon-719271" alt="Models: coming soon">
-  </a>
+  <a href="https://mcg-nju.github.io/VideoJev"><img src="https://img.shields.io/badge/VideoJev-Homepage-555555?labelColor=c96343" alt="VideoJev Homepage" height="28"></a>
+  <a href="docs/PAPER.md"><img src="https://img.shields.io/badge/Paper-Method%20%26%20results-555555?labelColor=c96343" alt="Paper · Method and results" height="28"></a>
+  <a href="https://huggingface.co/MCG-NJU/VideoJev-4B"><img src="https://img.shields.io/badge/Hugging%20Face-VideoJev--4B-555555?labelColor=b88a45" alt="Hugging Face · VideoJev-4B" height="28"></a>
+  <a href="https://huggingface.co/MCG-NJU/VideoJev-35B-A3B"><img src="https://img.shields.io/badge/Hugging%20Face-VideoJev--35B--A3B-555555?labelColor=778269" alt="Hugging Face · VideoJev-35B-A3B" height="28"></a>
 </p>
 
 <p align="center">
   <a href="#overview">Overview</a> ·
-  <a href="#method">Method</a> ·
-  <a href="#models-and-data">Models and data</a> ·
   <a href="#results">Results</a> ·
+  <a href="#models">Models</a> ·
   <a href="#quick-start">Quick start</a> ·
-  <a href="#citation">Citation</a>
+  <a href="#inference-output">Outputs</a> ·
+  <a href="#training">Training</a> ·
+  <a href="#evaluation">Evaluation</a>
 </p>
 
-<p align="center"><strong>Direct decisions. Shared computation.</strong></p>
+<p align="center">
+  <strong>Direct decisions. Shared computation.</strong><br>
+  Ground moments and select answers through a unified candidate-scoring interface.
+</p>
 
-## Updates
+<p align="center">
+  <img src="docs/assets/videojev-teaser.png" alt="VideoJev paper teaser: shared candidate scoring and video computation, with grounding and QA quality versus model forward latency" width="100%">
+  <br><sub>One decision interface for temporal grounding and video QA. Paper-reported quality and forward latency at both model scales.</sub>
+</p>
 
-- **2026/10/10**: The VideoJev repository is initialized with the project overview, method figures, and results. Code and model release updates will be posted here.
-
-## Release status
-
-This repository currently provides the project overview and paper figures. Runnable code, checkpoints, and installation instructions will be added in future updates.
-
-- [x] Project overview and main results
-- [x] Method and overview figures
-- [ ] Public paper link and final citation
-- [ ] Model checkpoints
-- [ ] Inference code and examples
-- [ ] Evaluation code and data preparation guides
-- [ ] Training code and configurations
+---
 
 ## Overview
 
-**VideoJev** is a family of video **System One** models that combines pretrained multimodal understanding with efficient direct prediction. It unifies **video temporal grounding** and **multiple-choice video question answering** through a shared candidate-scoring interface, evaluating temporal intervals and textual options against video evidence without autoregressive answer decoding.
+**VideoJev is a family of video System One models** that combines pretrained multimodal understanding with efficient direct prediction. Temporal grounding and multiple-choice video QA share a candidate scorer that evaluates video evidence without autoregressive answer decoding. These structured judgments provide building blocks for video understanding and interaction.
 
-VideoJev reuses visual computation across repeated judgments. **Cached inference** reuses a video prefix for arriving queries, while **Joint inference** scores multiple queries in a single forward pass per query group.
+| Task | Candidates | Decision |
+|---|---|---|
+| **Temporal grounding** | Native two-frame temporal intervals, represented by timestamps | Score event membership and decode a start/end interval. |
+| **Video QA** | Supplied textual answer options | Score the options and select the best-supported answer. |
 
-<p align="center">
-  <img src="assets/teaser.png" alt="VideoJev unifies temporal and option decisions and compares prediction quality with model forward latency at two model scales" width="100%">
-  <br><sub>Prediction quality versus amortized model forward latency. Grounding scores average three benchmarks; video QA scores average four benchmarks. Latency is measured on Charades and LVBench, respectively.</sub>
-</p>
+The paper studies **Cached inference** for arriving queries and **Joint inference** for questions available together. The released inference API uses Joint query grouping: one complete video prefix followed by multiple questions, with one causal forward per group and no reference or predicted answers appended. See [paper details](docs/PAPER.md) for authors, architecture, inference modes, and the measurement protocol.
 
-- **One interface, two tasks:** The same scorer handles temporal intervals and answer options.
-- **Reusable video computation:** Encode the video once and share its prefix across queries.
-- **Strong temporal grounding:** VideoJev-4B and VideoJev-35B-A3B improve mean mIoU over their backbones by **6.7** and **10.8** points, with measured **2.8–3.1×** inference speedups.
-- **Efficient video QA:** Both models achieve performance comparable to their Thinking-mode backbones, with measured speedups of approximately **129×** and **100×** on LVBench.
+<details>
+<summary><strong>Method at a glance</strong></summary>
 
-## Method
+![VideoJev method: unified candidates, shared prefix and scoring, and structured outputs](docs/assets/videojev-method.png)
 
-<p align="center">
-  <img src="assets/architecture.png" alt="VideoJev architecture: unified temporal and textual candidates, shared video prefix and scoring head, and task-specific temporal grounding or option-selection outputs" width="100%">
-  <br><sub>Temporal intervals and textual options share an input format and scoring head. The output rule converts scores into a temporal span or an answer choice.</sub>
-</p>
+The model retains native causal attention and DeltaNet, removes the last decoder MLP, and uses a shared 512-dimensional normalized Q/K head with cosine scale 10 and a learned bias. Grounding applies sigmoid membership scores; QA applies softmax over options. Vision and the visual connector remain frozen during training.
 
-**Unified candidate scoring.** VideoJev adapts a pretrained video-language model by removing the final MLP and replacing the language-model output head with a candidate scorer. Each candidate ends with `<|option_end|>`, and a `<|decide|>` token provides the query-level decision readout. Projected candidate and decision features produce similarity scores through a shared head.
+When a video and its questions exceed context, grouping splits only between complete questions. Each new group repeats the complete video prefix and starts fresh attention/DeltaNet state. No question is truncated or silently skipped. The method figure's scores and example interval are illustrative.
 
-**Task-specific decisions.** Temporal grounding applies sigmoid scores to candidate intervals and decodes a contiguous event span. Multiple-choice video QA applies softmax over textual options and selects the highest-scoring answer.
-
-**Shared computation.** Cached inference processes each query suffix against the same cached video prefix. Joint inference places multiple queries after one video prefix and reads out all their scores in one causal forward pass per group. Neither mode requires autoregressive answer decoding.
-
-## Models and data
-
-<!-- TODO(models): Add checkpoint links and model cards after verifying access and the released configurations. -->
-| Model | Backbone | Supported tasks | Checkpoint |
-| :--- | :--- | :--- | :--- |
-| **VideoJev-4B** | Qwen3.5-4B | Temporal grounding and multiple-choice video QA | Coming soon |
-| **VideoJev-35B-A3B** | Qwen3.6-35B-A3B | Temporal grounding and multiple-choice video QA | Coming soon |
-
-Training combines **TimeLens-100K** and **TimeLens2-93K** for temporal grounding with an internally curated corpus of approximately **240K multiple-choice questions over 19K videos**. Data preparation instructions and information about releasable resources will be added with the training code.
+</details>
 
 ## Results
 
-Selected results from Tables 1 and 2 of the paper are shown below. VideoJev uses **Joint inference**. Scores are percentages, and higher is better; latency is amortized model forward time in seconds per query, and lower is better.
+Main results from the manuscript, using **Joint inference**. Grounding uses TimeLens-Bench refined annotations; QA uses video frames without subtitles or audio.
 
-### Video temporal grounding
+### Temporal grounding
 
-Results use the **TimeLens-Bench refined annotations** of Charades-STA, ActivityNet Captions, and QVHighlights. The table reports mIoU and its three-benchmark mean. Generative baselines use Instruct mode.
-
-| Model | Charades<sup>TL</sup> | ActivityNet<sup>TL</sup> | QVHighlights<sup>TL</sup> | Avg. mIoU | Latency (s) ↓ |
-| :--- | ---: | ---: | ---: | ---: | ---: |
+| Model | Charades mIoU | ActivityNet mIoU | QVHighlights mIoU | Avg. | Latency (s/query) ↓ |
+|---|---:|---:|---:|---:|---:|
 | Qwen3.5-4B | 52.3 | 55.6 | 67.9 | 58.6 | 0.763 |
-| TimeLens2-4B | 57.7 | 59.0 | 69.3 | 62.0 | 0.646 |
 | **VideoJev-4B** | **60.1** | **62.8** | **73.2** | **65.3** | **0.276** |
 | Qwen3.6-35B-A3B | 47.3 | 56.0 | 67.5 | 56.9 | 1.054 |
 | **VideoJev-35B-A3B** | **63.7** | **65.5** | **74.0** | **67.7** | **0.336** |
 
-### Multiple-choice video QA
+VideoJev improves mean mIoU over its respective Instruct backbone by **6.7 / 10.8 points**, with **2.8× / 3.1×** measured forward-time speedups.
 
-Evaluation uses video frames without subtitles or audio. LVBench, Video-MME, and LongVideoBench report accuracy; MLVU reports M-Avg. Boldface highlights VideoJev rows.
+### Video question answering
 
-| Model | LVBench | Video-MME | LongVideoBench | MLVU | Avg. | Latency (s) ↓ |
-| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Qwen3.5-4B Instruct | 60.0 | 70.6 | 61.2 | 73.3 | 66.3 | 1.355 |
-| Qwen3.5-4B Thinking | 66.4 | 76.9 | 73.6 | 82.8 | 74.9 | 144.929 |
+| Model | LVBench | Video-MME | LongVideoBench | MLVU | Avg. | Latency (s/query) ↓ |
+|---|---:|---:|---:|---:|---:|---:|
+| Qwen3.5-4B · Instruct | 60.0 | 70.6 | 61.2 | 73.3 | 66.3 | 1.355 |
+| Qwen3.5-4B · Thinking | 66.4 | 76.9 | 73.6 | 82.8 | 74.9 | 144.929 |
 | **VideoJev-4B** | **67.9** | **75.0** | **73.6** | **80.6** | **74.3** | **1.123** |
-| Qwen3.6-35B-A3B Instruct | 66.0 | 77.1 | 72.4 | 79.5 | 73.8 | 2.379 |
-| Qwen3.6-35B-A3B Thinking | 71.4 | 82.5 | 74.9 | 86.2 | 78.8 | 149.777 |
+| Qwen3.6-35B-A3B · Instruct | 66.0 | 77.1 | 72.4 | 79.5 | 73.8 | 2.379 |
+| Qwen3.6-35B-A3B · Thinking | 71.4 | 82.5 | 74.9 | 86.2 | 78.8 | 149.777 |
 | **VideoJev-35B-A3B** | **73.4** | **81.8** | **77.1** | **85.9** | **79.5** | **1.493** |
 
-<details>
-<summary><strong>Evaluation and latency notes</strong></summary>
+Both models achieve mean QA performance comparable to their Thinking backbones, with **129× / 100×** measured forward-time speedups. QA reports accuracy, except MLVU's seven-task M-Avg. Bold identifies VideoJev rows.
 
-- Grounding latency is measured on the full Charades test set: **1,313 videos / 3,363 queries**.
-- QA latency is measured on the full LVBench test set: **103 videos / 1,549 questions**.
-- Measurements use **NVIDIA H200 GPUs, batch size 1**, and include visual encoding, prefix prefill, and model forward computation. Preprocessing and data transfers are excluded.
-- VideoJev shares video computation through Joint inference. Generative baselines share visual encoding and prefix prefill, then decode answers from independent query branches.
-- VideoJev QA uses a fixed **256K-token context budget**. Benchmark splits are LVBench test, Video-MME test, LongVideoBench validation, and MLVU development multiple-choice tasks.
-- Full protocols, benchmark preparation, and reproduction commands will accompany the evaluation code.
+Latency is measured on H200 at batch size 1 over full Charades (grounding) and full LVBench (QA). It includes visual encoding and model forward computation, with shared video prefixes for generative baselines too; preprocessing and data transfers are excluded. These are paper-reported results. The manuscript settings and differences from current release defaults are documented in [Paper details](docs/PAPER.md#reported-results-and-measurement-protocol).
 
-</details>
+## Models
 
-## Codebase
+| Model | Base model | Weight format | Usage |
+|---|---|---|---|
+| **VideoJev-4B** | [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) | BF16 · Safetensors | [Model & examples ↗](https://huggingface.co/MCG-NJU/VideoJev-4B) |
+| **VideoJev-35B-A3B** | [Qwen3.6-35B-A3B](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) | BF16 · Safetensors | [Model & examples ↗](https://huggingface.co/MCG-NJU/VideoJev-35B-A3B) |
 
-The code layout below is planned and will be finalized with the release. Only `assets/` and `docs/` are present in this initial version.
-
-<!-- TODO(codebase): Replace planned paths with the actual directories and link their guides and entry points. -->
-| Directory | Purpose | Status |
-| :--- | :--- | :--- |
-| [`assets/`](assets/README.md) | Figures displayed in this README | Available |
-| [`docs/`](docs/RELEASE_CHECKLIST.md) | Documentation and release checklist | Available |
-| `Inference/` | Temporal grounding and video QA examples | Planned |
-| `Eval/` | Benchmark preparation, inference, and scoring | Planned |
-| `Train/` | Training recipes and model configurations | Planned |
+> **Access:** Both model repositories and the [collection](https://huggingface.co/collections/MCG-NJU/videojev-6acb0ed1be2780d1cfc1a35d) are currently private. Use an authorized Hugging Face account with `hf auth login`.
 
 ## Quick start
 
-### Get the repository
+Set up the [environment](#environment), authenticate, then run grounding and QA on the same video:
+
+```python
+import json
+import torch
+from transformers import AutoModel, AutoProcessor
+
+repo = "MCG-NJU/VideoJev-4B"
+processor = AutoProcessor.from_pretrained(repo, trust_remote_code=True)
+model = AutoModel.from_pretrained(
+    repo,
+    trust_remote_code=True,
+    dtype=torch.bfloat16,
+    device_map={"": "cuda:0"},
+    attn_implementation="flash_attention_2",
+)
+model.prepare_for_inference()
+
+questions = [
+    {
+        "id": "grounding-1", "task": "grounding",
+        "query": "The person opens the door.",
+    },
+    {
+        "id": "qa-1", "task": "choice",
+        "query": "What does the person do after opening the door?",
+        "options": ["A. Walks outside.", "B. Sits down.", "C. Picks up a bag."],
+    },
+]
+results = model.predict_video(
+    processor, "/path/to/video.mp4", questions,
+    fps=4.0, max_frames=2048, context=147456,
+)
+print(json.dumps(results, indent=2, ensure_ascii=False))
+```
+
+Use `MCG-NJU/VideoJev-35B-A3B` to load the larger model. Short-video inference was verified on one H200; longer contexts need more memory. The weights alone occupy approximately **8.94 GB / 67.58 GB** for 4B / 35B-A3B.
+
+The example mixes tasks to show the API. See the [evaluation guide](docs/EVALUATION.md) for prepared feature plans and the [paper protocol](docs/PAPER.md#reported-results-and-measurement-protocol) for the settings behind the reported tables. `trust_remote_code=True` loads the VideoJev implementation bundled with the model.
+
+## Inference output
+
+The APIs return **one dictionary per question, in input order**. Below is a recorded 4B smoke-test result; it uses the synthetic-video queries described below, rather than the door queries in the quick start.
+
+```json
+[
+  {
+    "id": "v/0",
+    "task": "grounding",
+    "logits": [2.9891, 1.6585, 0.6531, -0.6125],
+    "probabilities": [0.9521, 0.84, 0.6577, 0.3515],
+    "interval": [0.0, 2.0]
+  },
+  {
+    "id": "v/1",
+    "task": "choice",
+    "logits": [-1.5424, -1.569, -2.3759],
+    "probabilities": [0.4152, 0.4043, 0.1804],
+    "answer_index": 0,
+    "answer": "A. A person walks."
+  }
+]
+```
+
+This is the recorded VideoJev-4B output on a 2-second synthetic smoke-test video (8 frames at 4 FPS, `context=4096`), with scores rounded to four decimal places. The queries were `What happens during event 0?` and `What happens during event 1?`; the QA options were `A. A person walks.`, `B. A person runs.`, and `C. A person sits.` It demonstrates the output format, not semantic accuracy on real video.
+
+| Field | Meaning |
+|---|---|
+| `id` · `task` | The input question ID and task. |
+| `interval` | Grounding: `[start_seconds, end_seconds]` relative to the video start. |
+| `answer_index` · `answer` | QA: zero-based option index and the exact selected option string. |
+| `logits` | Raw scores for valid candidates, without padding. |
+| `probabilities` | Grounding: sigmoid scores in chronological two-frame candidate order; they do not sum to 1. QA: softmax scores in input option order; they sum to 1 up to rounding. |
+
+These APIs return structured predictions, not generated text.
+
+See the [4B model card](https://huggingface.co/MCG-NJU/VideoJev-4B#video-grounding-and-qa) and [35B-A3B model card](https://huggingface.co/MCG-NJU/VideoJev-35B-A3B#video-grounding-and-qa) for complete loading and inference examples. Benchmark evaluation writes its own prediction and metric files as described above.
+
+## Environment
+
+Use Python 3.12, PyTorch 2.8 with CUDA 12.8, Triton 3.4, FlashAttention 2 and causal-conv1d. Install the matching CUDA packages before the Python dependencies:
 
 ```bash
-git clone git@github.com:MCG-NJU/VideoJev.git
-cd VideoJev
+pip install -r requirements.txt
+source scripts/env.sh
 ```
 
-### Installation
+<details>
+<summary><strong>Training dependencies and base-model paths</strong></summary>
 
-Coming soon. Supported Python, PyTorch, CUDA, and model-library versions, together with tested installation commands, will be documented here when the code is released.
+Training also requires [XTuner](https://github.com/InternLM/xtuner), including its compiled grouped-GEMM/token-permutation CUDA extension for the 35B MoE model. The source environment used revision `76e705134521eff867b409f3b3451df1c4d8dd36`. Set `XTUNER_ROOT` to your checkout before sourcing `scripts/env.sh`, or install XTuner into the active environment. The launchers use the active Python interpreter; they do not depend on a shared Conda installation.
 
-<!-- TODO(installation): Add a tested environment setup, dependency file, supported hardware, and checkpoint download instructions. -->
+Place the original Qwen model directories under `models/Qwen3.5-4B` and `models/Qwen3.6-35B-A3B`, or set `VIDEOJEV_BASE_4B` and `VIDEOJEV_BASE_35B` to local model directories. These must include the tokenizer, processor, configuration and weights.
 
-### Inference
+</details>
 
-Coming soon. Examples will cover temporal grounding and multiple-choice video QA, including Cached inference and Joint inference.
+## Data
 
-<!-- TODO(inference): Add runnable examples with real script paths, input formats, checkpoint arguments, and expected outputs. -->
+Prepare the manifests, video/frame sources and feature/packing metadata described in [docs/DATA.md](docs/DATA.md). The code release does not bundle datasets, checkpoints, feature caches or historical outputs. Configuration paths beginning with `data/`, `models/` or `configs/` resolve relative to this repository; explicit absolute paths are supported.
 
-### Evaluation
+RGB planning entrypoints are `scripts/prepare_rgb192.py`, `scripts/prepare_qwen36_mixed.py` and `scripts/prepare_context_eval.py`. They require the prepared source manifests and video split. Run them with `--help` for arguments. Changing media paths, tokenizer, context or input code requires regenerating the corresponding metadata and hashes.
 
-Coming soon. Dataset preparation, benchmark configuration, prediction, and scoring instructions will be added for the three grounding and four video QA benchmarks above.
+## Training
 
-<!-- TODO(evaluation): Link the released evaluation guide and include tested commands matching the reported protocols. -->
+### Recipe
 
-### Training
+| Stage | Trainable parameters | Grounding loss | QA loss |
+|---|---|---|---|
+| **Head warmup** | Shared head | BCE | CE |
+| **Joint** | Language backbone + head | BCE + 2 × duration-weighted SoftIoU | CE |
 
-Coming soon. The training guide will describe scorer alignment followed by joint adaptation of the language backbone and scoring head.
+Vision and the visual connector remain frozen. There is no hard-negative objective for either task.
 
-<!-- TODO(training): Add data preparation, two-stage configurations, launch commands, and compute requirements. -->
+<details>
+<summary><strong>Optimization settings</strong></summary>
 
-## License and acknowledgements
+Both stages use one epoch, independent optimizers, 5% warmup, and cosine decay to 10% of peak LR. Global batch size is 64 complete packs.
 
-License information will be added with the code release. Model checkpoints and third-party datasets remain subject to their respective terms.
+| Parameter | 4B | 35B-A3B |
+|---|---|---|
+| Head peak LR · warmup / joint | 3e-4 / 1e-4 | 3e-4 / 1e-4 |
+| Joint language-backbone LR | 5e-6 | 2e-6 |
 
-We thank the authors of Qwen, TimeLens, TimeLens2, and the benchmark resources used in this work. README figures come from the VideoJev paper; see [figure sources](assets/README.md).
+</details>
 
-<!-- TODO(license): Add the selected LICENSE and any required third-party notices before publishing code. -->
+### Launch
 
-## Citation
+Launch once on each of **8 nodes × 8 GPUs**. All nodes must share the same model/data/output paths. Set `NODE_RANK` to 0–7 and use the same reachable `MASTER_ADDR`, `MASTER_PORT`, and absolute `WORK_DIR` on all nodes:
 
-The entry below is a preliminary repository citation. The canonical paper link and publication metadata will be added after release.
-
-<!-- TODO(citation): Replace this entry with the final paper BibTeX; do not guess an arXiv identifier or venue. -->
-```bibtex
-@misc{zhu2026videojev,
-  title={VideoJev: System One Model for Video Understanding and Interaction},
-  author={Yuhan Zhu and Xiangyu Zeng and Qingyi Si and Chenxu Yang and Yifei Li and Junhao Zhou and Dingyu Yao and Jun Zhang and Chuanyu Qin and Luozheng Qin and Zhiqiu Zhang and Yuandong Yang and Yuqi Xu and Tianyu Zhang and Hongcheng Guo and Jiaqi Wang and Nan Duan and Limin Wang},
-  year={2026},
-  url={https://github.com/MCG-NJU/VideoJev}
-}
+```bash
+source scripts/env.sh
+NODE_RANK=0 MASTER_ADDR=192.0.2.10 WORK_DIR="$PWD/runs/videojev4b" \
+  bash scripts/train_eval_8nodes.sh --dry-run
 ```
+
+Remove `--dry-run` to train both stages and evaluate. Run the corresponding data planner first.
+
+| Recipe | Launcher | Tokens / pack |
+|---|---|---:|
+| 4B · features | `scripts/train_eval_8nodes.sh` | 147456 |
+| 4B · RGB | `scripts/train_eval_rgb192_8nodes.sh` | 196608 |
+| 35B-A3B | `scripts/train_eval_qwen36_8nodes.sh` | 147456 |
+
+For 35B, source `scripts/env_qwen36.sh` before launching.
+
+### Checkpoints
+
+The **4B joint stage exports a Hugging Face model directory by default**:
+
+```text
+joint/hf_checkpoint/
+├── config.json
+├── model-*.safetensors
+├── model.safetensors.index.json
+└── … tokenizer, processor, and inference code
+```
+
+Floating-point weights preserve the input model's precision: BF16 for Qwen3.5-4B. DeepSpeed recovery state stays separate; the warmup handoff uses `head.pt`. See [Checkpoint export](docs/CHECKPOINTS.md) for earlier `.pt` checkpoints and standalone 35B conversion.
+
+<details>
+<summary><strong>Resume and export behavior</strong></summary>
+
+The launchers retain source/configuration snapshots, resume complete checkpoints, and validate completion before cleanup. Use a new `WORK_DIR` for a changed recipe. Existing weights are not retrained by copying this repository.
+
+The HF exporter follows XTuner's separation of resumable training state and inference exports, explicit weight casting, native key layout, safetensors shards/index, and tokenizer saving. `scripts/export_hf.py` converts earlier task checkpoints. `AutoModel.from_pretrained(..., trust_remote_code=True)` loads the bundled VideoJev inference class with the native Qwen backbone and trained decision head.
+
+</details>
+
+## Evaluation
+
+**Complete video. Ordered questions. Fresh state between groups.** All entrypoints use same-video, manifest-order query groups. If the context limit is reached, greedy grouping splits only between questions and repeats the complete video prefix. No question is truncated or silently skipped. See the [evaluation protocol](docs/EVALUATION.md).
+
+```bash
+source scripts/env.sh
+
+# Seven benchmarks at the feature recipe's checkpoint configuration.
+python scripts/evaluate.py \
+  --checkpoint /path/to/joint/hf_checkpoint --out runs/eval4b
+
+# QA at both long contexts, using prepared offline vision features.
+python scripts/evaluate_cached_contexts.py \
+  --checkpoint /path/to/joint/hf_checkpoint \
+  --plans /path/to/context_plans --feature-cache /path/to/qa_features \
+  --out runs/eval4b_qa
+```
+
+<details>
+<summary><strong>Distributed evaluation and complete plan bundles</strong></summary>
+
+Use `torchrun` for distributed evaluation. `scripts/evaluate_4b_multiturn.py` evaluates an input-only plan covering all eleven benchmark/context combinations; `scripts/prepare_multiturn_eval.py` freezes such a supplied plan bundle.
+
+The 35B distributed evaluator uses the 64-GPU training topology:
+
+```bash
+# Invoke through the distributed launcher on the allocated nodes.
+python scripts/evaluate_qwen36.py \
+  --checkpoint /path/to/export \
+  --plans /path/to/plans \
+  --out /path/to/evaluation
+```
+
+</details>
+
+Outputs include prediction files, metrics, input/model identities, and completion hashes. Completed outputs are reused only when identities match. The current 4B release defaults to grounding threshold 0.15, smoothing 1, with round/repair/clamp postprocessing. The paper uses threshold 0.25 for both model sizes and a fixed 262144-token QA context; see [release defaults versus paper settings](docs/PAPER.md#current-release-defaults) before reproducing its tables.
+
+## Verification
+
+```bash
+source scripts/env.sh
+python -m pytest -q tests
+# Optional tokenizer-based checks, without loading model weights:
+VIDEOJEV_TEST_MODEL=/path/to/Qwen3.5-4B python -m pytest -q tests
+```
+
+Tests requiring full benchmark annotations, prepared plans, or local tokenizers skip when those inputs are absent. Unit tests cover task losses and gradients, packing/tail handling, temporal decoding, multi-query inputs, feature reuse, and snapshot/resume contracts. Distributed GPU training and full benchmark runs require separately provisioned resources and data.
+
+## Documentation
+
+| Guide | What's inside |
+|---|---|
+| [Paper details](docs/PAPER.md) | Authors, method, inference modes, reported results, and measurement protocol. |
+| [Data preparation](docs/DATA.md) | Manifests, media sources, feature metadata, and packing plans. |
+| [Evaluation protocol](docs/EVALUATION.md) | Benchmarks, context settings, temporal decoding, and coverage checks. |
+| [Checkpoint export](docs/CHECKPOINTS.md) | HF conversion, source identity, precision, and training recovery. |
+| [4B model card](https://huggingface.co/MCG-NJU/VideoJev-4B) · [35B-A3B model card](https://huggingface.co/MCG-NJU/VideoJev-35B-A3B) | Installation, inference, visual feature reuse, and model-specific outputs. |
+
+---
+
+Built on [Qwen](https://huggingface.co/Qwen) and [XTuner](https://github.com/InternLM/xtuner). Released under [Apache 2.0](LICENSE); see [NOTICE](NOTICE) for attribution.
