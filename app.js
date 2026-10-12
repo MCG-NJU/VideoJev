@@ -156,14 +156,21 @@
     return `<article class="extra-case"><img src="${c.frames[id===8?4:0].src}" loading="lazy" alt="${escape(c.title)}"><div class="extra-case-body"><h4>${extraTitles[id]}</h4><p>${escape(q.query)}</p><div class="extra-answers">${answers}<span>Ground truth<b>${escape(q.options[q.answer])}</b></span></div></div></article>`;
   }).join('');
 
+  // Keep both variants in the same grid cell so switching cannot resize the layout.
+  function setPanelVisibility(panel, visible) {
+    panel.setAttribute('aria-hidden', String(!visible));
+    panel.inert = !visible;
+  }
+  const inferenceLabel = '<div class="diagram-label"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3h14v14H3zM7 6l7 4-7 4z"/></svg> Video encoded once</div>';
+  const inferenceDiagrams = {
+    joint: `${inferenceLabel}<div class="sequence"><span class="token-video">V</span><span class="sequence-arrow">→</span><span class="token-query">Q<sub>1</sub> + options</span><span class="token-query">Q<sub>2</sub> + options</span><span class="token-query">Q<sub>3</sub> + options</span></div><div class="group-bracket"></div><div class="group-output">One forward <strong>A<sub>1</sub> · A<sub>2</sub> · A<sub>3</sub></strong></div>`,
+    cached: `${inferenceLabel}<div class="cache-branches"><div class="cache-source">Video cache<span>prefill once</span></div><div class="branches">${[1,2,3].map(n=>`<div class="branch"><span>↗</span><span>Q<sub>${n}</sub> + options</span><small>→ A<sub>${n}</sub></small></div>`).join('')}</div></div>`,
+  };
+  $('#inference-diagram').innerHTML = Object.entries(inferenceDiagrams).map(([mode, content]) =>
+    `<div class="switch-panel" data-inference-panel="${mode}">${content}</div>`
+  ).join('');
   function renderInference(mode) {
-    const joint = mode === 'joint';
-    $('#inference-description').textContent = joint
-      ? 'Answer a group of questions in one forward pass.'
-      : 'Reuse the video cache as new questions arrive, with one forward pass per query.';
-    const label = '<div class="diagram-label"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3h14v14H3zM7 6l7 4-7 4z"/></svg> Video encoded once</div>';
-    $('#inference-diagram').innerHTML = joint ? `${label}<div class="sequence"><span class="token-video">V</span><span class="sequence-arrow">→</span><span class="token-query">Q<sub>1</sub> + options</span><span class="token-query">Q<sub>2</sub> + options</span><span class="token-query">Q<sub>3</sub> + options</span></div><div class="group-bracket"></div><div class="group-output">One forward <strong>A<sub>1</sub> · A<sub>2</sub> · A<sub>3</sub></strong></div>`
-      : `${label}<div class="cache-branches"><div class="cache-source">Video cache<span>prefill once</span></div><div class="branches">${[1,2,3].map(n=>`<div class="branch"><span>↗</span><span>Q<sub>${n}</sub> + options</span><small>→ A<sub>${n}</sub></small></div>`).join('')}</div></div>`;
+    $$('[data-inference-panel]').forEach(panel => setPanelVisibility(panel, panel.dataset.inferencePanel === mode));
     $$('[data-inference]').forEach(b => {const selected=b.dataset.inference===mode;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});
   }
   $$('[data-inference]').forEach(button => button.addEventListener('click',()=>renderInference(button.dataset.inference)));
@@ -176,9 +183,8 @@
     $('#scaling-image').alt = ground ? 'Multi-query grounding time: VideoJev Joint takes 0.39 seconds for ten queries.' : 'Multi-query QA time: VideoJev Joint takes 1.64 seconds for ten queries, compared with 1.67 seconds for Direct Joint.';
     $('#scaling-zoom').dataset.zoom = $('#scaling-image').getAttribute('src');
     $('#scaling-value').innerHTML = `${ground?'0.39':'1.64'}<span>s</span>`;
-    $('#scaling-description').innerHTML = ground ? '10 grounding queries<br> <strong>vs. 5.98 s</strong> for Instruct' : '10 QA queries<br> <strong>vs. 1.67 s</strong> for Direct Joint';
-    $('#scaling-insight').hidden = ground;
-    $('#scaling-insight').textContent = 'LVBench accuracy: 67.9% vs. 59.8% for Direct Joint.';
+    $$('[data-scaling-panel]').forEach(panel => setPanelVisibility(panel, panel.dataset.scalingPanel === button.dataset.scaling));
+    setPanelVisibility($('#scaling-insight'), !ground);
   }));
 
   let tableTask = 'grounding';
