@@ -366,7 +366,7 @@ dialog::backdrop { background: #292824cf; }
   .brand .wordmark { width: 88px; }
   .site-header nav { gap: 14px; }
   .site-header nav a { font-size: 11px; }
-  .site-header nav a[href='#overview'], .site-header nav a[href='#models'] { display: none; }
+  .site-header nav a[href='#overview'], .site-header nav a.models-link { display: none; }
   .nav-paper { font-size: 0; margin-left: 0; gap: 0; }
   .nav-paper span { font-size: 17px; }
   .hero { padding-top: 25px; }
