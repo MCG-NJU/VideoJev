@@ -35,7 +35,7 @@
 
 **VideoJev** performs temporal grounding and multiple-choice video QA through direct candidate scoring, without text generation.
 
-https://github.com/user-attachments/assets/89555c48-69ac-46b3-984f-90744f057ca9
+https://github.com/user-attachments/assets/2a1e9d25-4a1b-4c99-b550-0bffd87cd4b4
 
 <details>
 <summary><strong>Architecture</strong></summary>
