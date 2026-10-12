@@ -88,7 +88,7 @@ Latency is measured on H200 at batch size 1 over full Charades (grounding) and f
 
 Set up the [environment](#environment), then run this example.
 
-Run grounding and QA on [Eating spaghetti](https://huggingface.co/datasets/nielsr/video-demo/resolve/657fbe79a427948714ba0f45f454a494d346f75e/eating_spaghetti.mp4) (10 seconds), sampling 8 frames.
+Run grounding and QA on [Eating spaghetti](https://huggingface.co/datasets/ZhuYuhan/VideoJev-Demo/resolve/7e2b9685bca592c3b929268f6fcf82c4ad74b267/eating_spaghetti.mp4) (10 seconds), sampling 8 frames.
 
 ```python
 import json
@@ -97,8 +97,8 @@ from huggingface_hub import hf_hub_download
 from transformers import AutoModel, AutoProcessor
 
 video = hf_hub_download(
-    repo_id="nielsr/video-demo", filename="eating_spaghetti.mp4",
-    repo_type="dataset", revision="657fbe79a427948714ba0f45f454a494d346f75e",
+    repo_id="ZhuYuhan/VideoJev-Demo", filename="eating_spaghetti.mp4",
+    repo_type="dataset", revision="7e2b9685bca592c3b929268f6fcf82c4ad74b267",
 )
 repo = "MCG-NJU/VideoJev-4B"
 processor = AutoProcessor.from_pretrained(repo, trust_remote_code=True)
