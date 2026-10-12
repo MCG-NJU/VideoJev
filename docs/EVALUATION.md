@@ -1,23 +1,53 @@
-# Evaluation protocol
+# Evaluation
 
-This guide describes the current code entrypoints and their existing defaults. For the manuscript's fixed grounding threshold and QA context, see [Paper details](PAPER.md#reported-results-and-measurement-protocol).
-
-The published entrypoints preserve `episode_lengths` and `turn_episode_indices`: one complete video prefix, followed by its questions and options in manifest order, with one native forward per query group. No answers or predicted answers are inserted. Greedy groups respect the 64-token-aligned context bound and reset all language state between groups. A single question that cannot fit causes an explicit error.
-
-| Benchmark | Questions | Main metric |
+| Benchmark | Questions | Metric |
 |---|---:|---|
-| Charades | 3363 | mIoU and R1@0.3/0.5/0.7 |
-| ActivityNet | 4500 | mIoU and R1@0.3/0.5/0.7 |
-| QVHighlights | 1541 | mIoU and R1@0.3/0.5/0.7 |
+| Charades | 3363 | mIoU, R1@0.3/0.5/0.7 |
+| ActivityNet | 4500 | mIoU, R1@0.3/0.5/0.7 |
+| QVHighlights | 1541 | mIoU, R1@0.3/0.5/0.7 |
 | LVBench | 1549 | Accuracy |
 | Video-MME | 2700 | Accuracy |
 | LongVideoBench validation | 1337 | Accuracy |
-| MLVU Dev multiple-choice tasks | 2174 | M-Avg |
+| MLVU Dev | 2174 | M-Avg |
 
-Grounding uses 4 FPS and the original feature geometry. The final 4B protocol uses 147456 tokens and a fixed decoder (threshold 0.25, smoothing 1, `round_repair_clamp_v1`). Both model sizes default to threshold 0.25. To override it, set `decoder_thresholds` in the evaluation config or pass `--decoder-threshold VALUE` when preparing a multi-turn plan. The RGB 192K training entrypoint has its own matching 192K evaluation geometry.
+## Settings
 
-Final QA evaluation uses both 196608 and 262144 contexts, 2 FPS, at most 2048 frames, and no subtitles/audio. Report the larger main metric for each benchmark, with ties resolved to 196608; use the same selected prediction set for any subsequent analysis. Context-level files retain the evidence needed to reproduce the selection. The seven-benchmark feature launcher also provides evaluation at its training context; use the two-context evaluator for final QA reporting.
+Grounding uses 4 FPS and a default threshold of `0.25`. The 4B final plan uses 147456 tokens, smoothing 1 and `round_repair_clamp_v1`; RGB 192K uses its matching geometry. Override the threshold through `decoder_thresholds` in the config or `--decoder-threshold` when preparing a plan.
 
-`evaluate_4b_multiturn.py` accepts an input-only plan with all eleven scopes, ordered query membership, immutable input-file hashes, feature paths/checksums, decoder parameters and the cache's model/completion identities. `prepare_multiturn_eval.py --reference /path/to/input_bundle --out /path/to/plan.json` freezes an existing verified bundle containing `identity.json`, `plan.json`, `decoder.json` and `inputs/`; it copies no checkpoint or predictions.
+QA uses 2 FPS, at most 2048 frames, without subtitles or audio. Current scripts compare contexts 196608 and 262144 and select each benchmark's higher metric, breaking ties toward 196608. The paper uses a fixed 262144 context; see [paper settings](PAPER.md#reported-results-and-measurement-protocol).
 
-Every evaluator checks complete query coverage and refuses mixed identities when resuming. Use a new output directory after changing code, weights, inputs or protocol. These checks are not a substitute for a full benchmark run.
+Query groups keep manifest order and split only between complete questions, repeating the video prefix with fresh state. Oversized single questions raise an error.
+
+## Commands
+
+Basic 4B evaluation is in the [README](../README.md#evaluation). For QA with prepared features:
+
+```bash
+python scripts/evaluate_cached_contexts.py \
+  --checkpoint /path/to/joint/hf_checkpoint \
+  --plans /path/to/context_plans --feature-cache /path/to/qa_features \
+  --out runs/eval4b_qa
+```
+
+For a complete 4B multi-turn plan, supply a reference bundle containing `identity.json`, `plan.json`, `decoder.json` and `inputs/`:
+
+```bash
+python scripts/prepare_multiturn_eval.py \
+  --reference /path/to/input_bundle --out /path/to/plan.json
+python scripts/evaluate_4b_multiturn.py \
+  --checkpoint /path/to/joint/hf_checkpoint \
+  --plan /path/to/plan.json --out runs/eval4b_multiturn
+```
+
+For 35B, run on each of 8 nodes with shared paths:
+
+```bash
+source scripts/env_qwen36.sh
+torchrun --nnodes=8 --nproc-per-node=8 \
+  --node-rank="$NODE_RANK" --master-addr="$MASTER_ADDR" \
+  --master-port="${MASTER_PORT:-29500}" \
+  scripts/evaluate_qwen36.py \
+  --checkpoint /path/to/export --plans /path/to/plans --out /path/to/evaluation
+```
+
+Evaluators save predictions, metrics and completion identities. Use a new output directory when changing code, weights, inputs or protocol.

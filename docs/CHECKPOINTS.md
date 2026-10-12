@@ -1,17 +1,10 @@
 # Checkpoint export
 
-The default 4B joint-stage artifact is `joint/hf_checkpoint/`. It contains sharded safetensors, a weight index, the complete model configuration, tokenizer/processor, and the VideoJev inference implementation. The language backbone uses native Qwen modules; the final MLP is removed and the trained decision head is included.
+- **4B:** `joint/hf_checkpoint/` is a complete Hugging Face package. Floating-point weights match the base model's dtype (BF16); integer buffers are preserved.
+- **35B:** the training export contains task weights. Convert it with the matching base model to include the frozen vision encoder.
+- DeepSpeed optimizer/RNG/scheduler recovery stays separate. Head warmup hands off through `head.pt`.
 
-The exporter reads the actual embedding-weight dtype from the input model's safetensors. It casts each floating tensor to that dtype, preserves integer buffers, round-trips every written tensor, and records file hashes before atomically publishing the directory. Qwen3.5-4B and Qwen3.6-35B-A3B use BF16. Native nonpersistent RoPE buffers are reconstructed by Transformers and must not be blanket-cast.
-
-DeepSpeed optimizer/master weights, RNG and scheduler state remain in separate recovery checkpoints. The head warmup handoff remains `head.pt`; it is an intermediate training artifact. Resuming an interrupted final export archives the earlier export attempt before rebuilding it from the complete DeepSpeed state.
-
-This follows XTuner's separation between training recovery and inference export, its explicit save dtype, safetensors shards/index, and tokenizer saving. References at the tested revision:
-
-- [Trainer HF checkpoint lifecycle](https://github.com/InternLM/xtuner/blob/76e705134521eff867b409f3b3451df1c4d8dd36/xtuner/v1/train/trainer.py#L1801)
-- [Model HF export and explicit casting](https://github.com/InternLM/xtuner/blob/76e705134521eff867b409f3b3451df1c4d8dd36/xtuner/v1/model/base.py#L1529)
-
-To convert an earlier completed task checkpoint:
+## Convert a task checkpoint
 
 ```bash
 python scripts/export_hf.py \
@@ -22,8 +15,10 @@ python scripts/export_hf.py \
   --expected-sha256 VERIFIED_SOURCE_SHA256
 ```
 
-Both sizes default to grounding threshold 0.25. Use `--decoder-threshold VALUE` to export a different default. The 35B converter verifies the frozen-vision base configuration and includes its original visual weights. It preserves task weights and remaps only their module prefix into the standalone HF model. Both exports contain the native Qwen tokenizer and processor plus the two trained decision tokens.
+Both sizes default to grounding threshold `0.25`; use `--decoder-threshold VALUE` to change it.
 
-The 4B training evaluator accepts both the new HF training directory and older `.pt` files. A standalone model package converted for distribution uses the model card's `AutoModel` interface. The 35B distributed trainer still keeps its task-only sharded export for ZeRO-3 evaluation; use the conversion command above to create a standalone package with vision.
+Exports include safetensors shards/index, configuration, tokenizer, processor and inference code. The exporter checks source identity and tensor round trips, then writes the completed package atomically.
 
-BF16 serialization rounds FP32 training parameters. Tensor round-trip checks and inference consistency tests compare against the same cast policy; they do not establish unchanged full-benchmark scores relative to FP32 training storage.
+Load with `AutoModel.from_pretrained(..., trust_remote_code=True)`. The 4B training evaluator also accepts older `.pt` checkpoints.
+
+The format follows [XTuner's inference export](https://github.com/InternLM/xtuner/blob/76e705134521eff867b409f3b3451df1c4d8dd36/xtuner/v1/model/base.py#L1529). See [release precision notes](PAPER.md#current-release-defaults).
