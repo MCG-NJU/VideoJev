@@ -20,9 +20,9 @@
   <a href="#results">📊 Results</a> ·
   <a href="#models">🤗 Models</a> ·
   <a href="#quick-start">🚀 Quick start</a> ·
-  <a href="#inference-output">Outputs</a> ·
-  <a href="#training">Training</a> ·
-  <a href="#evaluation">Evaluation</a>
+  <a href="#inference-output">💬 Outputs</a> ·
+  <a href="#training">🏋️ Training</a> ·
+  <a href="#evaluation">🧪 Evaluation</a>
 </p>
 
 <p align="center">
