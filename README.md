@@ -26,7 +26,7 @@ Open `http://127.0.0.1:8000`. The preview server binds only to localhost and sup
 
 ## Scientific scope
 
-The page uses the current 26-page manuscript and its LaTeX tables. Table values are parsed directly; website formatting does not recompute rounded averages. Website generation does not change paper sources or run inference.
+The page uses the current manuscript and its LaTeX tables. Table values are parsed directly; website formatting does not recompute rounded averages. Website generation does not change paper sources or run inference.
 
 Examples replay selected saved benchmark predictions. Case 01 plays the complete 27.3-second Charades video and shows three of six query readouts. Case 04 plays a 48-second excerpt while the recorded model input was the complete 3,665.5-second video, with 18 questions; two readouts are displayed. Display frames are illustrative video evidence, not a claim about the exact frame sampling used during evaluation. Option bars show uncalibrated scores.
 
@@ -44,7 +44,7 @@ Serve this folder as a static website, including GitHub Pages. Paths are relativ
 
 ## Source and credits
 
-Figures, author list, benchmark results and cases: VideoJev manuscript and accompanying research assets. Page organization is inspired by the OneStreamer project page, with an original implementation and paper-matched visual design. Inter fonts retain their bundled SIL Open Font License in `assets/fonts/OFL.txt`. The favicon is an original SVG mark combining a video frame, eye and play symbol.
+Figures, author list, benchmark results and cases: VideoJev manuscript and accompanying research assets. Page organization is inspired by the OneStreamer project page, with an original implementation and paper-matched visual design. Inter fonts retain their bundled SIL Open Font License in `assets/fonts/OFL.txt`. The header, navigation and footer share the approved VideoJev vector wordmark; the favicon uses its segmented V. The same wordmark appears in the downloadable paper title.
 
 ## Editorial presentation
 

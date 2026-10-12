@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="13" fill="#b7483d"/><path d="M10 24c4-6 8-9 14-9s10 3 14 9c-4 6-8 9-14 9s-10-3-14-9Z" fill="none" stroke="#fff9ef" stroke-width="2"/><path d="m21 18 9 6-9 6Z" fill="#fff9ef"/><path d="M13 8v5M35 35v5" stroke="#fff9ef" stroke-width="1.5" stroke-linecap="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 104 104"><title>VideoJev</title><g transform="translate(4 8)"><path fill="#292824" d="M5 0H27L48 56L36 88Z" />
+<path fill="#D6A19A" d="M70 0H92L81.5 28H59.5Z" />
+<path fill="#C77469" d="M57.5 33H79.5L70.1 58H48.1Z" />
+<path fill="#B7483D" d="M46.2 63H68.2L59 88H36Z" />
+    </g></svg>
