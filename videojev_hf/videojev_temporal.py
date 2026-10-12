@@ -80,7 +80,7 @@ def interval_iou(a, b):
     return max(0., min(a[1], b[1]) - max(a[0], b[0])) / (max(a[1], b[1]) - min(a[0], b[0]))
 
 
-def decode(logits, times, duration, threshold=.5, smooth=1, *, bounds,
+def decode(logits, times, duration, threshold=.25, smooth=1, *, bounds,
            postprocess=POSTPROCESS_VERSION, return_raw=False):
     """Maximum Bernoulli-likelihood nonempty contiguous segment (Kadane, O(T)).
 

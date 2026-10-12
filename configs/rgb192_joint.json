@@ -24,7 +24,7 @@
   "grad_clip": 1,
   "workers": 2,
   "decoder_thresholds": [
-    0.15
+    0.25
   ],
   "decoder_smoothing": [
     1

@@ -17,7 +17,7 @@ from .vision import VISUAL_PROTOCOL
 
 
 @torch.inference_mode()
-def predict_decisions(model, loader, device, *, threshold=.5, smooth=1):
+def predict_decisions(model, loader, device, *, threshold=.25, smooth=1):
     """Mixed grounding/QA inference. Targets are never passed into the model."""
     from .temporal import decode
     model.eval()

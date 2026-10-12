@@ -19,11 +19,10 @@ python scripts/export_hf.py \
   --base /path/to/matching/Qwen-model \
   --out /path/to/new/HF-model \
   --expected-id VERIFIED_FINAL_CHECKPOINT_ID \
-  --expected-sha256 VERIFIED_SOURCE_SHA256 \
-  --decoder-threshold 0.15
+  --expected-sha256 VERIFIED_SOURCE_SHA256
 ```
 
-Use threshold 0.35 for the final 35B checkpoint. The 35B converter verifies the frozen-vision base configuration and includes its original visual weights. It preserves task weights and remaps only their module prefix into the standalone HF model. Both exports contain the native Qwen tokenizer and processor plus the two trained decision tokens.
+Both sizes default to grounding threshold 0.25. Use `--decoder-threshold VALUE` to export a different default. The 35B converter verifies the frozen-vision base configuration and includes its original visual weights. It preserves task weights and remaps only their module prefix into the standalone HF model. Both exports contain the native Qwen tokenizer and processor plus the two trained decision tokens.
 
 The 4B training evaluator accepts both the new HF training directory and older `.pt` files. A standalone model package converted for distribution uses the model card's `AutoModel` interface. The 35B distributed trainer still keeps its task-only sharded export for ZeRO-3 evaluation; use the conversion command above to create a standalone package with vision.
 

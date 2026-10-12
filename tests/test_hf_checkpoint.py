@@ -30,6 +30,7 @@ def test_export_preserves_input_precision_and_integer_buffers(tmp_path, monkeypa
     export_tensors(source.items(), out, base=base, native_config=native,
         checkpoint_id='test', max_shard_bytes=80,
         training_state=dict(config={'base': str(base)}, step=1, checkpoint_id='test'))
+    assert json.loads((out/'config.json').read_text())['decoder']['threshold'] == .25
     loaded = load_training_checkpoint(out)
     assert loaded['step'] == 1
     for name, tensor in source.items():

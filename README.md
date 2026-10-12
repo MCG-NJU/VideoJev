@@ -166,6 +166,8 @@ Actual output from the video and code above:
 
 `interval` is in seconds; `answer_index` is zero-based. `probabilities` contains independent sigmoid scores for grounding and softmax scores over QA options.
 
+Grounding defaults to `threshold=0.25`; pass `threshold=0.4` to `predict_video` or `predict_features` to override it for one call.
+
 ## Environment
 
 Use Python 3.12, PyTorch 2.8 with CUDA 12.8, Triton 3.4, FlashAttention 2 and causal-conv1d. Install the matching CUDA packages before the Python dependencies:
@@ -291,7 +293,7 @@ python scripts/evaluate_qwen36.py \
 
 </details>
 
-Outputs include prediction files, metrics, input/model identities, and completion hashes. Completed outputs are reused only when identities match. The current 4B release defaults to grounding threshold 0.15, smoothing 1, with round/repair/clamp postprocessing. The paper uses threshold 0.25 for both model sizes and a fixed 262144-token QA context; see [release defaults versus paper settings](docs/PAPER.md#current-release-defaults) before reproducing its tables.
+Outputs include prediction files, metrics, input/model identities, and completion hashes. Completed outputs are reused only when identities match. Both model sizes default to grounding threshold 0.25 with round/repair/clamp postprocessing. Override it with `threshold=...` in the HF inference API or `decoder_thresholds` in an evaluation config. The paper uses a fixed 262144-token QA context; see [release defaults versus paper settings](docs/PAPER.md#current-release-defaults) before reproducing its tables.
 
 ## Verification
 

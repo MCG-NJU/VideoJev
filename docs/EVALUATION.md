@@ -14,7 +14,7 @@ The published entrypoints preserve `episode_lengths` and `turn_episode_indices`:
 | LongVideoBench validation | 1337 | Accuracy |
 | MLVU Dev multiple-choice tasks | 2174 | M-Avg |
 
-Grounding uses 4 FPS and the original feature geometry. The final 4B protocol uses 147456 tokens and a fixed decoder (threshold 0.15, smoothing 1, `round_repair_clamp_v1`). The RGB 192K training entrypoint has its own matching 192K evaluation geometry.
+Grounding uses 4 FPS and the original feature geometry. The final 4B protocol uses 147456 tokens and a fixed decoder (threshold 0.25, smoothing 1, `round_repair_clamp_v1`). Both model sizes default to threshold 0.25. To override it, set `decoder_thresholds` in the evaluation config or pass `--decoder-threshold VALUE` when preparing a multi-turn plan. The RGB 192K training entrypoint has its own matching 192K evaluation geometry.
 
 Final QA evaluation uses both 196608 and 262144 contexts, 2 FPS, at most 2048 frames, and no subtitles/audio. Report the larger main metric for each benchmark, with ties resolved to 196608; use the same selected prediction set for any subsequent analysis. Context-level files retain the evidence needed to reproduce the selection. The seven-benchmark feature launcher also provides evaluation at its training context; use the two-context evaluator for final QA reporting.
 

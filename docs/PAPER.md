@@ -56,7 +56,7 @@ Grounding speedups of 2.8× / 3.1× compare VideoJev-4B / 35B-A3B to their respe
 
 ### Current release defaults
 
-The existing code and model packages retain earlier evaluation defaults: grounding thresholds of 0.15 for 4B and 0.35 for 35B, and a QA workflow that evaluates both 196608 and 262144 contexts. These differ from the paper's fixed 0.25 threshold and 262144 QA context. The convenience API can also select a different raw-video resolution from prepared benchmark features. Use the manuscript settings and matching feature plans when reproducing the tables; running the default examples alone does not reproduce them.
+Both model sizes default to grounding threshold 0.25, matching the paper; callers can override it with `threshold=...`. The QA workflow still evaluates both 196608 and 262144 contexts, while the paper uses a fixed 262144 QA context. The convenience API can also select a different raw-video resolution from prepared benchmark features. Use the manuscript settings and matching feature plans when reproducing the tables; running the default examples alone does not reproduce them.
 
 The distributed 35B training export and the standalone Hugging Face model package also serve different loading paths; see [Checkpoint export](CHECKPOINTS.md). The standalone packages store BF16 weights, while the paper's 4B QA measurements used FP32 weights with BF16 autocast. Export validation checks tensor conversion and reference inference under the same casting policy; full benchmark metrics have not been rerun for these BF16 packages.
 

@@ -165,16 +165,24 @@ class VideoJevForVideoUnderstanding(PreTrainedModel):
         return VideoJevOutput(logits=logits, probabilities=probabilities, score_mask=mask)
 
     @torch.inference_mode()
-    def predict_video(self, processor, video, questions, *, fps=2., max_frames=2048, context=196608):
+    def predict_video(self, processor, video, questions, *, fps=2., max_frames=2048, context=196608, threshold=None):
         """Return ordered QA answers / grounding intervals from an original video file."""
+        if threshold is not None and not 0 < threshold < 1:
+            raise ValueError('threshold must be between 0 and 1')
         pixels, record = prepare_video(processor, video, fps=fps, max_frames=max_frames, context=context)
         features = self.encode_video(pixels, torch.tensor([record['grid_thw']]))
-        return self.predict_features(processor, features, record, questions, context=context)
+        return self.predict_features(processor, features, record, questions, context=context, threshold=threshold)
 
     @torch.inference_mode()
-    def predict_features(self, processor, features, record, questions, *, context=196608):
+    def predict_features(self, processor, features, record, questions, *, context=196608, threshold=None):
+        """Use the configured grounding threshold unless this call overrides it."""
+        decoder = dict(self.config.decoder)
+        if threshold is not None:
+            decoder['threshold'] = threshold
+        if not 0 < decoder['threshold'] < 1:
+            raise ValueError('threshold must be between 0 and 1')
         results = []
         for batch, rows in prepare_query_groups(processor, record, questions, context):
             output = self(**batch, visual_features=features)
-            results.extend(format_predictions(output, rows, record, self.config.decoder))
+            results.extend(format_predictions(output, rows, record, decoder))
         return results

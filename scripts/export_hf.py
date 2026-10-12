@@ -16,8 +16,10 @@ def main():
     parser.add_argument('--out', required=True)
     parser.add_argument('--expected-id', required=True)
     parser.add_argument('--expected-sha256')
-    parser.add_argument('--decoder-threshold', type=float, required=True)
+    parser.add_argument('--decoder-threshold', type=float, default=.25, help='Grounding threshold (default: 0.25)')
     args = parser.parse_args()
+    if not 0 < args.decoder_threshold < 1:
+        parser.error("--decoder-threshold must be between 0 and 1")
     path, base = Path(args.checkpoint), Path(args.base)
     native = json.loads((base/'config.json').read_text())
     if path.is_file():

@@ -109,7 +109,7 @@ def finish_scope(target, spec, rows, payloads, identity, decoder):
         spans = [decode(p['logits'],p['times'],p['sampled_duration'],decoder['threshold'],decoder['smooth'],
                  bounds=p['bounds'],postprocess=decoder['postprocess']) for p in ordered]
         result = metrics(spans,rows)
-        result.update(decoder=decoder,decoder_source='unchanged original Video-Jev-4B final decoder')
+        result.update(decoder=decoder,decoder_source='evaluation plan decoder')
         (target/'predictions.jsonl').write_text(''.join(json.dumps(dict(p,prediction=s),ensure_ascii=False)+'\n'
                                                for p,s in zip(ordered,spans)))
         files.append(target/'predictions.jsonl')

@@ -20,7 +20,11 @@ class VideoJevConfig(PreTrainedConfig):
         self.head_logit_scale = head_logit_scale
         self.decide_token_id = decide_token_id
         self.option_end_token_id = option_end_token_id
-        self.decoder = decoder or dict(threshold=.15, smooth=1, postprocess='round_repair_clamp_v1')
+        self.decoder = dict(threshold=.25, smooth=1, postprocess='round_repair_clamp_v1')
+        if decoder is not None:
+            self.decoder.update(decoder)
+        if not 0 < self.decoder['threshold'] < 1:
+            raise ValueError('threshold must be between 0 and 1')
         self.checkpoint_id = checkpoint_id
         self.architectures = ['VideoJevForVideoUnderstanding']
         self.auto_map = {'AutoConfig': 'configuration_videojev.VideoJevConfig',

@@ -18,8 +18,10 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def freeze_plan(reference, destination):
+def freeze_plan(reference, destination, *, decoder_threshold=.25):
     """Reuse input identities, never the original checkpoint or its predictions."""
+    if not 0 < decoder_threshold < 1:
+        raise ValueError('decoder_threshold must be between 0 and 1')
     reference, destination = Path(reference).resolve(), Path(destination).resolve()
     if destination.exists():
         raise FileExistsError(destination)
@@ -69,7 +71,7 @@ def freeze_plan(reference, destination):
     value = dict(protocol=PROTOCOL, base=read(cache/'model.json')['base'], scopes=scopes, jobs=old['jobs'],
         files=copied, cache=str(cache), cache_model_sha256=sha(cache/'model.json'),
         cache_completion_sha256=sha(cache/'completion.json'),
-        decoder={k:decoder[k] for k in ('threshold','smooth','postprocess')},
+        decoder=dict(threshold=decoder_threshold, smooth=decoder['smooth'], postprocess=decoder['postprocess']),
         reference=str(reference), reference_plan_sha256=selected['plan.json'],
         decoder_source_sha256=selected['decoder.json'],
         policy='Manifest-order greedy complete-query chunks; repeat unchanged video prefix; no answer history; no skips')
@@ -81,8 +83,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--reference', required=True, help='Input plan bundle with identity.json, plan.json, decoder.json and inputs/')
     parser.add_argument('--out', required=True, help='Destination plan JSON')
+    parser.add_argument('--decoder-threshold', type=float, default=.25, help='Grounding threshold (default: 0.25)')
     args = parser.parse_args()
-    freeze_plan(args.reference, args.out)
+    freeze_plan(args.reference, args.out, decoder_threshold=args.decoder_threshold)
 
 
 if __name__ == '__main__':
