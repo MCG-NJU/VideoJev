@@ -24,7 +24,7 @@
 <nav aria-label="Main navigation">
 <a href="#overview">Overview</a><a href="#examples">Examples</a><a href="#method">Method</a><a href="#results">Results</a><a class="models-link" href="https://huggingface.co/collections/MCG-NJU/videojev" rel="noopener" target="_blank">Models</a>
 </nav>
-<a class="nav-paper" href="assets/VideoJev.pdf" rel="noopener" target="_blank">Read the paper <span aria-hidden="true">↗</span></a>
+<a class="nav-paper" href="https://arxiv.org/abs/2610.18615" rel="noopener" target="_blank">Read the paper <span aria-hidden="true">↗</span></a>
 </div>
 </header>
 <main id="main">
@@ -39,7 +39,7 @@
 <p class="affiliations"><span><sup>1</sup>NJU</span><span><sup>2</sup>JD.com</span><span><sup>3</sup>UCAS</span><span><sup>4</sup>THU</span><span><sup>5</sup>XMU</span><span><sup>6</sup>SJTU</span><span><sup>7</sup>USTC</span><span><sup>8</sup>FDU</span></p>
 <p class="contributions">* Equal contribution <span>‡ Project lead</span> <span>† Corresponding author</span></p>
 <div class="resource-links">
-<a class="button primary" href="assets/VideoJev.pdf" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="M5 2h7l4 4v12H5zM12 2v5h4M8 11h5M8 14h5"></path></svg>Paper <span>↗</span></a>
+<a class="button primary" href="https://arxiv.org/abs/2610.18615" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="M5 2h7l4 4v12H5zM12 2v5h4M8 11h5M8 14h5"></path></svg>Paper <span>↗</span></a>
 <a class="button secondary" href="https://github.com/MCG-NJU/VideoJev" rel="noopener" target="_blank"><img alt="" aria-hidden="true" class="resource-icon" height="18" src="assets/github.svg" width="18"/>Code <span aria-hidden="true">↗</span></a>
 <a class="button secondary" href="https://huggingface.co/collections/MCG-NJU/videojev" rel="noopener" target="_blank"><img alt="" aria-hidden="true" class="resource-icon" height="18" src="assets/huggingface.svg" width="18"/>Models</a>
 </div>
@@ -111,7 +111,7 @@
 <div class="benchmark-heading"><div><h3 class="section-title">Benchmark results</h3></div></div>
 <div class="table-controls"><div aria-label="Benchmark task" class="segmented" role="group"><button aria-pressed="true" class="active" data-table-task="grounding">Temporal grounding</button><button aria-pressed="false" data-table-task="qa">Video QA</button></div><div class="table-filters"><label>Model scale <select id="table-scale"><option value="all">Both scales</option><option value="4B">4B dense</option><option value="MoE">35B-A3B / MoE</option></select></label><label class="checkbox-label"><input id="show-all-methods" type="checkbox"/> All methods</label><label class="checkbox-label" id="all-metrics-label"><input id="show-all-metrics" type="checkbox"/> All metrics</label></div></div>
 <div aria-label="Benchmark results, scroll horizontally for more columns" class="table-scroll" role="region" tabindex="0"><table id="benchmark-table"><caption>Temporal grounding results from Table 1.</caption></table></div>
-<noscript><p>Interactive comparisons require JavaScript. <a href="assets/VideoJev.pdf#page=7">Read all results in the paper.</a></p></noscript>
+<noscript><p>Interactive comparisons require JavaScript. <a href="https://arxiv.org/pdf/2610.18615#page=7">Read all results in the paper.</a></p></noscript>
 <p class="table-note" id="table-note"></p>
 </div><details class="protocol" id="timing-protocol"><summary><span class="disclosure-label"><svg aria-hidden="true" class="label-icon" focusable="false" viewBox="0 0 24 24"><path d="M4 7h7m4 0h5M4 17h3m4 0h9"/><circle cx="13" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>Evaluation settings</span> <span aria-hidden="true" class="expand-icon">+</span></summary>
 <div class="protocol-columns"><div><h4>Benchmark results</h4>
@@ -133,14 +133,14 @@
 <section aria-labelledby="models-title" class="section models-section" id="models"><div class="container">
 <div class="section-heading"><h2 class="heading-with-icon section-title" id="models-title"><svg aria-hidden="true" class="section-icon" focusable="false" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></svg>Models</h2></div>
 <div class="model-grid"><article class="model-card"><div class="model-top"><span class="eyebrow">Dense</span></div><h3>VideoJev<span>-4B</span></h3><p>Built on Qwen3.5-4B</p><div class="model-scores"><div><strong>65.3</strong><span>Grounding mIoU</span></div><div><strong>74.3</strong><span>Video QA average</span></div></div><a class="model-link" href="https://huggingface.co/MCG-NJU/VideoJev-4B" rel="noopener" target="_blank"><span class="model-link-label"><img alt="Hugging Face" class="hf-logo" height="22" src="assets/huggingface.svg" width="22"/>Checkpoint &amp; examples</span><span aria-hidden="true">↗</span></a></article><article class="model-card"><div class="model-top"><span class="eyebrow">Mixture of experts · 3B active</span></div><h3>VideoJev<span>-35B-A3B</span></h3><p>Built on Qwen3.6-35B-A3B</p><div class="model-scores"><div><strong>67.7</strong><span>Grounding mIoU</span></div><div><strong>79.5</strong><span>Video QA average</span></div></div><a class="model-link" href="https://huggingface.co/MCG-NJU/VideoJev-35B-A3B" rel="noopener" target="_blank"><span class="model-link-label"><img alt="Hugging Face" class="hf-logo" height="22" src="assets/huggingface.svg" width="22"/>Checkpoint &amp; examples</span><span aria-hidden="true">↗</span></a></article></div>
-<div class="citation" id="citation"><div class="citation-heading"><div><h3 class="heading-with-icon section-title"><svg aria-hidden="true" class="section-icon" focusable="false" viewBox="0 0 24 24"><path d="M10 6H4v7h5c0 3-2 5-5 5M20 6h-6v7h5c0 3-2 5-5 5"/></svg>Citation</h3></div><button class="button secondary copy-button" id="copy-citation">Copy BibTeX <span aria-hidden="true">⧉</span></button></div><pre><code id="bibtex">@misc{zhu2026videojev,
-  title = {VideoJev: System One Model for Video Understanding and Interaction},
-  author = {Yuhan Zhu and Xiangyu Zeng and Qingyi Si and Chenxu Yang and
-            Yifei Li and Luozheng Qin and Junhao Zhou and Dingyu Yao and
-            Jun Zhang and Chuanyu Qin and Zhiqiu Zhang and Yuandong Yang and
-            Yuqi Xu and Tianyu Zhang and Hongcheng Guo and Jiaqi Wang and
-            Nan Duan and Limin Wang},
-  year = {2026}
+<div class="citation" id="citation"><div class="citation-heading"><div><h3 class="heading-with-icon section-title"><svg aria-hidden="true" class="section-icon" focusable="false" viewBox="0 0 24 24"><path d="M10 6H4v7h5c0 3-2 5-5 5M20 6h-6v7h5c0 3-2 5-5 5"/></svg>Citation</h3></div><button class="button secondary copy-button" id="copy-citation">Copy BibTeX <span aria-hidden="true">⧉</span></button></div><pre><code id="bibtex">@misc{zhu2026videojevmodelvideounderstanding,
+  title={VideoJev: System One Model for Video Understanding and Interaction},
+  author={Yuhan Zhu and Xiangyu Zeng and Qingyi Si and Chenxu Yang and Yifei Li and Luozheng Qin and Junhao Zhou and Dingyu Yao and Jun Zhang and Chuanyu Qin and Zhiqiu Zhang and Yuandong Yang and Yuqi Xu and Tianyu Zhang and Hongcheng Guo and Jiaqi Wang and Nan Duan and Limin Wang},
+  year={2026},
+  eprint={2610.18615},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  url={https://arxiv.org/abs/2610.18615},
 }</code></pre><span aria-live="polite" class="sr-only" id="copy-status"></span></div>
 </div></section>
 </main>

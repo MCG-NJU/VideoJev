@@ -36,7 +36,7 @@ Table 3 is a same-data single-stage training control, not the default two-stage 
 
 ## Release information
 
-The manuscript currently has placeholder public project URLs. Code and Models are marked **Coming soon** and lead to the model section. Replace these with official release links when available. The local PDF link works now. BibTeX is provisional and deliberately omits unknown arXiv, DOI and venue metadata. Add the final canonical URL and social-sharing image once a deployment URL is known.
+[Paper · arXiv:2610.18615](https://arxiv.org/abs/2610.18615).
 
 ## Hosting
 
@@ -55,3 +55,17 @@ The page stands alone: repeated figure/table numbers, source links and usage cap
 Section headlines use a shared Candara bold italic style and a 36px desktop size. Explicit line breaks are removed, and headings span the section width where needed. On narrower screens, a shared size fits every headline on one line. All headline text, including emphasis, uses warm dark gray (#55534f), slightly darker than the body copy, and shares the same typography. The two analysis card headings are subordinate to “What makes the difference?”: they use 24px on desktop and scale down to 16px on narrow screens, while retaining the same bold italic Candara style. A smaller gap below the parent heading and lighter card dividers reinforce the grouping.
 
 Native Candara is preferred. The local WOFF2 fallback contains Candara Regular, with bold and italic synthesized by the browser; it is not a native Candara Italic font. Font origin and original copyright/license metadata are retained in `assets/fonts/CANDARA-NOTICE.txt` and the font file.
+
+## Citation
+
+```bibtex
+@misc{zhu2026videojevmodelvideounderstanding,
+  title={VideoJev: System One Model for Video Understanding and Interaction},
+  author={Yuhan Zhu and Xiangyu Zeng and Qingyi Si and Chenxu Yang and Yifei Li and Luozheng Qin and Junhao Zhou and Dingyu Yao and Jun Zhang and Chuanyu Qin and Zhiqiu Zhang and Yuandong Yang and Yuqi Xu and Tianyu Zhang and Hongcheng Guo and Jiaqi Wang and Nan Duan and Limin Wang},
+  year={2026},
+  eprint={2610.18615},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  url={https://arxiv.org/abs/2610.18615},
+}
+```
