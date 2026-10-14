@@ -21,4 +21,4 @@ Exports include safetensors shards/index, configuration, tokenizer, processor an
 
 Load with `AutoModel.from_pretrained(..., trust_remote_code=True)`. The 4B training evaluator also accepts older `.pt` checkpoints.
 
-The format follows [XTuner's inference export](https://github.com/InternLM/xtuner/blob/76e705134521eff867b409f3b3451df1c4d8dd36/xtuner/v1/model/base.py#L1529). See [release precision notes](PAPER.md#current-release-defaults).
+The format follows [XTuner's inference export](https://github.com/InternLM/xtuner/blob/76e705134521eff867b409f3b3451df1c4d8dd36/xtuner/v1/model/base.py#L1529).

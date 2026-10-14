@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://mcg-nju.github.io/VideoJev"><img src="https://img.shields.io/badge/VideoJev-Homepage-555555?labelColor=c96343" alt="VideoJev Homepage" height="28"></a>
-  <a href="docs/PAPER.md"><img src="https://img.shields.io/badge/Paper-Method%20%26%20results-555555?labelColor=c96343" alt="Paper · Method and results" height="28"></a>
+  <img src="https://img.shields.io/badge/Paper-Method%20%26%20results-555555?labelColor=c96343" alt="Paper · Method and results" height="28">
   <a href="https://huggingface.co/ZhuYuhan/VideoJev-4B"><img src="https://img.shields.io/badge/Hugging%20Face-VideoJev--4B-555555?labelColor=b88a45" alt="Hugging Face · VideoJev-4B" height="28"></a>
   <a href="https://huggingface.co/ZhuYuhan/VideoJev-35B-A3B"><img src="https://img.shields.io/badge/Hugging%20Face-VideoJev--35B--A3B-555555?labelColor=778269" alt="Hugging Face · VideoJev-35B-A3B" height="28"></a>
 </p>
@@ -210,7 +210,7 @@ Set `VIDEOJEV_TEST_MODEL=/path/to/Qwen3.5-4B` for tokenizer checks. Tests skip w
 
 ## Documentation
 
-[Paper](docs/PAPER.md) · [Data](docs/DATA.md) · [Evaluation](docs/EVALUATION.md) · [Checkpoint export](docs/CHECKPOINTS.md)
+[Data](docs/DATA.md) · [Evaluation](docs/EVALUATION.md) · [Checkpoint export](docs/CHECKPOINTS.md)
 
 ---
 
