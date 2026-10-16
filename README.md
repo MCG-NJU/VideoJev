@@ -17,20 +17,8 @@
 </p>
 
 <p align="center">
-  <a href="#overview">🎬 Overview</a> ·
-  <a href="#results">📊 Results</a> ·
-  <a href="#models">🤗 Models</a> ·
-  <a href="#quick-start">🚀 Quick start</a> ·
-  <a href="#inference-output">💬 Outputs</a> ·
-  <a href="#training">🏋️ Training</a> ·
-  <a href="#evaluation">🧪 Evaluation</a>
-</p>
-
-<p align="center">
   <img src="docs/assets/videojev-teaser.png" alt="VideoJev paper teaser: shared candidate scoring and video computation, with grounding and QA quality versus model forward latency" width="100%">
 </p>
-
----
 
 ## Overview
 
@@ -227,9 +215,7 @@ Set `VIDEOJEV_TEST_MODEL=/path/to/Qwen3.5-4B` for tokenizer checks. Tests skip w
 }
 ```
 
----
-
-### 🤝 Acknowledgements
+## Acknowledgements
 
 Thanks to the teams behind [**Qwen**](https://huggingface.co/Qwen) for the open model checkpoints, [**XTuner**](https://github.com/InternLM/xtuner) for the training framework, and [**TimeLens-100K**](https://huggingface.co/datasets/TencentARC/TimeLens-100K) and [**TimeLens2-93K**](https://huggingface.co/datasets/MCG-NJU/TimeLens2-93K) for the open training data.
 
