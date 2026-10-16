@@ -24,6 +24,8 @@
 
 **VideoJev** performs temporal grounding and multiple-choice video QA through direct candidate scoring, without text generation.
 
+[Try VideoJev-4B on ModelScope Studio ↗](https://modelscope.cn/studios/MCG-NJU/VideoJev-Demo)
+
 https://github.com/user-attachments/assets/e603d76e-b485-4ac6-aafe-3752bda9f19b
 
 <details>
