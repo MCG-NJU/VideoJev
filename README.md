@@ -9,11 +9,11 @@
 <h3 align="center">System One Model for Video Understanding and Interaction</h3>
 
 <p align="center">
-  <a href="https://mcg-nju.github.io/VideoJev"><img src="https://img.shields.io/badge/VideoJev-Homepage-555555?labelColor=c96343" alt="VideoJev Homepage" height="28"></a>
-  <a href="https://arxiv.org/abs/2610.18615"><img src="https://img.shields.io/badge/arXiv-2610.18615-555555?labelColor=c96343" alt="arXiv: 2610.18615" height="28"></a>
-  <a href="https://huggingface.co/ZhuYuhan/VideoJev-4B"><img src="https://img.shields.io/badge/Hugging%20Face-VideoJev--4B-555555?labelColor=b88a45" alt="Hugging Face · VideoJev-4B" height="28"></a>
-  <a href="https://huggingface.co/ZhuYuhan/VideoJev-35B-A3B"><img src="https://img.shields.io/badge/Hugging%20Face-VideoJev--35B--A3B-555555?labelColor=778269" alt="Hugging Face · VideoJev-35B-A3B" height="28"></a>
-  <a href="https://modelscope.cn/collections/MCG-NJU/VideoJev"><img src="https://img.shields.io/badge/ModelScope-Models-555555?labelColor=5844e9" alt="ModelScope · VideoJev models" height="28"></a>
+  <a href="https://mcg-nju.github.io/VideoJev"><img src="docs/assets/badges/homepage.svg" alt="VideoJev Homepage" height="34"></a>
+  <a href="https://arxiv.org/abs/2610.18615"><img src="docs/assets/badges/paper.svg" alt="arXiv: 2610.18615" height="34"></a>
+  <a href="https://huggingface.co/ZhuYuhan/VideoJev-4B"><img src="docs/assets/badges/hf4b.svg" alt="Hugging Face · VideoJev-4B" height="34"></a>
+  <a href="https://huggingface.co/ZhuYuhan/VideoJev-35B-A3B"><img src="docs/assets/badges/hf35b.svg" alt="Hugging Face · VideoJev-35B-A3B" height="34"></a>
+  <a href="https://modelscope.cn/collections/MCG-NJU/VideoJev"><img src="docs/assets/badges/modelscope.svg" alt="ModelScope · VideoJev models" height="34"></a>
 </p>
 
 <p align="center">

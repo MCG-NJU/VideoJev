@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="203" height="38" viewBox="0 0 203 38" role="img" aria-label="VideoJev Homepage">
+  <title>VideoJev Homepage</title>
+  <rect x="0.5" y="0.5" width="202" height="37" rx="9" fill="#FFFEFC" stroke="#E7E2D9"/>
+  <rect x="7" y="5" width="28" height="28" rx="7" fill="#F4E6E0"/>
+  <g transform="translate(11 7) scale(.23)"><g transform="translate(4 8)"><path fill="#292824" d="M5 0H27L48 56L36 88Z"/><path fill="#D6A19A" d="M70 0H92L81.5 28H59.5Z"/><path fill="#C77469" d="M57.5 33H79.5L70.1 58H48.1Z"/><path fill="#B7483D" d="M46.2 63H68.2L59 88H36Z"/></g></g>
+  <text x="45" y="24.6" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#292824"><tspan font-weight="700">VideoJev</tspan><tspan dx="6" fill="#66625D" font-weight="400">Homepage</tspan></text>
+</svg>
