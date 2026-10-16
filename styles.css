@@ -328,6 +328,7 @@ tbody tr.ours:hover { background: #f5e6de; }
 .model-scores strong { font-size: 22px; font-weight: 500; line-height: 1.3; }
 .model-scores span { font-size: 11px; color: var(--muted); }
 .model-link { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; padding: 8px 11px; border: 1px solid var(--control-border); border-radius: var(--radius); background: var(--control-surface); box-shadow: var(--control-shadow); font-size: 12px; font-weight: 500; color: var(--ink); }
+.model-link + .model-link { margin-top: 8px; }
 .model-link-label { display: inline-flex; align-items: center; gap: 8px; }
 .hf-logo { width: 22px; height: 22px; object-fit: contain; flex-shrink: 0; }
 .model-link:hover { color: var(--clay-dark); border-color: var(--clay); background: var(--clay-wash); }
