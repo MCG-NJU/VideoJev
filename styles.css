@@ -69,6 +69,8 @@ sup { font-size: .68em; vertical-align: super; }
 .section + .section > .container { border-top: 1px solid var(--line); padding-top: 30px; }
 .section-heading { margin-bottom: 20px; }
 .section-heading > p { color: var(--muted); font-size: 13px; margin-top: 6px; }
+.examples-live-link { color: var(--clay-dark); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+.examples-live-link:hover { color: var(--clay); }
 .section-title { font-style: normal; white-space: normal; text-wrap: balance; }
 .section-title em { font: inherit; }
 .heading-with-icon { display: flex; align-items: center; gap: 9px; }
