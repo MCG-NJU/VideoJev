@@ -1,9 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="216" height="54" viewBox="0 0 216 54" role="img" aria-label="VideoJev-35B-A3B: #1 on QVHighlights-TimeLens, overall mIoU — Papers with Code, 2026-10-17">
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="30" viewBox="0 0 140 30" role="img" aria-label="VideoJev-35B-A3B: #1 on QVHighlights-TimeLens, overall mIoU — Papers with Code, 2026-10-17">
   <title>VideoJev-35B-A3B: #1 on QVHighlights-TimeLens, overall mIoU — Papers with Code, 2026-10-17</title>
-  <desc>Ranking among entries listed on Papers with Code as of 2026-10-17.</desc>
-  <rect x="0.5" y="0.5" width="215" height="53" rx="11" fill="#FCFCF8" stroke="#E7E4DC"/>
-  <text x="14" y="23" font-family="Arial, Helvetica, sans-serif" font-size="13.5" font-weight="600" fill="#35342F">QVHighlights</text>
-  <text x="14" y="40" font-family="Arial, Helvetica, sans-serif" font-size="10.5" fill="#858179">TimeLens</text>
-  <rect x="165" y="10" width="39" height="34" rx="9" fill="#EDF1E7"/>
-  <text x="184.5" y="33" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="600" fill="#647756">#1</text>
+  <desc>Ranking among entries listed on Papers with Code as of 2026-10-17. QA rankings use the fewer-than-6B total-parameter category.</desc>
+  <rect x="0.5" y="0.5" width="139" height="29" rx="7" fill="#FCFCF8" stroke="#E7E4DC"/>
+  <text x="10" y="19" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="500" fill="#35342F">QVHighlights<tspan dx="3" dy="-4" font-size="8" font-weight="400" fill="#858179">TL</tspan></text>
+  <rect x="109" y="5" width="24" height="20" rx="5" fill="#EDF1E7"/>
+  <text x="121" y="19" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="600" fill="#647756">#1</text>
 </svg>

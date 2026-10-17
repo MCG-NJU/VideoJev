@@ -46,9 +46,9 @@ https://github.com/user-attachments/assets/e603d76e-b485-4ac6-aafe-3752bda9f19b
 </p>
 
 <p align="center">
-  <a href="https://paperswithcode.co/benchmark/charades-timelens?task=video-temporal-grounding&amp;eval=38568"><img src="docs/assets/badges/rank-charades.svg" alt="VideoJev-35B-A3B: #1 on Charades-TimeLens, overall mIoU — Papers with Code, 2026-10-17" height="48"></a>
-  <a href="https://paperswithcode.co/benchmark/activitynet-timelens?task=video-temporal-grounding&amp;eval=38569"><img src="docs/assets/badges/rank-activitynet.svg" alt="VideoJev-35B-A3B: #1 on ActivityNet-TimeLens, overall mIoU — Papers with Code, 2026-10-17" height="48"></a>
-  <a href="https://paperswithcode.co/benchmark/qvhighlights-timelens-validation?task=video-temporal-grounding&amp;eval=38570"><img src="docs/assets/badges/rank-qvhighlights.svg" alt="VideoJev-35B-A3B: #1 on QVHighlights-TimeLens, overall mIoU — Papers with Code, 2026-10-17" height="48"></a>
+  <a href="https://paperswithcode.co/benchmark/charades-timelens?task=video-temporal-grounding&amp;eval=38568"><img src="docs/assets/badges/rank-charades.svg" alt="VideoJev-35B-A3B: #1 on Charades-TimeLens, overall mIoU — Papers with Code, 2026-10-17" height="30"></a>
+  <a href="https://paperswithcode.co/benchmark/activitynet-timelens?task=video-temporal-grounding&amp;eval=38569"><img src="docs/assets/badges/rank-activitynet.svg" alt="VideoJev-35B-A3B: #1 on ActivityNet-TimeLens, overall mIoU — Papers with Code, 2026-10-17" height="30"></a>
+  <a href="https://paperswithcode.co/benchmark/qvhighlights-timelens-validation?task=video-temporal-grounding&amp;eval=38570"><img src="docs/assets/badges/rank-qvhighlights.svg" alt="VideoJev-35B-A3B: #1 on QVHighlights-TimeLens, overall mIoU — Papers with Code, 2026-10-17" height="30"></a>
 </p>
 
 ![Paper Table 1: temporal grounding](docs/assets/temporal-grounding-table.png)
@@ -60,10 +60,10 @@ https://github.com/user-attachments/assets/e603d76e-b485-4ac6-aafe-3752bda9f19b
 </p>
 
 <p align="center">
-  <a href="https://paperswithcode.co/benchmark/lvbench?task=video-understanding&amp;eval=40176&amp;max_parameters_exclusive=6000000000"><img src="docs/assets/badges/rank-lvbench-6b.svg" alt="VideoJev-4B: #1 on LVBench, models with fewer than 6B total parameters — Papers with Code, 2026-10-17" height="48"></a>
-  <a href="https://paperswithcode.co/benchmark/videomme?task=video-understanding&amp;eval=40177&amp;max_parameters_exclusive=6000000000"><img src="docs/assets/badges/rank-videomme-6b.svg" alt="VideoJev-4B: #1 on Video-MME, models with fewer than 6B total parameters — Papers with Code, 2026-10-17" height="48"></a>
-  <a href="https://paperswithcode.co/benchmark/longvideobench?task=video-understanding&amp;eval=40178&amp;max_parameters_exclusive=6000000000"><img src="docs/assets/badges/rank-longvideobench-6b.svg" alt="VideoJev-4B: #1 on LongVideoBench, models with fewer than 6B total parameters — Papers with Code, 2026-10-17" height="48"></a>
-  <a href="https://paperswithcode.co/benchmark/mlvu?task=video-understanding&amp;eval=40179&amp;max_parameters_exclusive=6000000000"><img src="docs/assets/badges/rank-mlvu-6b.svg" alt="VideoJev-4B: #1 on MLVU, models with fewer than 6B total parameters — Papers with Code, 2026-10-17" height="48"></a>
+  <a href="https://paperswithcode.co/benchmark/lvbench?task=video-understanding&amp;eval=40176&amp;max_parameters_exclusive=6000000000"><img src="docs/assets/badges/rank-lvbench-6b.svg" alt="VideoJev-4B: #1 on LVBench, models with fewer than 6B total parameters — Papers with Code, 2026-10-17" height="30"></a>
+  <a href="https://paperswithcode.co/benchmark/videomme?task=video-understanding&amp;eval=40177&amp;max_parameters_exclusive=6000000000"><img src="docs/assets/badges/rank-videomme-6b.svg" alt="VideoJev-4B: #1 on Video-MME, models with fewer than 6B total parameters — Papers with Code, 2026-10-17" height="30"></a>
+  <a href="https://paperswithcode.co/benchmark/longvideobench?task=video-understanding&amp;eval=40178&amp;max_parameters_exclusive=6000000000"><img src="docs/assets/badges/rank-longvideobench-6b.svg" alt="VideoJev-4B: #1 on LongVideoBench, models with fewer than 6B total parameters — Papers with Code, 2026-10-17" height="30"></a>
+  <a href="https://paperswithcode.co/benchmark/mlvu?task=video-understanding&amp;eval=40179&amp;max_parameters_exclusive=6000000000"><img src="docs/assets/badges/rank-mlvu-6b.svg" alt="VideoJev-4B: #1 on MLVU, models with fewer than 6B total parameters — Papers with Code, 2026-10-17" height="30"></a>
 </p>
 
 ![Paper Table 2: video question answering](docs/assets/video-qa-table.png)
