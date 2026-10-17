@@ -1,10 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="223" height="30" viewBox="0 0 223 30" role="img" aria-label="VideoJev-4B: #1 on LVBench, models with fewer than 6B total parameters — Papers with Code, 2026-10-17">
+<svg xmlns="http://www.w3.org/2000/svg" width="176" height="54" viewBox="0 0 176 54" role="img" aria-label="VideoJev-4B: #1 on LVBench, models with fewer than 6B total parameters — Papers with Code, 2026-10-17">
   <title>VideoJev-4B: #1 on LVBench, models with fewer than 6B total parameters — Papers with Code, 2026-10-17</title>
   <desc>Ranking among entries listed on Papers with Code as of 2026-10-17. Parameter-filtered rankings include entries with recorded parameter counts.</desc>
-  <rect x="0.5" y="0.5" width="222" height="29" rx="7" fill="#FFFEFC" stroke="#E7E2D9"/>
-  <path d="M7 .5H100V29.5H7A6.5 6.5 0 0 1 .5 23V7A6.5 6.5 0 0 1 7 .5Z" fill="#383831"/>
-  <text x="50" y="19" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="500" fill="#FFFEFC">Papers with Code</text>
-  <text x="108" y="19" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="600" fill="#292824">LVBench</text>
-  <rect x="168" y="4" width="50" height="22" rx="5" fill="#F7EAE5"/>
-  <text x="193.0" y="18.7" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="700" fill="#A54F43">#1 &lt;6B</text>
+  <rect x="0.5" y="0.5" width="175" height="53" rx="11" fill="#FFFDFC" stroke="#E7E4DC"/>
+  <text x="14" y="23" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="600" fill="#35342F">LVBench</text>
+  <text x="14" y="40" font-family="Arial, Helvetica, sans-serif" font-size="10.5" fill="#858179">&lt;6B parameters</text>
+  <rect x="125" y="10" width="39" height="34" rx="9" fill="#F7EAE5"/>
+  <text x="144.5" y="33" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="600" fill="#A54F43">#1</text>
 </svg>
