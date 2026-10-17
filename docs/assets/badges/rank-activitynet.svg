@@ -1,8 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="211" height="36" viewBox="0 0 211 36" role="img" aria-label="VideoJev-35B-A3B: #1 on ActivityNet-TimeLens, overall mIoU — Papers with Code, 2026-10-17">
+<svg xmlns="http://www.w3.org/2000/svg" width="271" height="30" viewBox="0 0 271 30" role="img" aria-label="VideoJev-35B-A3B: #1 on ActivityNet-TimeLens, overall mIoU — Papers with Code, 2026-10-17">
   <title>VideoJev-35B-A3B: #1 on ActivityNet-TimeLens, overall mIoU — Papers with Code, 2026-10-17</title>
   <desc>Ranking among entries listed on Papers with Code as of 2026-10-17.</desc>
-  <rect x="0.5" y="0.5" width="210" height="35" rx="9" fill="#FFFEFC" stroke="#E7E2D9"/>
-  <text x="12" y="23" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="600" fill="#292824">ActivityNet-TimeLens</text>
-  <rect x="168" y="5" width="37" height="26" rx="6" fill="#EDF1E7"/>
-  <text x="186.5" y="22.7" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" fill="#647756">#1</text>
+  <rect x="0.5" y="0.5" width="270" height="29" rx="7" fill="#FFFEFC" stroke="#E7E2D9"/>
+  <path d="M7 .5H100V29.5H7A6.5 6.5 0 0 1 .5 23V7A6.5 6.5 0 0 1 7 .5Z" fill="#383831"/>
+  <text x="50" y="19" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="500" fill="#FFFEFC">Papers with Code</text>
+  <text x="108" y="19" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="600" fill="#292824">ActivityNet-TimeLens</text>
+  <rect x="238" y="4" width="28" height="22" rx="5" fill="#EDF1E7"/>
+  <text x="252.0" y="18.7" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="700" fill="#647756">#1</text>
 </svg>
