@@ -206,14 +206,11 @@ Set `VIDEOJEV_TEST_MODEL=/path/to/Qwen3.5-4B` for tokenizer checks. Tests skip w
 ## Citation
 
 ```bibtex
-@misc{zhu2026videojevmodelvideounderstanding,
+@article{zhu2026videojev,
   title={VideoJev: System One Model for Video Understanding and Interaction},
-  author={Yuhan Zhu and Xiangyu Zeng and Qingyi Si and Chenxu Yang and Yifei Li and Luozheng Qin and Junhao Zhou and Dingyu Yao and Jun Zhang and Chuanyu Qin and Zhiqiu Zhang and Yuandong Yang and Yuqi Xu and Tianyu Zhang and Hongcheng Guo and Jiaqi Wang and Nan Duan and Limin Wang},
-  year={2026},
-  eprint={2610.18615},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV},
-  url={https://arxiv.org/abs/2610.18615},
+  author={Zhu, Yuhan and Zeng, Xiangyu and Si, Qingyi and Yang, Chenxu and Li, Yifei and Qin, Luozheng and Zhou, Junhao and Yao, Dingyu and Zhang, Jun and Qin, Chuanyu and others},
+  journal={arXiv preprint arXiv:2610.18615},
+  year={2026}
 }
 ```
 
