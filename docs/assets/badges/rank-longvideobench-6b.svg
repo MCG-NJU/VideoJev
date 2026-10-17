@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="207" height="36" viewBox="0 0 207 36" role="img" aria-label="VideoJev-4B: #1 on LongVideoBench, models with fewer than 6B total parameters — Papers with Code, 2026-10-17">
+  <title>VideoJev-4B: #1 on LongVideoBench, models with fewer than 6B total parameters — Papers with Code, 2026-10-17</title>
+  <desc>Ranking among entries listed on Papers with Code as of 2026-10-17. Parameter-filtered rankings include entries with recorded parameter counts.</desc>
+  <rect x="0.5" y="0.5" width="206" height="35" rx="9" fill="#FFFEFC" stroke="#E7E2D9"/>
+  <text x="12" y="23" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="600" fill="#292824">LongVideoBench</text>
+  <rect x="135" y="5" width="66" height="26" rx="6" fill="#F7EAE5"/>
+  <text x="168.0" y="22.7" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" fill="#A54F43">#1 &lt;6B</text>
+</svg>
